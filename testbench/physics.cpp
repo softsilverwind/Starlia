@@ -57,7 +57,7 @@ void Ball::draw()
 
 void createBall(int _)
 {
-	layer->registerObject(new Ball(Coordinate2d(randomi(200,600), randomi(300,500)), randomi(5,15), Color3d(randomd(), randomd(), randomd()), Coordinate2d(randomsgn() * randomd() * 10, randomsgn() * randomd() * 10)), NULL, true, true);
+	layer->registerObject(new Ball(Coordinate2d(randomi(200,600), randomi(300,500)), randomi(5,15), Color3d(randomd(), randomd(), randomd()), Coordinate2d(randomsgn() * randomd() * 10, randomsgn() * randomd() * 10)));
 	glutTimerFunc(500, createBall, 42);
 }
 

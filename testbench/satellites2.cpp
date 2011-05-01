@@ -48,9 +48,9 @@ void Satellite::draw()
 void createSatellite(int _)
 {
 	if (randomi(0,1))
-		layer1->registerObject(new Satellite(Coordinate2d(400,300), Coordinate2dpolar(randomi(100,200), randomd() * 2 * M_PI), 8, Color3d(1,0,0), randomd() / 100, randomi(500, 1000)), NULL, true, true);
+		layer1->registerObject(new Satellite(Coordinate2d(400,300), Coordinate2dpolar(randomi(100,200), randomd() * 2 * M_PI), 8, Color3d(1,0,0), randomd() / 100, randomi(500, 1000)), NULL);
 	else
-		layer2->registerObject(new Satellite(Coordinate2d(200,150), Coordinate2dpolar(randomi(50,100), randomd() * 2 * M_PI), 4, Color3d(0,0,1), randomd() / 100, randomi(500, 1000)), NULL, true, true);
+		layer2->registerObject(new Satellite(Coordinate2d(200,150), Coordinate2dpolar(randomi(50,100), randomd() * 2 * M_PI), 4, Color3d(0,0,1), randomd() / 100, randomi(500, 1000)), NULL);
 	glutTimerFunc(10, createSatellite, 42);
 }
 

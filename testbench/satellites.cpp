@@ -46,7 +46,7 @@ void Satellite::draw()
 
 void createSatellite(int _)
 {
-	layer->registerObject(new Satellite(Coordinate2d(400,300), Coordinate2dpolar(randomi(100,200), randomd() * 2 * M_PI), 5, Color3d(randomd(), randomd(), randomd()), randomd() / 100, randomi(500, 1000)), NULL, true, true);
+	layer->registerObject(new Satellite(Coordinate2d(400,300), Coordinate2dpolar(randomi(100,200), randomd() * 2 * M_PI), 5, Color3d(randomd(), randomd(), randomd()), randomd() / 100, randomi(500, 1000)));
 	glutTimerFunc(10, createSatellite, 42);
 }
 

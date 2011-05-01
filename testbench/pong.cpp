@@ -168,7 +168,7 @@ void restart()
 
 void start(int _)
 {
-	layer->registerObject(new Ball(Coordinate2d(400,300), 10, Coordinate2d(0.0, 3), Color3d(0,0,1)), restart, true, true);
+	layer->registerObject(new Ball(Coordinate2d(400,300), 10, Coordinate2d(0.0, 3), Color3d(0,0,1)), restart);
 }
 
 int main(int argc, char** argv)

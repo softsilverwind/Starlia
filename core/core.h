@@ -34,9 +34,9 @@ class StarLayer : public StarObject
 
 		StarLayer(Coordinate2d size);
 
-		void registerObject(StarObject *object, void (*onEnd)() = NULL, bool remove = false, bool destroy = false);
+		void registerObject(StarObject *object, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
 		void unregisterObject(StarObject *object);
-		void registerWidget(StarWidget *widget, void (*onEnd)() = NULL, bool remove = false, bool destroy = false);
+		void registerWidget(StarWidget *widget, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
 		void unregisterWidget(StarWidget *widget);
 
 		/* returns true if the click is handled by the layer, false if it should fall through */

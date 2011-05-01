@@ -111,7 +111,7 @@ void createBall(int _)
 {
 	balls.push_front(new Ball(Coordinate2d(randomi(200,600), randomi(300,500)), randomi(5,15), Color3d(randomd(), randomd(), randomd()), Coordinate2d(randomsgn() * randomd() * 10, randomsgn() * randomd() * 10)));
 	balls.front()->itpos = balls.begin();
-	layer->registerObject(balls.front(), NULL, true, true);
+	layer->registerObject(balls.front());
 	glutTimerFunc(1000, createBall, 42);
 }
 
