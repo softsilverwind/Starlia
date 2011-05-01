@@ -17,9 +17,9 @@ class Circle : public Star2dModel
 		static bool initialized;
 		static Coordinate2d vertex[POINTS];
 		Color3d color;
+		static void prepare();
 
 	public:
-		static void prepare();
 		static void draw(Color3d color);
 		
 		void draw();

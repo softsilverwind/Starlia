@@ -11,6 +11,9 @@ Coordinate2d Circle::vertex[POINTS];
 
 void Circle::prepare()
 {
+	if (initialized)
+		return;
+
 	initialized = true;
 	for (int i = 0; i < POINTS / 8; i++)
 	{
