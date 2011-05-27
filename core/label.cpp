@@ -63,7 +63,7 @@ StarLabel::StarLabel(string text, Coordinate2d topLeft, Coordinate2d botRight, d
 	// Adding a dummy space at the bottom end of the label.
 	// Each space between two lines is one half the height of a character.
 	
-	linesPrinted = min((unsigned int) maxlineD, textArray.size());
+	linesPrinted = min((unsigned int) maxlineD, (unsigned int) textArray.size());
 }
 
 void StarLabel::draw()
