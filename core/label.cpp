@@ -71,7 +71,6 @@ void StarLabel::draw()
 	int count = 0;
 	double color_factor;
 
-#define __DEBUG__
 #ifdef __DEBUG__
 	glColor3d(0,0.2,0);
 	glBegin(GL_LINE_LOOP);
