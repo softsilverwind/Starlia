@@ -13,6 +13,15 @@ StarLayer::StarLayer(Coordinate2d size)
 {
 }
 
+StarLayer::~StarLayer()
+{
+	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
+	{
+		if (it->destroy)
+			delete it->object;
+	}
+}
+
 void StarLayer::draw()
 {
 	glMatrixMode(GL_PROJECTION);

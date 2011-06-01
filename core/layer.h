@@ -31,6 +31,7 @@ class StarLayer : public StarObject
 		bool invalid;
 
 		StarLayer(Coordinate2d size);
+		~StarLayer();
 
 		void draw();
 		bool recalc();
