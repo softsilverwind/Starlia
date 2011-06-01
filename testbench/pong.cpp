@@ -4,7 +4,7 @@
 
 using namespace Starlia;
 
-StarLayer *layer;
+StarObjectLayer *layer;
 
 class Racket : public StarObject
 {
@@ -174,7 +174,7 @@ void start(int _)
 int main(int argc, char** argv)
 {
 	StarCore::init("Starlia Pong - keys are \"A,D\" and \"J,L\"");
-	layer = new StarLayer(Coordinate2d(800, 600));
+	layer = new StarObjectLayer(Coordinate2d(800, 600));
 
 	player[0] = new Racket(Coordinate2d(400,50), 10, 50, Color3d(1,0,0));
 	player[1] = new Racket(Coordinate2d(400,550), 10, 50, Color3d(0,1,0));

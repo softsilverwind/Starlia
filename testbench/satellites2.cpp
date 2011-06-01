@@ -4,8 +4,8 @@
 
 using namespace Starlia;
 
-StarLayer *layer1;
-StarLayer *layer2;
+StarObjectLayer *layer1;
+StarObjectLayer *layer2;
 
 class Satellite : public StarObject
 {
@@ -57,8 +57,8 @@ void createSatellite(int _)
 int main(int argc, char** argv)
 {
 	StarCore::init("Starlia test bench");
-	layer1 = new StarLayer(Coordinate2d(800, 600));
-	layer2 = new StarLayer(Coordinate2d(400, 300));
+	layer1 = new StarObjectLayer(Coordinate2d(800, 600));
+	layer2 = new StarObjectLayer(Coordinate2d(400, 300));
 	StarCore::registerLayerForeground(layer1);
 	StarCore::registerLayerForeground(layer2);
 	glutTimerFunc(10, createSatellite, 42);

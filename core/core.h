@@ -4,52 +4,18 @@
 #include <string>
 #include <list>
 #include "object.h"
+#include "layer.h"
 
 using namespace std;
 
 namespace Starlia
 {
 
-class StarLayer : public StarObject
-{
-	private:
-		typedef struct EntryType_tag
-		{
-			StarObject *object;
-			bool invalid;
-			void (*onEnd)();
-			bool remove;
-			bool destroy;
-			EntryType_tag (StarObject *object, void (*onEnd)(), bool remove, bool destroy)
-				: object(object), invalid(false), onEnd(onEnd), remove(remove), destroy(destroy) {};
-		}
-		EntryType;
-
-		Coordinate2d size;
-		list<EntryType> objectList;
-		list<StarWidget *> clickList; // TODO HASH THE F*CK OUT OF IT! :D
-
-	public:
-		bool invalid;
-
-		StarLayer(Coordinate2d size);
-
-		void registerObject(StarObject *object, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
-		void unregisterObject(StarObject *object);
-		void registerWidget(StarWidget *widget, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
-		void unregisterWidget(StarWidget *widget);
-
-		/* returns true if the click is handled by the layer, false if it should fall through */
-		bool click(Coordinate2d position);
-
-		void draw();
-		bool recalc();
-};
-
 class StarCore
 {
 	private:
-		static list<StarLayer *> layers;
+		static list<StarObjectLayer *> objectLayers;
+		static list<StarWidgetLayer *> widgetLayers;
 		static unsigned int last_recalc;
 		static Coordinate2d scale;
 
@@ -66,9 +32,13 @@ class StarCore
 		static void init(string title, int width = 800, int height = 600);
 		static void loop();
 
-		static void registerLayerForeground(StarLayer *layer);
-		static void registerLayerBackground(StarLayer *layer);
-		static void unregisterLayer(StarLayer *layer);
+		static void registerLayerForeground(StarObjectLayer *layer);
+		static void registerLayerBackground(StarObjectLayer *layer);
+		static void unregisterLayer(StarObjectLayer *layer);
+
+		static void registerLayerForeground(StarWidgetLayer *layer);
+		static void registerLayerBackground(StarWidgetLayer *layer);
+		static void unregisterLayer(StarWidgetLayer *layer);
 };
 
 }
