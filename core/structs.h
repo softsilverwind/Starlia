@@ -10,9 +10,10 @@ typedef struct Coordinate2d
 	Coordinate2d() {};
 	Coordinate2d(double x, double y) : x(x), y(y) {};
 
-	Coordinate2d operator+(Coordinate2d second) { return Coordinate2d(x + second.x, y + second.y); }
-	Coordinate2d operator-(Coordinate2d second) { return Coordinate2d(x - second.x, y - second.y); }
+	Coordinate2d operator+(const Coordinate2d& second) { return Coordinate2d(x + second.x, y + second.y); }
+	Coordinate2d operator-(const Coordinate2d& second) { return Coordinate2d(x - second.x, y - second.y); }
 	Coordinate2d operator/(int second) { return Coordinate2d(x / second, y / second); }
+	Coordinate2d operator/(const Coordinate2d& second) { return Coordinate2d(x / second.x, y / second.y); }
 
 	Coordinate2d operator+=(Coordinate2d second) { return Coordinate2d(x += second.x, y += second.y); }
 	Coordinate2d operator-=(Coordinate2d second) { return Coordinate2d(x -= second.x, y -= second.y); }

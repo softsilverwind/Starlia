@@ -27,6 +27,7 @@ class StarCore
 		static void resize(int width, int height);
 		static void idle(int _);
 		static void click(int button, int state, int x, int y);
+		static void mouseOver(int x, int y);
 
 	public:
 		static void init(string title, int width = 800, int height = 600);

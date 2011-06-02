@@ -37,7 +37,7 @@ void StarLabel::breakText(const string& text)
 		justifyOffset.push_back(justify * ((botRight.x - topLeft.x) - (textArray[i].size() * charWidth * 1.5 - charWidth * 0.5)) / charWidth);
 }
 
-StarLabel::StarLabel(string text, Coordinate2d topLeft, Coordinate2d botRight, double charHeight, Color3d color, Justify justify, void (*onClick)())
+StarLabel::StarLabel(string text, Coordinate2d topLeft, Coordinate2d botRight, double charHeight, Color3d color, Justify justify, void (*onClick)(Coordinate2d))
 	: StarWidget(topLeft, botRight, onClick), charHeight(charHeight), color(color), justify(justify)
 {
 

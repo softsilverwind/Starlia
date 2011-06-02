@@ -15,10 +15,17 @@ StarLayer::StarLayer(Coordinate2d size)
 
 StarLayer::~StarLayer()
 {
+	clearLayer();
+}
+
+void StarLayer::clearLayer()
+{
 	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
 	{
 		if (it->destroy)
 			delete it->object;
+
+		objectList.erase(it--);
 	}
 }
 
@@ -131,7 +138,30 @@ bool StarWidgetLayer::click(Coordinate2d position)
 
 		if (position.x >= tl.x && position.x <= br.x && position.y <= tl.y && position.y >= br.y)
 		{
-			it2->click();
+			Coordinate2d pos((position - tl) / (br - tl));
+			it2->click(pos);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool StarWidgetLayer::mouseOver(Coordinate2d position)
+{
+	position *= size;
+
+	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
+	{
+		StarWidget *it2 = (StarWidget *) it->object;
+		Coordinate2d tl, br;
+
+		tl = it2->getTopLeft();
+		br = it2->getBotRight();
+
+		if (position.x >= tl.x && position.x <= br.x && position.y <= tl.y && position.y >= br.y)
+		{
+			Coordinate2d pos((position - tl) / (br - tl));
+			it2->mouseOver(pos);
 			return true;
 		}
 	}

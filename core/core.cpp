@@ -109,9 +109,24 @@ void StarCore::click(int button, int state, int x, int y)
 		pos.y = 1 - y / scale.y;
 
 		for(list<StarWidgetLayer *>::reverse_iterator it = widgetLayers.rbegin();
-				it != widgetLayers.rend() && (*it)->click(pos); ++it)
+				it != widgetLayers.rend() && !(*it)->click(pos); ++it)
 			;
 	}
+
+	glutPostRedisplay();
+}
+
+void StarCore::mouseOver(int x, int y)
+{
+	Coordinate2d pos;
+	pos.x = x / scale.x;
+	pos.y = 1 - y / scale.y;
+
+	for(list<StarWidgetLayer *>::reverse_iterator it = widgetLayers.rbegin();
+			it != widgetLayers.rend() && !(*it)->mouseOver(pos); ++it)
+		;
+
+	glutPostRedisplay();
 }
 
 void StarCore::loop()
@@ -139,6 +154,7 @@ void StarCore::init(string title, int width, int height)
 	glutDisplayFunc(StarCore::display);
 	glutReshapeFunc(StarCore::resize);
 	glutMouseFunc(StarCore::click);
+	glutPassiveMotionFunc(StarCore::mouseOver);
 
 	glutTimerFunc(10, StarCore::idle, 42);
 }

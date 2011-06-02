@@ -32,6 +32,7 @@ class StarLayer : public StarObject
 
 		StarLayer(Coordinate2d size);
 		~StarLayer();
+		void clearLayer();
 
 		void draw();
 		bool recalc();
@@ -56,9 +57,8 @@ class StarWidgetLayer : public StarLayer
 
 		/* returns true if the click is handled by the layer, false if it should fall through */
 		bool click(Coordinate2d position);
-
+		bool mouseOver(Coordinate2d position);
 };
-
 
 }
 

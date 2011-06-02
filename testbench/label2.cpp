@@ -4,19 +4,19 @@
 using namespace Starlia;
 using namespace std;
 
-void foo1()
+void foo1(Coordinate2d pos)
 {
-	puts("first label clicked :)");
+	printf("first label clicked on (%f,%f) :)\n", pos.x, pos.y);
 }
 
-void foo2()
+void foo2(Coordinate2d pos)
 {
-	puts("second label clicked :)");
+	printf("second label clicked on (%f,%f) :)\n", pos.x, pos.y);
 }
 
-void foo3()
+void foo3(Coordinate2d pos)
 {
-	puts("third label clicked :)");
+	printf("third label clicked on (%f,%f) :)\n", pos.x, pos.y);
 }
 
 int main()

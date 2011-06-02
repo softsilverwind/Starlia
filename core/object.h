@@ -43,7 +43,8 @@ class StarWidget : public StarObject
 	protected:
 		Coordinate2d topLeft;
 		Coordinate2d botRight;
-		void (*onClick)();
+		void (*onClick)(Coordinate2d pos);
+		void (*onMouseOver)(Coordinate2d pos);
 
 		virtual void draw();
 		virtual bool recalc();
@@ -52,8 +53,9 @@ class StarWidget : public StarObject
 		StarWidget();
 		const Coordinate2d& getTopLeft() { return topLeft; };
 		const Coordinate2d& getBotRight() { return botRight; };
-		StarWidget(Coordinate2d topLeft, Coordinate2d botRight, void (*onClick)() = NULL);
-		void click();
+		StarWidget(Coordinate2d topLeft, Coordinate2d botRight, void (*onClick)(Coordinate2d) = NULL, void (*onMouseOver)(Coordinate2d) = NULL);
+		void click(Coordinate2d pos);
+		void mouseOver(Coordinate2d pos);
 };
 
 class Star3dObject : public StarObject

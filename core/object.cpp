@@ -48,8 +48,8 @@ Star2dObject::~Star2dObject()
 		delete model;
 }
 
-StarWidget::StarWidget(Coordinate2d topLeft, Coordinate2d botRight, void (*onClick)())
-	: topLeft(topLeft), botRight(botRight), onClick(onClick)
+StarWidget::StarWidget(Coordinate2d topLeft, Coordinate2d botRight, void (*onClick)(Coordinate2d), void (*onMouseOver)(Coordinate2d))
+	: topLeft(topLeft), botRight(botRight), onClick(onClick), onMouseOver(onMouseOver)
 {
 }
 
@@ -63,10 +63,16 @@ bool StarWidget::recalc()
 	return true;
 }
 
-void StarWidget::click()
+void StarWidget::click(Coordinate2d pos)
 {
 	if (onClick)
-		onClick();
+		onClick(pos);
+}
+
+void StarWidget::mouseOver(Coordinate2d pos)
+{
+	if (onMouseOver)
+		onMouseOver(pos);
 }
 
 }
