@@ -58,6 +58,7 @@ void StarCore::recalc()
 		{
 			if ((*it)->invalid)
 			{
+				(*it)->invalid = false;
 				objectLayers.erase(it--);
 				continue;
 			}
@@ -69,6 +70,7 @@ void StarCore::recalc()
 		{
 			if ((*it)->invalid)
 			{
+				(*it)->invalid = false;
 				widgetLayers.erase(it--);
 				continue;
 			}
