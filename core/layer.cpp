@@ -46,9 +46,9 @@ void StarLayer::draw()
 			objectList.erase(it--);
 			continue;
 		}
-	
+
 		glPushMatrix();
-		glPushAttrib(GL_CURRENT_BIT);
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		it->object->draw();
 		glPopAttrib();
 		glPopMatrix();
@@ -84,6 +84,10 @@ bool StarLayer::recalc()
 	return true;
 }
 
+StarObjectLayer::StarObjectLayer(Coordinate2d size) : StarLayer(size)
+{
+}
+
 void StarObjectLayer::registerObject(StarObject *object, void (*onEnd)(), bool remove, bool destroy)
 {
 	if (destroy)
@@ -102,6 +106,10 @@ void StarObjectLayer::unregisterObject(StarObject *object)
 		}
 
 	cerr << "Unregistering invalid object: " << object->tag << endl;
+}
+
+StarWidgetLayer::StarWidgetLayer(Coordinate2d size, bool blockFallThrough) : StarLayer(size), blockFallThrough(blockFallThrough)
+{
 }
 
 void StarWidgetLayer::registerObject(StarWidget *object, void (*onEnd)(), bool remove, bool destroy)
@@ -139,11 +147,10 @@ bool StarWidgetLayer::click(Coordinate2d position)
 		if (position.x >= tl.x && position.x <= br.x && position.y <= tl.y && position.y >= br.y)
 		{
 			Coordinate2d pos((position - tl) / (br - tl));
-			it2->click(pos);
-			return true;
+			return it2->click(pos) || blockFallThrough;
 		}
 	}
-	return false;
+	return blockFallThrough;
 }
 
 bool StarWidgetLayer::mouseOver(Coordinate2d position)
@@ -161,11 +168,10 @@ bool StarWidgetLayer::mouseOver(Coordinate2d position)
 		if (position.x >= tl.x && position.x <= br.x && position.y <= tl.y && position.y >= br.y)
 		{
 			Coordinate2d pos((position - tl) / (br - tl));
-			it2->mouseOver(pos);
-			return true;
+			return it2->mouseOver(pos) || blockFallThrough;
 		}
 	}
-	return false;
+	return blockFallThrough;
 }
 
 }

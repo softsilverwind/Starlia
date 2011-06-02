@@ -63,16 +63,26 @@ bool StarWidget::recalc()
 	return true;
 }
 
-void StarWidget::click(Coordinate2d pos)
+bool StarWidget::click(Coordinate2d pos)
 {
 	if (onClick)
+	{
 		onClick(pos);
+		return true;
+	}
+	else
+		return false;
 }
 
-void StarWidget::mouseOver(Coordinate2d pos)
+bool StarWidget::mouseOver(Coordinate2d pos)
 {
 	if (onMouseOver)
+	{
 		onMouseOver(pos);
+		return true;
+	}
+	else
+		return false;
 }
 
 }

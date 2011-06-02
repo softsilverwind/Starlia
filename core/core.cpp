@@ -23,11 +23,11 @@ void StarCore::draw()
 	glClearColor(0,0,0,0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-
 	for (list<StarObjectLayer *>::iterator it = objectLayers.begin(); it != objectLayers.end(); ++it)
 	{
 		if ((*it)->invalid)
 		{
+			(*it)->invalid = false;
 			objectLayers.erase(it--);
 			continue;
 		}
@@ -39,6 +39,7 @@ void StarCore::draw()
 	{
 		if ((*it)->invalid)
 		{
+			(*it)->invalid = false;
 			widgetLayers.erase(it--);
 			continue;
 		}

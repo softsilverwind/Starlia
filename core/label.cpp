@@ -35,26 +35,27 @@ void StarLabel::breakText(const string& text)
 
 	for(unsigned int i = 0; i < textArray.size(); ++i)
 		justifyOffset.push_back(justify * ((botRight.x - topLeft.x) - (textArray[i].size() * charWidth * 1.5 - charWidth * 0.5)) / charWidth);
+
+	linesPrinted = min((unsigned int) maxlineD, (unsigned int) textArray.size());
 }
 
 StarLabel::StarLabel(string text, Coordinate2d topLeft, Coordinate2d botRight, double charHeight, Color3d color, Justify justify, void (*onClick)(Coordinate2d))
 	: StarWidget(topLeft, botRight, onClick), charHeight(charHeight), color(color), justify(justify)
 {
-
 	charWidth = 0.5 * charHeight;
 	charsPerLineD = (botRight.x - topLeft.x + 0.5 * charWidth) / (1.5 * charWidth); 
+
 	// adding a dummy space at the end of the line. It won't be displayed either way
 	// Each space between two characters is one half the width of a character.
-
 	charsPerLine = (unsigned int) charsPerLineD;
+
+	// Adding a dummy space at the bottom end of the label.
+	// Each space between two lines is one half the height of a character.
+	maxlineD = (topLeft.y - botRight.y + 0.5 * charHeight) / (1.5 * charHeight);
 
 	breakText(text);
 
-	maxlineD = (topLeft.y - botRight.y + 0.5 * charHeight) / (1.5 * charHeight);
-	// Adding a dummy space at the bottom end of the label.
-	// Each space between two lines is one half the height of a character.
 	
-	linesPrinted = min((unsigned int) maxlineD, (unsigned int) textArray.size());
 }
 
 void StarLabel::draw()

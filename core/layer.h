@@ -41,7 +41,7 @@ class StarLayer : public StarObject
 class StarObjectLayer : public StarLayer
 {
 	public:
-		StarObjectLayer(Coordinate2d size) : StarLayer(size) {}
+		StarObjectLayer(Coordinate2d size);
 
 		void registerObject(StarObject *object, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
 		void unregisterObject(StarObject *object);
@@ -49,8 +49,11 @@ class StarObjectLayer : public StarLayer
 
 class StarWidgetLayer : public StarLayer
 {
+	private:
+		bool blockFallThrough;
+
 	public:
-		StarWidgetLayer(Coordinate2d size) : StarLayer(size) {}
+		StarWidgetLayer(Coordinate2d size, bool blockFallThrough = false);
 
 		void registerObject(StarWidget *object, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
 		void unregisterObject(StarWidget *object);

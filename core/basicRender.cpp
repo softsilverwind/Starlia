@@ -52,7 +52,6 @@ void Circle::draw(Color3d color)
 	if (!initialized)
 		prepare();
 
-	glPushAttrib(GL_CURRENT_BIT);
 	glColor3d(color.r, color.g, color.b);
 
 	glBegin(GL_POLYGON);
@@ -63,8 +62,6 @@ void Circle::draw(Color3d color)
 	}
 
 	glEnd();
-
-	glPopAttrib();
 }
 
 void Circle::draw()
@@ -288,6 +285,69 @@ void VectorLetter::prepare()
 	character['\''].push_back(Coordinate2d( 0.2, 0.8));
 	character['\''].push_back(Coordinate2d(-0.2,   1));
 
+	character['1'].push_back(Coordinate2d(   -1,   0));
+	character['1'].push_back(Coordinate2d(    0,   1));
+	character['1'].push_back(Coordinate2d(    0,  -1));
+
+	character['2'].push_back(Coordinate2d(  -1, 0.5));
+	character['2'].push_back(Coordinate2d(   0,   1));
+	character['2'].push_back(Coordinate2d(   1, 0.5));
+	character['2'].push_back(Coordinate2d(  -1,  -1));
+	character['2'].push_back(Coordinate2d(   1,  -1));
+
+	character['3'].push_back(Coordinate2d(  -1,   1));
+	character['3'].push_back(Coordinate2d(   1,   1));
+	character['3'].push_back(Coordinate2d(   1,   0));
+	character['3'].push_back(Coordinate2d(  -1,   0));
+	character['3'].push_back(Coordinate2d(   1,   0));
+	character['3'].push_back(Coordinate2d(   1,  -1));
+	character['3'].push_back(Coordinate2d(  -1,  -1));
+
+	character['4'].push_back(Coordinate2d(   1,   0));
+	character['4'].push_back(Coordinate2d(  -1,   0));
+	character['4'].push_back(Coordinate2d(   0,   1));
+	character['4'].push_back(Coordinate2d(   0,  -1));
+
+	character['5'].push_back(Coordinate2d(   1,   1));
+	character['5'].push_back(Coordinate2d(  -1,   1));
+	character['5'].push_back(Coordinate2d(  -1,   0));
+	character['5'].push_back(Coordinate2d(   1,   0));
+	character['5'].push_back(Coordinate2d(   1,  -1));
+	character['5'].push_back(Coordinate2d(  -1,  -1));
+
+	character['6'].push_back(Coordinate2d(   1,   1));
+	character['6'].push_back(Coordinate2d(  -1,   1));
+	character['6'].push_back(Coordinate2d(  -1,  -1));
+	character['6'].push_back(Coordinate2d(   1,  -1));
+	character['6'].push_back(Coordinate2d(   1,   0));
+	character['6'].push_back(Coordinate2d(  -1,   0));
+
+	character['7'].push_back(Coordinate2d(  -1,   1));
+	character['7'].push_back(Coordinate2d(   1,   1));
+	character['7'].push_back(Coordinate2d(   0,  -1));
+
+	character['8'].push_back(Coordinate2d(   1,   1));
+	character['8'].push_back(Coordinate2d(  -1,   1));
+	character['8'].push_back(Coordinate2d(  -1,   0));
+	character['8'].push_back(Coordinate2d(   1,   0));
+	character['8'].push_back(Coordinate2d(   1,  -1));
+	character['8'].push_back(Coordinate2d(  -1,  -1));
+	character['8'].push_back(Coordinate2d(  -1,   0));
+	character['8'].push_back(Coordinate2d(   1,   0));
+	character['8'].push_back(Coordinate2d(   1,   1));
+
+	character['9'].push_back(Coordinate2d(   1,   0));
+	character['9'].push_back(Coordinate2d(  -1,   0));
+	character['9'].push_back(Coordinate2d(  -1,   1));
+	character['9'].push_back(Coordinate2d(   1,   1));
+	character['9'].push_back(Coordinate2d(   1,  -1));
+
+	character['0'].push_back(Coordinate2d(  -1,   1));
+	character['0'].push_back(Coordinate2d(   1,   1));
+	character['0'].push_back(Coordinate2d(   1,  -1));
+	character['0'].push_back(Coordinate2d(  -1,  -1));
+	character['0'].push_back(Coordinate2d(  -1,   1));
+
 	initialized = true;
 }
 
@@ -301,7 +361,7 @@ void VectorLetter::writeCharacter(unsigned char c)
 		for (vector<Coordinate2d>::iterator it = character[c].begin();
 				it != character[c].end(); ++it)
 		{
-			if (it->x > 20)
+			if (it->x > 2)
 			{
 				glEnd();
 				glBegin(GL_LINE_STRIP);
