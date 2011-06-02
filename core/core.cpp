@@ -108,7 +108,9 @@ void StarCore::click(int button, int state, int x, int y)
 		pos.x = x / scale.x;
 		pos.y = 1 - y / scale.y;
 
-		widgetLayers.back()->click(pos);
+		for(list<StarWidgetLayer *>::reverse_iterator it = widgetLayers.rbegin();
+				it != widgetLayers.rend() && (*it)->click(pos); ++it)
+			;
 	}
 }
 
