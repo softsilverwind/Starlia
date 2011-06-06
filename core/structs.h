@@ -24,14 +24,14 @@ typedef struct Coordinate2d
 }
 Coordinate2d;
 
-inline istream& operator >> (istream& is, Coordinate2d coord)
+inline istream& operator >> (istream& is, Coordinate2d& coord)
 {
 	return is >> coord.x >> coord.y;
 }
 
-inline ostream& operator << (ostream& os, Coordinate2d coord)
+inline ostream& operator << (ostream& os, const Coordinate2d& coord)
 {
-	return os << coord.x << coord.y;
+	return os << "(" << coord.x << ", " << coord.y << ")";
 }
 
 typedef struct Coordinate2dpolar
@@ -50,14 +50,14 @@ typedef struct Coordinate3d
 }
 Coordinate3d;
 
-inline istream& operator >> (istream& is, Coordinate3d coord)
+inline istream& operator >> (istream& is, Coordinate3d& coord)
 {
 	return is >> coord.x >> coord.y >> coord.z;
 }
 
-inline ostream& operator << (ostream& os, Coordinate3d coord)
+inline ostream& operator << (ostream& os, const Coordinate3d& coord)
 {
-	return os << coord.x << coord.y << coord.z;
+	return os << "(" << coord.x << ", " << coord.y << ", " << coord.z << ")";
 }
 
 typedef struct Color3d
