@@ -1,7 +1,7 @@
 CXX=g++
 CXXFLAGS=-Wall -O3
 
-all: circle satellites satellites2 pong physics physics2 label label2 label3
+all: circle satellites satellites2 pong physics physics2 label label2 label3 cube
 
 circle: circle.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lglut -lGLU -lstarlia -lGL
@@ -28,6 +28,9 @@ label2: label2.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lglut -lGLU -lstarlia -lGL
 
 label3: label3.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ -lglut -lGLU -lstarlia -lGL
+
+cube: cube.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lglut -lGLU -lstarlia -lGL
 
 #1.exe: main1.cpp

@@ -24,13 +24,12 @@ class StarLayer : public StarObject
 		}
 		EntryType;
 
-		Coordinate2d size;
 		list<EntryType> objectList;
 
 	public:
 		bool invalid;
 
-		StarLayer(Coordinate2d size);
+		StarLayer();
 		~StarLayer();
 		void clearLayer();
 
@@ -38,7 +37,17 @@ class StarLayer : public StarObject
 		bool recalc();
 };
 
-class StarObjectLayer : public StarLayer
+class Star2dLayer : public StarLayer
+{
+	protected:
+		Coordinate2d size;
+
+	public:
+		void draw();
+		Star2dLayer(Coordinate2d size);
+};
+
+class StarObjectLayer : public Star2dLayer
 {
 	public:
 		StarObjectLayer(Coordinate2d size);
@@ -47,7 +56,7 @@ class StarObjectLayer : public StarLayer
 		void unregisterObject(StarObject *object);
 };
 
-class StarWidgetLayer : public StarLayer
+class StarWidgetLayer : public Star2dLayer
 {
 	private:
 		bool blockFallThrough;
@@ -61,6 +70,17 @@ class StarWidgetLayer : public StarLayer
 		/* returns true if the click is handled by the layer, false if it should fall through */
 		bool click(Coordinate2d position);
 		bool mouseOver(Coordinate2d position);
+};
+
+class Star3dLayer : public StarLayer
+{
+	public:
+		Star3dLayer();
+
+		void draw();
+
+		void registerObject(StarObject *object, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
+		void unregisterObject(StarObject *object);
 };
 
 }

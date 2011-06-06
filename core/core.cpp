@@ -15,6 +15,7 @@ namespace Starlia
 
 list<StarObjectLayer *> StarCore::objectLayers;
 list<StarWidgetLayer *> StarCore::widgetLayers;
+Star3dLayer *StarCore::layer3d = NULL;
 unsigned int StarCore::last_recalc = 0;
 Coordinate2d StarCore::scale;
 
@@ -22,6 +23,9 @@ void StarCore::draw()
 {
 	glClearColor(0,0,0,0);
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	if (layer3d)
+		layer3d->draw();
 
 	for (list<StarObjectLayer *>::iterator it = objectLayers.begin(); it != objectLayers.end(); ++it)
 	{
@@ -54,6 +58,9 @@ void StarCore::recalc()
 
 	for (unsigned int i = 0; i < time_now/10 - last_recalc/10; ++i)
 	{
+		if (layer3d)
+			layer3d->recalc();
+
 		for (list<StarObjectLayer *>::iterator it = objectLayers.begin(); it != objectLayers.end(); ++it)
 		{
 			if ((*it)->invalid)
@@ -150,7 +157,7 @@ void StarCore::init(string title, int width, int height)
 	glutInit(&argc, argv);
 	glutInitWindowPosition(50,50);
 	glutInitWindowSize(width, height);
-	glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB);
+	glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB|GLUT_DEPTH);
 
 	glutCreateWindow(title.c_str());
 
@@ -204,6 +211,11 @@ void StarCore::unregisterLayer(StarWidgetLayer *layer)
 		}
 
 	cerr << "Unregistering invalid layer: " << layer->tag << endl;
+}
+
+void StarCore::registerLayer(Star3dLayer *layer)
+{
+	layer3d = layer;
 }
 
 }

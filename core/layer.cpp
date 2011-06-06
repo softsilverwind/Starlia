@@ -1,6 +1,7 @@
 #include <GL/glu.h>
 #include <iostream>
 #include <list>
+#include "core.h"
 #include "layer.h"
 	
 using namespace std;
@@ -8,8 +9,8 @@ using namespace std;
 namespace Starlia
 {
 
-StarLayer::StarLayer(Coordinate2d size)
-	: size(size), invalid(false)
+StarLayer::StarLayer()
+	: invalid(false)
 {
 }
 
@@ -31,11 +32,6 @@ void StarLayer::clearLayer()
 
 void StarLayer::draw()
 {
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluOrtho2D(0, size.x, 0, size.y);
-	glMatrixMode(GL_MODELVIEW);
-
 	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
 	{
 		if (it->invalid)
@@ -84,7 +80,21 @@ bool StarLayer::recalc()
 	return true;
 }
 
-StarObjectLayer::StarObjectLayer(Coordinate2d size) : StarLayer(size)
+Star2dLayer::Star2dLayer(Coordinate2d size) : size(size)
+{
+}
+
+void Star2dLayer::draw()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0, size.x, 0, size.y);
+	glMatrixMode(GL_MODELVIEW);
+
+	StarLayer::draw();
+}
+
+StarObjectLayer::StarObjectLayer(Coordinate2d size) : Star2dLayer(size)
 {
 }
 
@@ -108,7 +118,7 @@ void StarObjectLayer::unregisterObject(StarObject *object)
 	cerr << "Unregistering invalid object: " << object->tag << endl;
 }
 
-StarWidgetLayer::StarWidgetLayer(Coordinate2d size, bool blockFallThrough) : StarLayer(size), blockFallThrough(blockFallThrough)
+StarWidgetLayer::StarWidgetLayer(Coordinate2d size, bool blockFallThrough) : Star2dLayer(size), blockFallThrough(blockFallThrough)
 {
 }
 
@@ -172,6 +182,45 @@ bool StarWidgetLayer::mouseOver(Coordinate2d position)
 		}
 	}
 	return blockFallThrough;
+}
+
+Star3dLayer::Star3dLayer()
+{
+}
+
+void Star3dLayer::draw()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45, StarCore::getScale().x / StarCore::getScale().y, 1, 200);
+	gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
+	glEnable(GL_DEPTH_TEST);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+
+	StarLayer::draw();
+
+	glDisable(GL_DEPTH_TEST);
+}
+
+void Star3dLayer::registerObject(StarObject *object, void (*onEnd)(), bool remove, bool destroy)
+{
+	if (destroy)
+		remove = true;
+
+	objectList.push_back(EntryType(object, onEnd, remove, destroy));
+}
+
+void Star3dLayer::unregisterObject(StarObject *object)
+{
+	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
+		if (it->object == object)
+		{
+			it->invalid = true;
+			return;
+		}
+
+	cerr << "Unregistering invalid object: " << object->tag << endl;
 }
 
 }

@@ -16,6 +16,7 @@ class StarCore
 	private:
 		static list<StarObjectLayer *> objectLayers;
 		static list<StarWidgetLayer *> widgetLayers;
+		static Star3dLayer *layer3d;
 		static unsigned int last_recalc;
 		static Coordinate2d scale;
 
@@ -30,6 +31,7 @@ class StarCore
 		static void mouseOver(int x, int y);
 
 	public:
+		static const Coordinate2d& getScale() { return scale; };
 		static void init(string title, int width = 800, int height = 600);
 		static void loop();
 
@@ -40,6 +42,8 @@ class StarCore
 		static void registerLayerForeground(StarWidgetLayer *layer);
 		static void registerLayerBackground(StarWidgetLayer *layer);
 		static void unregisterLayer(StarWidgetLayer *layer);
+
+		static void registerLayer(Star3dLayer *layer = NULL);
 };
 
 }
