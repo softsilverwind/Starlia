@@ -23,12 +23,11 @@ void Star2dObject::draw()
 	if (!model)
 		return;
 
-	glPushMatrix();
+	glColor3d(0,0,1);
 	glTranslated(position.x, position.y, 0);
 	glRotated(angle,0,0,1);
 	glScaled(halfsize.x, halfsize.y, 1);
 	model->draw();
-	glPopMatrix();
 }
 
 bool Star2dObject::recalc()
@@ -83,6 +82,34 @@ bool StarWidget::mouseOver(Coordinate2d pos)
 	}
 	else
 		return false;
+}
+
+void Star3dObject::draw()
+{
+	if (!model)
+		return;
+
+	glColor3d(0,0,1);
+	glTranslated(position.x, position.y, position.z);
+	glScaled(halfsize.x, halfsize.y, halfsize.z);
+	model->draw();
+}
+
+bool Star3dObject::recalc()
+{
+	position += velocity;
+	return true;
+}
+
+Star3dObject::Star3dObject(Coordinate3d position, Coordinate3d halfsize, Star3dModel *model)
+	: position(position), velocity(0,0,0), halfsize(halfsize), model(model)
+{	
+}
+
+Star3dObject::~Star3dObject()
+{
+	if (model)
+		delete model;
 }
 
 }
