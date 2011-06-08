@@ -31,13 +31,9 @@ class Star3dModel : public StarModel
 class StarObjModel : public Star3dModel
 {
 	private:
-		typedef struct
-		{
-			Coordinate3d a, b, c;
-		}
-		Triangle;
-
-		vector<Triangle> triangles;
+		vector<Coordinate3d> vertices;
+		vector<Coordinate3d> normals;
+		vector<Coordinate2d> textures;
 
 	public:
 		virtual void draw();
