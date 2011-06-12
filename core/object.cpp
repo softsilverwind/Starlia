@@ -91,6 +91,9 @@ void Star3dObject::draw()
 
 	glColor3d(0,0,1);
 	glTranslated(position.x, position.y, position.z);
+	glRotated(angle.z,0,0,1);
+	glRotated(angle.x,1,0,0);
+	glRotated(angle.y,0,1,0);
 	glScaled(halfsize.x, halfsize.y, halfsize.z);
 	model->draw();
 }
@@ -101,8 +104,8 @@ bool Star3dObject::recalc()
 	return true;
 }
 
-Star3dObject::Star3dObject(Coordinate3d position, Coordinate3d halfsize, Star3dModel *model)
-	: position(position), velocity(0,0,0), halfsize(halfsize), model(model)
+Star3dObject::Star3dObject(Coordinate3d position, Coordinate3d halfsize, Coordinate3d angle, Star3dModel *model)
+	: position(position), velocity(0,0,0), halfsize(halfsize), angle(angle), model(model)
 {	
 }
 
