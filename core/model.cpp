@@ -1,6 +1,7 @@
 #include <GL/gl.h>
 #include <fstream>
 #include "model.h"
+#include "texture.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ void Star3dModel::draw()
 {
 }
 
-StarObjModel::StarObjModel(string filename)
+StarObjModel::StarObjModel(string filename, string texfile)
 {
 	vector<Coordinate3d> vertex;
 	vector<Coordinate3d> normal;
@@ -62,17 +63,29 @@ StarObjModel::StarObjModel(string filename)
 			}
 		}
 	}
+	tex = genBMPTex(texfile);
 }
 
 void StarObjModel::draw()
 {
+	glEnable(GL_TEXTURE_2D);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, tex);
+
 	glVertexPointer(3, GL_DOUBLE, 0, &(vertices.front()));
 	glNormalPointer(GL_DOUBLE, 0, &(normals.front()));
+	glTexCoordPointer(2, GL_DOUBLE, 0, &(textures.front()));
+
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 #ifdef __STAROBJ_PRINT_NORMALS__
 

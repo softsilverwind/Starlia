@@ -5,7 +5,7 @@ ARFLAGS=-cvsr
 
 all: libstarlia.a
 
-libstarlia.a: basicRender.o core.o starMath.o object.o model.o label.o layer.o
+libstarlia.a: basicRender.o core.o starMath.o object.o model.o label.o layer.o texture.o
 	$(AR) $(ARFLAGS) $@ $^
 
 model.o: model.h
@@ -14,6 +14,8 @@ basicRender.o: basicRender.h
 core.o: core.h
 starMath.o: starMath.h
 label.o: label.h
+layer.o: layer.h
+texture.o: texture.h
 
 clean:
 	$(RM) *.o

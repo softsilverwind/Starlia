@@ -90,6 +90,7 @@ void Star2dLayer::draw()
 	glLoadIdentity();
 	gluOrtho2D(0, size.x, 0, size.y);
 	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 
 	StarLayer::draw();
 }
@@ -197,6 +198,7 @@ void Star3dLayer::draw()
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 
 	StarLayer::draw();
 

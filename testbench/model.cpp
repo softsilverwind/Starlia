@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 
 	Star3dLayer *layer = new Star3dLayer();
 
-	layer->registerObject(new Star3dObject(Coordinate3d(0,0,0), Coordinate3d(1,1,1), new StarObjModel("head.obj")));
+	layer->registerObject(new Star3dObject(Coordinate3d(0,0,0), Coordinate3d(1,1,1), new StarObjModel("fruit.obj", "fruit_Sphere.bmp")));
 	
 	StarCore::registerLayer(layer);
 	StarCore::loop();

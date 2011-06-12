@@ -35,10 +35,12 @@ class StarObjModel : public Star3dModel
 		vector<Coordinate3d> normals;
 		vector<Coordinate2d> textures;
 
+		unsigned int tex;
+
 	public:
 		virtual void draw();
 
-		StarObjModel(string filename);
+		StarObjModel(string filename, string texfile);
 };
 
 }
