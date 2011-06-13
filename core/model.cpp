@@ -12,6 +12,10 @@ void StarModel::draw()
 {
 }
 
+StarModel::~StarModel()
+{
+}
+
 void Star2dModel::draw()
 {
 }

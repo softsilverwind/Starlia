@@ -1,3 +1,4 @@
+#include <iostream>
 #include <GL/glut.h>
 #include <string>
 #include "object.h"
@@ -16,6 +17,10 @@ void StarObject::draw()
 bool StarObject::recalc()
 {
 	return true;
+}
+
+StarObject::~StarObject()
+{
 }
 
 void Star2dObject::draw()

@@ -17,6 +17,8 @@ class StarObject
 
 		virtual void draw();
 		virtual bool recalc();
+
+		virtual ~StarObject();
 };
 
 class Star2dObject : public StarObject

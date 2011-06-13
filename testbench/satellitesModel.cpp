@@ -46,14 +46,8 @@ void Satellite::draw()
 
 void createSatellite(int _)
 {
-	layer->registerObject(new Satellite(Coordinate2d(400,300), Coordinate2dpolar(randomi(100,200), randomd() * 2 * M_PI), 5, Color3d(randomd(), randomd(), randomd()), randomd() / 100, randomi(500, 1000)));
+	layer->registerObject(new Satellite(Coordinate2d(400,300), Coordinate2dpolar(randomi(100,200), randomd() * 2 * M_PI), 5, Color3d(randomd(), randomd(), randomd()), randomd() / 100, randomi(500, 5000)));
 	glutTimerFunc(10, createSatellite, 42);
-}
-
-void term(int _)
-{
-	printf("Terminating program after 10 seconds. Trust me, you don't want to see the memory leaks...\n");
-	exit(0);
 }
 
 int main(int argc, char** argv)
@@ -81,7 +75,6 @@ int main(int argc, char** argv)
 	layer = new Star3dLayer(Coordinate3d(400, 0, -50), Coordinate3d(400,300,0), Coordinate3d(0,1,0));
 	StarCore::registerLayer(layer);
 	glutTimerFunc(10, createSatellite, 42);
-	glutTimerFunc(10000, term, 42);
 	StarCore::loop();
 
 	return 0;

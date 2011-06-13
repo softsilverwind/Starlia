@@ -14,6 +14,8 @@ class StarModel
 {
 	public:
 		virtual void draw();
+
+		virtual ~StarModel();
 };
 
 class Star2dModel : public StarModel
