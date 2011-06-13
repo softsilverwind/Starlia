@@ -3,7 +3,6 @@
 #include <GL/glu.h>
 #include <fstream>
 #include <cassert>
-#include <arpa/inet.h>
 #include "texture.h"
 #include "structs.h"
 
@@ -38,6 +37,9 @@ unsigned int genBMPTex(string filename)
 
 	file.read(img, siz);
 
+	for (unsigned int i = 0; i < siz; i += 3)
+		swap(img[i], img[i+2]);
+
 	glGenTextures( 1, &texture );
 	glBindTexture( GL_TEXTURE_2D, texture );
 
@@ -48,7 +50,7 @@ unsigned int genBMPTex(string filename)
 	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	gluBuild2DMipmaps( GL_TEXTURE_2D, 3, sizex, sizey, GL_BGR, GL_UNSIGNED_BYTE, img );
+	gluBuild2DMipmaps( GL_TEXTURE_2D, 3, sizex, sizey, GL_RGB, GL_UNSIGNED_BYTE, img );
 
 	glBindTexture( GL_TEXTURE_2D, 0 );
 

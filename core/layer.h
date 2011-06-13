@@ -30,7 +30,7 @@ class StarLayer : public StarObject
 		bool invalid;
 
 		StarLayer();
-		~StarLayer();
+		virtual ~StarLayer();
 		void clearLayer();
 
 		void draw();
