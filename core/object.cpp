@@ -23,7 +23,6 @@ void Star2dObject::draw()
 	if (!model)
 		return;
 
-	glColor3d(0,0,1);
 	glTranslated(position.x, position.y, 0);
 	glRotated(angle,0,0,1);
 	glScaled(halfsize.x, halfsize.y, 1);
@@ -89,7 +88,6 @@ void Star3dObject::draw()
 	if (!model)
 		return;
 
-	glColor3d(0,0,1);
 	glTranslated(position.x, position.y, position.z);
 	glRotated(angle.z,0,0,1);
 	glRotated(angle.x,1,0,0);

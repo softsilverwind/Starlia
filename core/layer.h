@@ -74,8 +74,13 @@ class StarWidgetLayer : public Star2dLayer
 
 class Star3dLayer : public StarLayer
 {
+	private:
+		Coordinate3d campos;
+		Coordinate3d lookpos;
+		Coordinate3d n;
+
 	public:
-		Star3dLayer();
+		Star3dLayer(Coordinate3d campos, Coordinate3d lookpos, Coordinate3d n);
 
 		void draw();
 

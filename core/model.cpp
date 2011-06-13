@@ -104,4 +104,9 @@ void StarObjModel::draw()
 	
 }
 
+StarObjModel::~StarObjModel()
+{
+	glDeleteTextures(1, &tex);
+}
+
 }

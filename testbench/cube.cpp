@@ -23,7 +23,7 @@ int main()
 {
 	StarCore::init("Starlia test bench");
 
-	Star3dLayer *layer = new Star3dLayer();
+	Star3dLayer *layer = new Star3dLayer(Coordinate3d(0,0,-5), Coordinate3d(0,0,0), Coordinate3d(0,1,0));
 
 	layer->registerObject(new Cube());
 	

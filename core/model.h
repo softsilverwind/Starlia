@@ -41,6 +41,7 @@ class StarObjModel : public Star3dModel
 		virtual void draw();
 
 		StarObjModel(string filename, string texfile);
+		~StarObjModel();
 };
 
 }

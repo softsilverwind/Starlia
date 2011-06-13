@@ -11,7 +11,7 @@ int main(int argc, char** argv)
 	GLfloat light_specular[] = {0.7,0.7,0.7};
 	GLfloat light_diffuse[] = {0.8,0.8,0.8};
 	GLfloat light_ambient[] = {0.4,0.4,0.4};
-	GLfloat light_position[] = {-5, 2, 2, 1.0};
+	GLfloat light_position[] = {5, -2, -2, 1.0};
 	GLfloat light_model[] = {0, 0, 0};
 
 	glEnable(GL_NORMALIZE);
@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, light_model);
 
-	Star3dLayer *layer = new Star3dLayer();
+	Star3dLayer *layer = new Star3dLayer(Coordinate3d(0,0,-5), Coordinate3d(0,0,0), Coordinate3d(0,1,0));
 
 	layer->registerObject(new Star3dObject(Coordinate3d(0,0,0), Coordinate3d(1,1,1), Coordinate3d(90,0,0), new StarObjModel("fruit.obj", "fruit_Sphere.bmp")));
 	

@@ -28,8 +28,6 @@ class Star2dObject : public StarObject
 		double angle;
 		Star2dModel *model;
 
-
-	protected:
 		virtual void draw();
 		virtual bool recalc();
 
@@ -67,12 +65,12 @@ class Star3dObject : public StarObject
 		Coordinate3d angle;
 		Star3dModel *model;
 
+		virtual void draw();
+		virtual bool recalc();
+
 	public:
 		Star3dObject(Coordinate3d position, Coordinate3d halfsize, Coordinate3d angle, Star3dModel *model = NULL);
 		~Star3dObject();
-
-		virtual void draw();
-		virtual bool recalc();
 };
 
 }

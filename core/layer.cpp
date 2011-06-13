@@ -185,7 +185,8 @@ bool StarWidgetLayer::mouseOver(Coordinate2d position)
 	return blockFallThrough;
 }
 
-Star3dLayer::Star3dLayer()
+Star3dLayer::Star3dLayer(Coordinate3d campos, Coordinate3d lookpos, Coordinate3d n)
+	: campos(campos), lookpos(lookpos), n(n)
 {
 }
 
@@ -193,8 +194,8 @@ void Star3dLayer::draw()
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45, StarCore::getScale().x / StarCore::getScale().y, 1, 200);
-	gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
+	gluPerspective(45, StarCore::getScale().x / StarCore::getScale().y, 1, 10000);
+	gluLookAt(campos.x, campos.y, campos.z, lookpos.x, lookpos.y, lookpos.z, n.x, n.y, n.z);
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
