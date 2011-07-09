@@ -9,6 +9,7 @@
 #include "object.h"
 #include "core.h"
 #include "basicRender.h"
+#include "timer.h"
 
 using namespace std;
 
@@ -95,6 +96,7 @@ void StarCore::recalc()
 inline void StarCore::display()
 {
 	StarCore::draw();
+	SDL_GL_SwapBuffers();
 }
 
 inline void StarCore::resize(int width, int height)
@@ -138,7 +140,6 @@ void StarCore::loop()
 
 	while(looping)
 	{
-		last_recalc = SDL_GetTicks();
 		while(SDL_PollEvent(&ev))
 		{
 			switch(ev.type)
@@ -161,6 +162,7 @@ void StarCore::loop()
 		}
 		idle();
 		display();
+		StarTimer::loopTimers(last_recalc);
 		SDL_Delay(10);
 	}
 }
@@ -171,7 +173,7 @@ void StarCore::init(string title, int width, int height)
 	scale.y = height;
 
 	SDL_Init(SDL_INIT_EVERYTHING);
-	SDL_SetVideoMode(width, height, 32, SDL_OPENGL | SDL_RESIZABLE);
+	SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
 	SDL_WM_SetCaption(title.c_str(), NULL);
 }
 

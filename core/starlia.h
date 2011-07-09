@@ -8,5 +8,6 @@
 #include "structs.h"
 #include "starMath.h"
 #include "label.h"
+#include "timer.h"
 
 #endif /* __STARLIA_H__ */

@@ -1,5 +1,5 @@
 #include <iostream>
-#include <GL/glut.h>
+#include <GL/gl.h>
 #include <cstdio>
 #include "starlia.h"
 
@@ -107,12 +107,12 @@ void Ball::draw()
 	glPopMatrix();
 }
 
-void createBall(int _)
+void createBall()
 {
 	balls.push_front(new Ball(Coordinate2d(randomi(200,600), randomi(300,500)), randomi(5,15), Color3d(randomd(), randomd(), randomd()), Coordinate2d(randomsgn() * randomd() * 10, randomsgn() * randomd() * 10)));
 	balls.front()->itpos = balls.begin();
 	layer->registerObject(balls.front());
-	glutTimerFunc(1000, createBall, 42);
+	StarTimer::registerTimer(1000, createBall);
 }
 
 int main(int argc, char** argv)
@@ -120,7 +120,7 @@ int main(int argc, char** argv)
 	StarCore::init("Starlia test bench");
 	layer = new StarObjectLayer(Coordinate2d(800, 600));
 	StarCore::registerLayerForeground(layer);
-	glutTimerFunc(500, createBall, 42);
+	StarTimer::registerTimer(500, createBall);
 	StarCore::loop();
 
 	return 0;

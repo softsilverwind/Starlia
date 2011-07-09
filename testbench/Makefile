@@ -1,7 +1,7 @@
 CXX=g++
 CXXFLAGS=-Wall -O3 -g
 
-all: circle satellites satellites2 pong physics physics2 label label2 label3 cube model satellitesModel
+all: circle satellites satellites2 pong physics physics2 label label2 label3 model satellitesModel coord
 
 circle: circle.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL
@@ -13,7 +13,9 @@ satellites2: satellites2.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL
 
 pong: pong.o
-	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL
+	touch pong.o
+#	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL
+#	overrides keyboard
 
 physics: physics.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL
@@ -30,13 +32,13 @@ label2: label2.o
 label3: label3.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL
 
-cube: cube.o
-	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL
-
 model: model.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL
 
 satellitesModel: satellitesModel.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL
+
+coord: coord.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL
 
 #1.exe: main1.cpp
@@ -46,4 +48,4 @@ clean:
 	$(RM) *.o
 
 distclean: clean
-	$(RM) circle satellites satellites2 pong physics physics2 label label2 label3 cube model satellitesModel
+	$(RM) circle satellites satellites2 pong physics physics2 label label2 label3 model satellitesModel coord

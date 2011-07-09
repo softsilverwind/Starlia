@@ -5,7 +5,7 @@ ARFLAGS=-cvsr
 
 all: libstarlia.a
 
-libstarlia.a: basicRender.o core.o starMath.o object.o model.o label.o layer.o texture.o
+libstarlia.a: basicRender.o core.o starMath.o object.o model.o label.o layer.o texture.o timer.o
 	$(AR) $(ARFLAGS) $@ $^
 
 model.o: model.h
@@ -24,7 +24,7 @@ distclean: clean
 	$(RM) libstarlia.a
 
 install: all
-	su -c "cp libstarlia.a /usr/local/lib && cp basicRender.h core.h starMath.h structs.h starlia.h object.h model.h label.h layer.h /usr/local/include"
+	su -c "cp libstarlia.a /usr/local/lib && cp basicRender.h core.h starMath.h structs.h starlia.h object.h model.h label.h layer.h timer.h /usr/local/include"
 
 uninstall:
-	su -c "$(RM) /usr/local/lib/libstarlia.a && rm /usr/local/include/basicRender.h /usr/local/include/core.h /usr/local/include/starMath.h /usr/local/include/starlia.h /usr/local/include/structs.h /usr/local/include/object.h /usr/local/include/model.h /usr/local/include/label.h /usr/local/include/layer.h"
+	su -c "$(RM) /usr/local/lib/libstarlia.a && rm /usr/local/include/basicRender.h /usr/local/include/core.h /usr/local/include/starMath.h /usr/local/include/starlia.h /usr/local/include/structs.h /usr/local/include/object.h /usr/local/include/model.h /usr/local/include/label.h /usr/local/include/layer.h" /usr/local/include/timer.h

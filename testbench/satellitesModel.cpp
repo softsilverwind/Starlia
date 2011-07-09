@@ -1,4 +1,4 @@
-#include <GL/glut.h>
+#include <GL/gl.h>
 #include <cstdio>
 #include <cstdlib>
 #include "starlia.h"
@@ -44,10 +44,10 @@ void Satellite::draw()
 	Star3dObject::draw();
 }
 
-void createSatellite(int _)
+void createSatellite()
 {
 	layer->registerObject(new Satellite(Coordinate2d(400,300), Coordinate2dpolar(randomi(100,200), randomd() * 2 * M_PI), 5, Color3d(randomd(), randomd(), randomd()), randomd() / 100, randomi(500, 5000)));
-	glutTimerFunc(10, createSatellite, 42);
+	StarTimer::registerTimer(10, createSatellite);
 }
 
 int main(int argc, char** argv)
@@ -74,7 +74,7 @@ int main(int argc, char** argv)
 
 	layer = new Star3dLayer(Coordinate3d(400, 0, -50), Coordinate3d(400,300,0), Coordinate3d(0,1,0));
 	StarCore::registerLayer(layer);
-	glutTimerFunc(10, createSatellite, 42);
+	StarTimer::registerTimer(10, createSatellite);
 	StarCore::loop();
 
 	return 0;
