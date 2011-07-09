@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cstdio>
 #include <list>
-#include <GL/glut.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_events.h>
+#include <SDL/SDL_opengl.h>
 
 #include "layer.h"
 #include "object.h"
@@ -54,7 +56,7 @@ void StarCore::draw()
 
 void StarCore::recalc()
 {
-	unsigned int time_now = glutGet(GLUT_ELAPSED_TIME);
+	unsigned int time_now = SDL_GetTicks();
 
 	for (unsigned int i = 0; i < time_now/10 - last_recalc/10; ++i)
 	{
@@ -90,43 +92,35 @@ void StarCore::recalc()
 	last_recalc = time_now;
 }
 
-void StarCore::display()
+inline void StarCore::display()
 {
 	StarCore::draw();
-	glutSwapBuffers();
 }
 
-void StarCore::resize(int width, int height)
+inline void StarCore::resize(int width, int height)
 {
 	scale.x = width;
 	scale.y = height;
 	glViewport(0, 0, width, height);
 }
 
-void StarCore::idle(int _)
+inline void StarCore::idle()
 {
 	StarCore::recalc();
-	glutTimerFunc(10, idle, 42);
-	glutPostRedisplay();
 }
 
-void StarCore::click(int button, int state, int x, int y)
+inline void StarCore::click(int x, int y)
 {
-	if (state == GLUT_DOWN)
-	{
-		Coordinate2d pos;
-		pos.x = x / scale.x;
-		pos.y = 1 - y / scale.y;
+	Coordinate2d pos;
+	pos.x = x / scale.x;
+	pos.y = 1 - y / scale.y;
 
-		for(list<StarWidgetLayer *>::reverse_iterator it = widgetLayers.rbegin();
-				it != widgetLayers.rend() && !(*it)->click(pos); ++it)
-			;
-	}
-
-	glutPostRedisplay();
+	for(list<StarWidgetLayer *>::reverse_iterator it = widgetLayers.rbegin();
+			it != widgetLayers.rend() && !(*it)->click(pos); ++it)
+		;
 }
 
-void StarCore::mouseOver(int x, int y)
+inline void StarCore::mouseOver(int x, int y)
 {
 	Coordinate2d pos;
 	pos.x = x / scale.x;
@@ -135,38 +129,50 @@ void StarCore::mouseOver(int x, int y)
 	for(list<StarWidgetLayer *>::reverse_iterator it = widgetLayers.rbegin();
 			it != widgetLayers.rend() && !(*it)->mouseOver(pos); ++it)
 		;
-
-	glutPostRedisplay();
 }
 
 void StarCore::loop()
 {
-	last_recalc = glutGet(GLUT_ELAPSED_TIME);
-	glutMainLoop();
+	SDL_Event ev;
+	bool looping = true;
+
+	while(looping)
+	{
+		last_recalc = SDL_GetTicks();
+		while(SDL_PollEvent(&ev))
+		{
+			switch(ev.type)
+			{
+				case SDL_QUIT:
+					looping = false;
+					break;
+				case SDL_MOUSEMOTION:
+					mouseOver(ev.motion.x, ev.motion.y);
+					break;
+				case SDL_MOUSEBUTTONDOWN:
+					click(ev.button.x, ev.button.y);
+					break;
+				case SDL_VIDEORESIZE:
+					resize(ev.resize.w, ev.resize.h);
+					break;
+				default:
+					break;
+			}
+		}
+		idle();
+		display();
+		SDL_Delay(10);
+	}
 }
 
 void StarCore::init(string title, int width, int height)
 {
-	char *argv[1];
-	int argc = 1;
-	argv[0] = (char *) "Starlia";
-
 	scale.x = width;
 	scale.y = height;
 
-	glutInit(&argc, argv);
-	glutInitWindowPosition(50,50);
-	glutInitWindowSize(width, height);
-	glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB|GLUT_DEPTH);
-
-	glutCreateWindow(title.c_str());
-
-	glutDisplayFunc(StarCore::display);
-	glutReshapeFunc(StarCore::resize);
-	glutMouseFunc(StarCore::click);
-	glutPassiveMotionFunc(StarCore::mouseOver);
-
-	glutTimerFunc(10, StarCore::idle, 42);
+	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_SetVideoMode(width, height, 32, SDL_OPENGL | SDL_RESIZABLE);
+	SDL_WM_SetCaption(title.c_str(), NULL);
 }
 
 void StarCore::registerLayerForeground(StarObjectLayer *layer)
