@@ -1,4 +1,4 @@
-#include <GL/glut.h>
+#include <GL/gl.h>
 #include "basicRender.h"
 #include "starMath.h"
 #include "structs.h"
@@ -54,14 +54,10 @@ void Circle::draw(Color3d color)
 
 	glColor3d(color.r, color.g, color.b);
 
-	glBegin(GL_POLYGON);
-
-	for (int i = 0; i < POINTS; i++)
-	{
-		glVertex2f(vertex[i].x, vertex[i].y);
-	}
-
-	glEnd();
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(2, GL_DOUBLE, 0, vertex);
+	glDrawArrays(GL_POLYGON, 0, POINTS);
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void Circle::draw()

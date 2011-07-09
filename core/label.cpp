@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include <cctype>
-#include <GL/glut.h>
+#include <GL/gl.h>
 #include "structs.h"
 #include "label.h"
 #include "basicRender.h"
