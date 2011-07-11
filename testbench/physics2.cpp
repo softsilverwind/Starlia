@@ -5,7 +5,7 @@
 
 using namespace Starlia;
 
-StarObjectLayer *layer;
+Star2dObjectLayer *layer;
 
 class Ball : public StarObject
 {
@@ -118,7 +118,7 @@ void createBall()
 int main(int argc, char** argv)
 {
 	StarCore::init("Starlia test bench");
-	layer = new StarObjectLayer(Coordinate2d(800, 600));
+	layer = new Star2dObjectLayer(Coordinate2d(800, 600));
 	StarCore::registerLayerForeground(layer);
 	StarTimer::registerTimer(500, createBall);
 	StarCore::loop();

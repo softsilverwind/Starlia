@@ -16,7 +16,7 @@ using namespace std;
 namespace Starlia
 {
 
-list<StarObjectLayer *> StarCore::objectLayers;
+list<Star2dObjectLayer *> StarCore::objectLayers;
 list<StarWidgetLayer *> StarCore::widgetLayers;
 Star3dLayer *StarCore::layer3d = NULL;
 unsigned int StarCore::last_recalc = 0;
@@ -30,7 +30,7 @@ void StarCore::draw()
 	if (layer3d)
 		layer3d->draw();
 
-	for (list<StarObjectLayer *>::iterator it = objectLayers.begin(); it != objectLayers.end(); ++it)
+	for (list<Star2dObjectLayer *>::iterator it = objectLayers.begin(); it != objectLayers.end(); ++it)
 	{
 		if ((*it)->invalid)
 		{
@@ -64,7 +64,7 @@ void StarCore::recalc()
 		if (layer3d)
 			layer3d->recalc();
 
-		for (list<StarObjectLayer *>::iterator it = objectLayers.begin(); it != objectLayers.end(); ++it)
+		for (list<Star2dObjectLayer *>::iterator it = objectLayers.begin(); it != objectLayers.end(); ++it)
 		{
 			if ((*it)->invalid)
 			{
@@ -122,6 +122,26 @@ inline void StarCore::click(int x, int y)
 		;
 }
 
+inline void StarCore::keypress(SDL_keysym c)
+{
+	for(list<StarWidgetLayer *>::reverse_iterator it = widgetLayers.rbegin();
+			it != widgetLayers.rend() && !(*it)->keypress(c.sym); ++it)
+		;
+	for(list<Star2dObjectLayer *>::reverse_iterator it = objectLayers.rbegin();
+			it != objectLayers.rend() && !(*it)->keypress(c.sym); ++it)
+		;
+}
+
+inline void StarCore::keyrelease(SDL_keysym c)
+{
+	for(list<StarWidgetLayer *>::reverse_iterator it = widgetLayers.rbegin();
+			it != widgetLayers.rend() && !(*it)->keyrelease(c.sym); ++it)
+		;
+	for(list<Star2dObjectLayer *>::reverse_iterator it = objectLayers.rbegin();
+			it != objectLayers.rend() && !(*it)->keyrelease(c.sym); ++it)
+		;
+}
+
 inline void StarCore::mouseOver(int x, int y)
 {
 	Coordinate2d pos;
@@ -153,8 +173,11 @@ void StarCore::loop()
 				case SDL_MOUSEBUTTONDOWN:
 					click(ev.button.x, ev.button.y);
 					break;
-				case SDL_VIDEORESIZE:
-					resize(ev.resize.w, ev.resize.h);
+				case SDL_KEYDOWN:
+					keypress(ev.key.keysym);
+					break;
+				case SDL_KEYUP:
+					keyrelease(ev.key.keysym);
 					break;
 				default:
 					break;
@@ -177,19 +200,19 @@ void StarCore::init(string title, int width, int height)
 	SDL_WM_SetCaption(title.c_str(), NULL);
 }
 
-void StarCore::registerLayerForeground(StarObjectLayer *layer)
+void StarCore::registerLayerForeground(Star2dObjectLayer *layer)
 {
 	objectLayers.push_back(layer);
 }
 
-void StarCore::registerLayerBackground(StarObjectLayer *layer)
+void StarCore::registerLayerBackground(Star2dObjectLayer *layer)
 {
 	objectLayers.push_front(layer);
 }
 
-void StarCore::unregisterLayer(StarObjectLayer *layer)
+void StarCore::unregisterLayer(Star2dObjectLayer *layer)
 {
-	for (list<StarObjectLayer *>::iterator it = objectLayers.begin(); it != objectLayers.end(); ++it)
+	for (list<Star2dObjectLayer *>::iterator it = objectLayers.begin(); it != objectLayers.end(); ++it)
 		if (*it == layer)
 		{
 			(*it)->invalid = true;

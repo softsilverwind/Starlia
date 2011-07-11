@@ -13,9 +13,7 @@ satellites2: satellites2.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL
 
 pong: pong.o
-	touch pong.o
-#	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL
-#	overrides keyboard
+	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL
 
 physics: physics.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL

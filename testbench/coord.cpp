@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 {
 	StarCore::init("Starlia test bench");
 
-	StarObjectLayer *layer = new StarObjectLayer(Coordinate2d(800, 600));
+	Star2dObjectLayer *layer = new Star2dObjectLayer(Coordinate2d(800, 600));
 
 	layer->registerObject(new CoordDisp());
 	

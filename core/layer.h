@@ -1,7 +1,9 @@
 #ifndef __LAYER_H__
 #define __LAYER_H__
 
+#include <SDL/SDL.h>
 #include <list>
+#include <map>
 #include "object.h"
 
 using namespace std;
@@ -25,6 +27,10 @@ class StarLayer : public StarObject
 		EntryType;
 
 		list<EntryType> objectList;
+		map<SDLKey, pair<void (*)(int), int> > keypresses;
+		map<SDLKey, pair<void (*)(int), int> > keyreleases;
+
+		bool blockFallThrough;
 
 	public:
 		bool invalid;
@@ -35,6 +41,15 @@ class StarLayer : public StarObject
 
 		void draw();
 		bool recalc();
+
+		bool keypress(SDLKey);
+		bool keyrelease(SDLKey);
+		void registerKeyPress(SDLKey, void (*)(int), int);
+		void registerKeyPress(char, void (*)(int), int);
+		void registerKeyRelease(SDLKey, void (*)(int), int);
+		void registerKeyRelease(char, void (*)(int), int);
+
+		void setBlockFallThrough(bool);
 };
 
 class Star2dLayer : public StarLayer
@@ -47,10 +62,10 @@ class Star2dLayer : public StarLayer
 		Star2dLayer(Coordinate2d size);
 };
 
-class StarObjectLayer : public Star2dLayer
+class Star2dObjectLayer : public Star2dLayer
 {
 	public:
-		StarObjectLayer(Coordinate2d size);
+		Star2dObjectLayer(Coordinate2d size);
 
 		void registerObject(StarObject *object, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
 		void unregisterObject(StarObject *object);
@@ -58,11 +73,8 @@ class StarObjectLayer : public Star2dLayer
 
 class StarWidgetLayer : public Star2dLayer
 {
-	private:
-		bool blockFallThrough;
-
 	public:
-		StarWidgetLayer(Coordinate2d size, bool blockFallThrough = false);
+		StarWidgetLayer(Coordinate2d size);
 
 		void registerObject(StarWidget *object, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
 		void unregisterObject(StarWidget *object);

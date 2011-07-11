@@ -1,3 +1,4 @@
+#include <SDL/SDL.h>
 #include <GL/glu.h>
 #include <iostream>
 #include <list>
@@ -80,6 +81,57 @@ bool StarLayer::recalc()
 	return true;
 }
 
+bool StarLayer::keypress(SDLKey c)
+{
+	map<SDLKey, pair<void (*)(int), int> >::iterator it = keypresses.find(c);
+
+	if (it != keypresses.end())
+	{
+		(*(it->second.first))(it->second.second);
+		return true;
+	}
+
+	return blockFallThrough;
+}
+
+bool StarLayer::keyrelease(SDLKey c)
+{
+	map<SDLKey, pair<void (*)(int), int> >::iterator it = keyreleases.find(c);
+
+	if (it != keyreleases.end())
+	{
+		(*(it->second.first))(it->second.second);
+		return true;
+	}
+
+	return blockFallThrough;
+}
+
+void StarLayer::registerKeyPress(SDLKey c, void (*fun)(int), int x)
+{
+	keypresses[c] = make_pair(fun, x);
+}
+
+void StarLayer::registerKeyPress(char c, void (*fun)(int), int x)
+{
+	keypresses[(SDLKey) c] = make_pair(fun, x);
+}
+
+void StarLayer::registerKeyRelease(SDLKey c, void (*fun)(int), int x)
+{
+	keyreleases[c] = make_pair(fun, x);
+}
+
+void StarLayer::registerKeyRelease(char c, void (*fun)(int), int x)
+{
+	keyreleases[(SDLKey) c] = make_pair(fun, x);
+}
+
+void StarLayer::setBlockFallThrough(bool block)
+{
+	blockFallThrough = block;
+}
+
 Star2dLayer::Star2dLayer(Coordinate2d size) : size(size)
 {
 }
@@ -95,11 +147,11 @@ void Star2dLayer::draw()
 	StarLayer::draw();
 }
 
-StarObjectLayer::StarObjectLayer(Coordinate2d size) : Star2dLayer(size)
+Star2dObjectLayer::Star2dObjectLayer(Coordinate2d size) : Star2dLayer(size)
 {
 }
 
-void StarObjectLayer::registerObject(StarObject *object, void (*onEnd)(), bool remove, bool destroy)
+void Star2dObjectLayer::registerObject(StarObject *object, void (*onEnd)(), bool remove, bool destroy)
 {
 	if (destroy)
 		remove = true;
@@ -107,7 +159,7 @@ void StarObjectLayer::registerObject(StarObject *object, void (*onEnd)(), bool r
 	objectList.push_back(EntryType(object, onEnd, remove, destroy));
 }
 
-void StarObjectLayer::unregisterObject(StarObject *object)
+void Star2dObjectLayer::unregisterObject(StarObject *object)
 {
 	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
 		if (it->object == object)
@@ -119,7 +171,7 @@ void StarObjectLayer::unregisterObject(StarObject *object)
 	cerr << "Unregistering invalid object: " << object->tag << endl;
 }
 
-StarWidgetLayer::StarWidgetLayer(Coordinate2d size, bool blockFallThrough) : Star2dLayer(size), blockFallThrough(blockFallThrough)
+StarWidgetLayer::StarWidgetLayer(Coordinate2d size) : Star2dLayer(size)
 {
 }
 

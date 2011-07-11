@@ -1,10 +1,11 @@
-#include <GL/glut.h>
+#include <GL/gl.h>
+#include <SDL/SDL.h>
 #include <cstdio>
 #include "starlia.h"
 
 using namespace Starlia;
 
-StarObjectLayer *layer;
+Star2dObjectLayer *layer;
 
 class Racket : public StarObject
 {
@@ -117,7 +118,7 @@ void Ball::changeDirection(double x, bool up)
 	velocity.x = (position.x - x) / 10;
 }
 
-void keyboard(unsigned char key, int x, int y)
+void keyboard(int key)
 {
 	switch (key)
 	{
@@ -138,7 +139,7 @@ void keyboard(unsigned char key, int x, int y)
 	}
 }
 
-void keyboardup(unsigned char key, int x, int y)
+void keyboardup(int key)
 {
 	switch (key)
 	{
@@ -159,14 +160,14 @@ void keyboardup(unsigned char key, int x, int y)
 	}
 }
 
-void start(int _);
+void start();
 
 void restart()
 {
-	glutTimerFunc(2000, start, 42);
+	StarTimer::registerTimer(2000, start);
 }
 
-void start(int _)
+void start()
 {
 	layer->registerObject(new Ball(Coordinate2d(400,300), 10, Coordinate2d(0.0, 3), Color3d(0,0,1)), restart);
 }
@@ -174,7 +175,7 @@ void start(int _)
 int main(int argc, char** argv)
 {
 	StarCore::init("Starlia Pong - keys are \"A,D\" and \"J,L\"");
-	layer = new StarObjectLayer(Coordinate2d(800, 600));
+	layer = new Star2dObjectLayer(Coordinate2d(800, 600));
 
 	player[0] = new Racket(Coordinate2d(400,50), 10, 50, Color3d(1,0,0));
 	player[1] = new Racket(Coordinate2d(400,550), 10, 50, Color3d(0,1,0));
@@ -182,9 +183,15 @@ int main(int argc, char** argv)
 
 	layer->registerObject(player[0]);
 	layer->registerObject(player[1]);
+	layer->registerKeyPress('a', keyboard, 'a');
+	layer->registerKeyPress('d', keyboard, 'd');
+	layer->registerKeyPress('j', keyboard, 'j');
+	layer->registerKeyPress('l', keyboard, 'l');
+	layer->registerKeyRelease('a', keyboardup, 'a');
+	layer->registerKeyRelease('d', keyboardup, 'd');
+	layer->registerKeyRelease('j', keyboardup, 'j');
+	layer->registerKeyRelease('l', keyboardup, 'l');
 	restart();
-	glutKeyboardFunc(keyboard);
-	glutKeyboardUpFunc(keyboardup);
 	StarCore::loop();
 
 	return 0;

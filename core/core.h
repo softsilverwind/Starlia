@@ -14,7 +14,7 @@ namespace Starlia
 class StarCore
 {
 	private:
-		static list<StarObjectLayer *> objectLayers;
+		static list<Star2dObjectLayer *> objectLayers;
 		static list<StarWidgetLayer *> widgetLayers;
 		static Star3dLayer *layer3d;
 		static unsigned int last_recalc;
@@ -29,15 +29,17 @@ class StarCore
 		static void idle();
 		static void click(int x, int y);
 		static void mouseOver(int x, int y);
+		static void keypress(SDL_keysym);
+		static void keyrelease(SDL_keysym);
 
 	public:
 		static const Coordinate2d& getScale() { return scale; };
 		static void init(string title, int width = 800, int height = 600);
 		static void loop();
 
-		static void registerLayerForeground(StarObjectLayer *layer);
-		static void registerLayerBackground(StarObjectLayer *layer);
-		static void unregisterLayer(StarObjectLayer *layer);
+		static void registerLayerForeground(Star2dObjectLayer *layer);
+		static void registerLayerBackground(Star2dObjectLayer *layer);
+		static void unregisterLayer(Star2dObjectLayer *layer);
 
 		static void registerLayerForeground(StarWidgetLayer *layer);
 		static void registerLayerBackground(StarWidgetLayer *layer);
