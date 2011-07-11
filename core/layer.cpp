@@ -11,7 +11,7 @@ namespace Starlia
 {
 
 StarLayer::StarLayer()
-	: invalid(false)
+	: blockFallThrough(false), invalid(false)
 {
 }
 
