@@ -9,5 +9,6 @@
 #include "starMath.h"
 #include "label.h"
 #include "timer.h"
+#include "sound.h"
 
 #endif /* __STARLIA_H__ */

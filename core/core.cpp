@@ -8,8 +8,8 @@
 #include "layer.h"
 #include "object.h"
 #include "core.h"
-#include "basicRender.h"
 #include "timer.h"
+#include "sound.h"
 
 using namespace std;
 
@@ -198,6 +198,8 @@ void StarCore::init(string title, int width, int height)
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
 	SDL_WM_SetCaption(title.c_str(), NULL);
+
+	StarSound::initialize();
 }
 
 void StarCore::registerLayerForeground(Star2dObjectLayer *layer)
