@@ -7,6 +7,34 @@ using namespace std;
 namespace Starlia
 {
 
+typedef struct Coordinate2i
+{
+	int x,y;
+	Coordinate2i() {};
+	Coordinate2i(int x, int y) : x(x), y(y) {};
+
+	Coordinate2i operator+(const Coordinate2i& second) { return Coordinate2i(x + second.x, y + second.y); }
+	Coordinate2i operator-(const Coordinate2i& second) { return Coordinate2i(x - second.x, y - second.y); }
+	Coordinate2i operator/(int second) { return Coordinate2i(x / second, y / second); }
+	Coordinate2i operator*(int second) { return Coordinate2i(x * second, y * second); }
+	Coordinate2i operator/(const Coordinate2i& second) { return Coordinate2i(x / second.x, y / second.y); }
+
+	Coordinate2i operator+=(Coordinate2i second) { return Coordinate2i(x += second.x, y += second.y); }
+	Coordinate2i operator-=(Coordinate2i second) { return Coordinate2i(x -= second.x, y -= second.y); }
+	Coordinate2i operator*=(Coordinate2i second) { return Coordinate2i(x *= second.x, y *= second.y); }
+}
+Coordinate2i;
+
+inline istream& operator >> (istream& is, Coordinate2i& coord)
+{
+	return is >> coord.x >> coord.y;
+}
+
+inline ostream& operator << (ostream& os, const Coordinate2i& coord)
+{
+	return os << "(" << coord.x << ", " << coord.y << ")";
+}
+
 typedef struct Coordinate2d
 {
 	double x,y;
