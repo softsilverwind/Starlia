@@ -4,17 +4,17 @@
 using namespace Starlia;
 using namespace std;
 
-void foo1(Coordinate2d pos)
+void foo1(StarWidget *_, Coordinate2d pos)
 {
 	printf("first label clicked on (%f,%f) :)\n", pos.x, pos.y);
 }
 
-void foo2(Coordinate2d pos)
+void foo2(StarWidget *_, Coordinate2d pos)
 {
 	printf("second label clicked on (%f,%f) :)\n", pos.x, pos.y);
 }
 
-void foo3(Coordinate2d pos)
+void foo3(StarWidget *_, Coordinate2d pos)
 {
 	printf("third label clicked on (%f,%f) :)\n", pos.x, pos.y);
 }

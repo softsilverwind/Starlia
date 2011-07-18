@@ -43,17 +43,17 @@ class StarWidget : public StarObject
 	protected:
 		Coordinate2d topLeft;
 		Coordinate2d botRight;
-		void (*onClick)(Coordinate2d pos);
-		void (*onMouseOver)(Coordinate2d pos);
+		void (*onClick)(StarWidget *, Coordinate2d pos);
+		void (*onMouseOver)(StarWidget *, Coordinate2d pos);
 
 		virtual void draw();
 		virtual bool recalc();
 
 	public:
 		StarWidget();
+		StarWidget(Coordinate2d topLeft, Coordinate2d botRight, void (*onClick)(StarWidget *, Coordinate2d) = NULL, void (*onMouseOver)(StarWidget *, Coordinate2d) = NULL);
 		const Coordinate2d& getTopLeft() { return topLeft; };
 		const Coordinate2d& getBotRight() { return botRight; };
-		StarWidget(Coordinate2d topLeft, Coordinate2d botRight, void (*onClick)(Coordinate2d) = NULL, void (*onMouseOver)(Coordinate2d) = NULL);
 		bool click(Coordinate2d pos);
 		bool mouseOver(Coordinate2d pos);
 };

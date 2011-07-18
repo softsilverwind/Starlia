@@ -39,7 +39,7 @@ void StarLabel::breakText(const string& text)
 	linesPrinted = min((unsigned int) maxlineD, (unsigned int) textArray.size());
 }
 
-StarLabel::StarLabel(string text, Coordinate2d topLeft, Coordinate2d botRight, double charHeight, Color3d color, Justify justify, void (*onClick)(Coordinate2d))
+StarLabel::StarLabel(string text, Coordinate2d topLeft, Coordinate2d botRight, double charHeight, Color3d color, Justify justify, void (*onClick)(StarWidget *, Coordinate2d))
 	: StarWidget(topLeft, botRight, onClick), charHeight(charHeight), color(color), justify(justify)
 {
 	charWidth = 0.5 * charHeight;
