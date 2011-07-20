@@ -33,13 +33,13 @@ class Matrix
 			is >> *this;
 		}
 
-		Matrix(Coordinate2i size, T init_val)
+		Matrix(Coordinate2i size, const T& init_val)
 			: size(size)
 		{
 			contents = new T[size.x * size.y];
 			for (int i = 0; i < size.x; ++i)
 				for (int j = 0; j < size.y; ++j)
-					getVal(i,j) = init_val;
+					contents[loc(i,j)] = init_val;
 		}
 
 		~Matrix()
@@ -47,7 +47,7 @@ class Matrix
 			delete [] contents;
 		}
 
-		T& getVal(int x, int y, bool getDummy = false)
+		T& operator() (int x, int y, bool getDummy = false)
 		{
 			if (x >= 0 && x < size.x && y >= 0 && y < size.y)
 				return contents[loc(x,y)];
@@ -61,9 +61,9 @@ class Matrix
 					throw "Out of bounds";
 		}
 
-		T& getVal(Coordinate2i pos, bool getDummy = false)
+		T& operator() (Coordinate2i pos, bool getDummy = false)
 		{
-			return getVal(pos.x, pos.y, getDummy);
+			return *this(pos.x, pos.y, getDummy);
 		}
 
 		Coordinate2i getSize()
@@ -75,7 +75,7 @@ class Matrix
 		{
 			for (int i = 0; i < size.x; ++i)
 				for (int j = 0; j < size.y; ++j)
-					getVal(i,j) = t;
+					*this(i,j) = t;
 		}
 
 
@@ -83,7 +83,7 @@ class Matrix
 	{
 		for (int j = 0; j < mat.size.y; ++j)
 			for (int i = 0; i < mat.size.x; ++i)
-				is >> mat.getVal(i,j);
+				is >> mat(i,j);
 
 		return is;
 	}
@@ -93,7 +93,7 @@ class Matrix
 		for (int j = 0; j < mat.size.y; ++j)
 		{
 			for (int i = 0; i < mat.size.x; ++i)
-				os << mat.getVal(i,j);
+				os << mat(i,j);
 			os << endl;
 		}
 
