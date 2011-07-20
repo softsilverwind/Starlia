@@ -158,8 +158,6 @@ void StarCore::loop()
 	SDL_Event ev;
 	bool looping = true;
 
-	SDL_SetVideoMode(scale.x, scale.y, 32, SDL_OPENGL);
-
 	while(looping)
 	{
 		while(SDL_PollEvent(&ev))
@@ -199,6 +197,8 @@ void StarCore::init(string title, int width, int height)
 
 	SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO);
 	SDL_WM_SetCaption(title.c_str(), NULL);
+
+	SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
 
 	StarSound::initialize();
 }
