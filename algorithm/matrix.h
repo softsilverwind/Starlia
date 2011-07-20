@@ -2,9 +2,16 @@
 #define __MATRIX_H__
 
 #include <starlia.h>
+#include <exception>
+
+using namespace std;
 
 namespace Starlia
 {
+
+class Out_of_bounds : public exception
+{
+};
 
 template <class T>
 class Matrix
@@ -58,7 +65,7 @@ class Matrix
 					return dummy;
 				}
 				else
-					throw "Out of bounds";
+					throw Out_of_bounds();
 		}
 
 		T& operator() (Coordinate2i pos, bool getDummy = false)
@@ -71,13 +78,10 @@ class Matrix
 			return size;
 		}
 
-		void initialize(T t)
+		void initzero()
 		{
-			for (int i = 0; i < size.x; ++i)
-				for (int j = 0; j < size.y; ++j)
-					*this(i,j) = t;
+			memset(contents, 0, size.x * size.y * sizeof(T));
 		}
-
 
 	friend istream& operator >> (istream& is, Matrix<T>& mat)
 	{
