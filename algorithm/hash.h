@@ -2,18 +2,14 @@
 #define __HASH_H__
 
 #include <map>
-#include <exception>
+#include "exception.h"
 #include "matrix.h"
-#include "core/structs.h"
+#include "../structs.h"
 
 using namespace std;
 
 namespace Starlia
 {
-
-class Nonexistent : public exception
-{
-};
 
 template <typename T1, typename T2>
 class Hash

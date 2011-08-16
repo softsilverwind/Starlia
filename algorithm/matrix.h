@@ -2,18 +2,14 @@
 #define __MATRIX_H__
 
 #include <starlia.h>
-#include <exception>
+#include "exception.h"
 
 using namespace std;
 
 namespace Starlia
 {
 
-class Out_of_bounds : public exception
-{
-};
-
-template <class T>
+template <typename T>
 class Matrix
 {
 	private:
