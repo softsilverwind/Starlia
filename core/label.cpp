@@ -39,7 +39,7 @@ void StarLabel::breakText(const string& text)
 	linesPrinted = min((unsigned int) maxlineD, (unsigned int) textArray.size());
 }
 
-StarLabel::StarLabel(string text, Coordinate2d topLeft, Coordinate2d botRight, double charHeight, Color3d color, Justify justify, void (*onClick)(StarWidget *, Coordinate2d))
+StarLabel::StarLabel(string text, Coordinate2d topLeft, Coordinate2d botRight, double charHeight, Color3f color, Justify justify, void (*onClick)(StarWidget *, Coordinate2d))
 	: StarWidget(topLeft, botRight, onClick), charHeight(charHeight), color(color), justify(justify)
 {
 	charWidth = 0.5 * charHeight;
@@ -61,7 +61,7 @@ StarLabel::StarLabel(string text, Coordinate2d topLeft, Coordinate2d botRight, d
 void StarLabel::draw()
 {
 #ifdef __DEBUG__
-	glColor3d(0,0.2,0);
+	glColor3f(0,0.2,0);
 	glBegin(GL_LINE_LOOP);
 	glVertex2d(topLeft.x, topLeft.y);
 	glVertex2d(topLeft.x, botRight.y);
@@ -70,11 +70,11 @@ void StarLabel::draw()
 	glEnd();
 #endif
 
-	glColor3d(color.r, color.g, color.b);
+	glColor3f(color.r, color.g, color.b);
 	glTranslated(topLeft.x,topLeft.y,0);
 	glScaled(charWidth / 2, charHeight / 2, 0);
 	glTranslated(1, -1, 0);
-	glColor3d(color.r, color.g, color.b);
+	glColor3f(color.r, color.g, color.b);
 	for (unsigned int i = 0; i < linesPrinted; ++i)
 	{
 		glPushMatrix();

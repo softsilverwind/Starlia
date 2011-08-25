@@ -13,16 +13,16 @@ class Ball : public StarObject
 	private:
 		Coordinate2d center;
 		double radius;
-		Color3d color;
+		Color3f color;
 		Coordinate2d velocity;
 
 	public:
-		Ball(Coordinate2d center, double radius, Color3d color, Coordinate2d velocity);
+		Ball(Coordinate2d center, double radius, Color3f color, Coordinate2d velocity);
 		bool recalc();
 		void draw();
 };
 
-Ball::Ball(Coordinate2d center, double radius, Color3d color, Coordinate2d velocity)
+Ball::Ball(Coordinate2d center, double radius, Color3f color, Coordinate2d velocity)
 	: center(center), radius(radius), color(color), velocity(velocity)
 {
 }
@@ -57,7 +57,7 @@ void Ball::draw()
 
 void createBall()
 {
-	layer->registerObject(new Ball(Coordinate2d(randomi(200,600), randomi(300,500)), randomi(5,15), Color3d(randomd(), randomd(), randomd()), Coordinate2d(randomsgn() * randomd() * 10, randomsgn() * randomd() * 10)));
+	layer->registerObject(new Ball(Coordinate2d(randomi(200,600), randomi(300,500)), randomi(5,15), Color3f(randomd(), randomd(), randomd()), Coordinate2d(randomsgn() * randomd() * 10, randomsgn() * randomd() * 10)));
 	StarTimer::registerTimer(500, createBall);
 }
 

@@ -14,11 +14,11 @@ class Ball : public StarObject
 		int id;
 		Coordinate2d center;
 		double radius;
-		Color3d color;
+		Color3f color;
 		Coordinate2d velocity;
 
 	public:
-		Ball(Coordinate2d center, double radius, Color3d color, Coordinate2d velocity);
+		Ball(Coordinate2d center, double radius, Color3f color, Coordinate2d velocity);
 		bool recalc();
 		void draw();
 		bool collides(Coordinate2d cnt2, double rad2);
@@ -29,7 +29,7 @@ int Ball::id_pool = 0;
 
 list<Ball *> balls;
 
-Ball::Ball(Coordinate2d center, double radius, Color3d color, Coordinate2d velocity)
+Ball::Ball(Coordinate2d center, double radius, Color3f color, Coordinate2d velocity)
 	: center(center), radius(radius), color(color), velocity(velocity)
 {
 	id = id_pool++;
@@ -109,7 +109,7 @@ void Ball::draw()
 
 void createBall()
 {
-	balls.push_front(new Ball(Coordinate2d(randomi(200,600), randomi(300,500)), randomi(5,15), Color3d(randomd(), randomd(), randomd()), Coordinate2d(randomsgn() * randomd() * 10, randomsgn() * randomd() * 10)));
+	balls.push_front(new Ball(Coordinate2d(randomi(200,600), randomi(300,500)), randomi(5,15), Color3f(randomd(), randomd(), randomd()), Coordinate2d(randomsgn() * randomd() * 10, randomsgn() * randomd() * 10)));
 	balls.front()->itpos = balls.begin();
 	layer->registerObject(balls.front());
 	StarTimer::registerTimer(1000, createBall);

@@ -1,9 +1,11 @@
 #include <SDL/SDL.h>
 #include <GL/glu.h>
 #include <iostream>
+#include <vector>
 #include <list>
 #include "core.h"
 #include "layer.h"
+#include "starLight.h"
 	
 using namespace std;
 
@@ -240,10 +242,36 @@ bool StarWidgetLayer::mouseOver(Coordinate2d position)
 Star3dLayer::Star3dLayer(Coordinate3d campos, Coordinate3d lookpos, Coordinate3d n)
 	: campos(campos), lookpos(lookpos), n(n)
 {
+	lightNums.push_back(GL_LIGHT7);
+	lightNums.push_back(GL_LIGHT6);
+	lightNums.push_back(GL_LIGHT5);
+	lightNums.push_back(GL_LIGHT4);
+	lightNums.push_back(GL_LIGHT3);
+	lightNums.push_back(GL_LIGHT2);
+	lightNums.push_back(GL_LIGHT1);
+	lightNums.push_back(GL_LIGHT0);
 }
 
 void Star3dLayer::draw()
 {
+	glEnable(GL_NORMALIZE);
+        glEnable(GL_LIGHTING);
+
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+	glEnable(GL_LIGHT2);
+	glEnable(GL_LIGHT3);
+	glEnable(GL_LIGHT4);
+	glEnable(GL_LIGHT5);
+	glEnable(GL_LIGHT6);
+	glEnable(GL_LIGHT7);
+
+	for (vector<GLenum>::iterator it = lightNums.begin(); it != lightNums.end(); ++it)
+		glDisable(*it);
+
+	for (list<StarLight *>::iterator it = lights.begin(); it != lights.end(); ++it)
+		(*it)->prepLight();
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45, StarCore::getScale().x / StarCore::getScale().y, 1, 10000);
@@ -256,6 +284,18 @@ void Star3dLayer::draw()
 	StarLayer::draw();
 
 	glDisable(GL_DEPTH_TEST);
+
+	glDisable(GL_LIGHT0);
+	glDisable(GL_LIGHT1);
+	glDisable(GL_LIGHT2);
+	glDisable(GL_LIGHT3);
+	glDisable(GL_LIGHT4);
+	glDisable(GL_LIGHT5);
+	glDisable(GL_LIGHT6);
+	glDisable(GL_LIGHT7);
+
+	glDisable(GL_LIGHTING);
+	glDisable(GL_NORMALIZE);
 }
 
 void Star3dLayer::registerObject(StarObject *object, void (*onEnd)(), bool remove, bool destroy)
@@ -276,6 +316,25 @@ void Star3dLayer::unregisterObject(StarObject *object)
 		}
 
 	cerr << "Unregistering invalid object: " << object->tag << endl;
+}
+
+
+void Star3dLayer::registerObject(StarLight *light, void (*onEnd)(), bool remove, bool destroy)
+{
+	light->setLightNum(lightNums.back());
+	lightNums.pop_back();
+	lights.push_back(light);
+	registerObject((Star3dObject *) light, onEnd, remove, destroy);
+}
+
+void Star3dLayer::unregisterObject(StarLight *light)
+{
+	for (list<StarLight *>::iterator it = lights.begin(); it != lights.end(); ++it)
+		if (*it == light)
+			lights.erase(it);
+
+	lightNums.push_back(light->getLightNum());
+	unregisterObject((Star3dObject *) light);
 }
 
 }

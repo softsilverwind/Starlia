@@ -13,17 +13,17 @@ class Satellite : public StarObject
 		Coordinate2d center;
 		Coordinate2dpolar position;
 		double radius;
-		Color3d color;
+		Color3f color;
 		double rad_velocity;
 		int life;
 
 	public:
-		Satellite(Coordinate2d center, Coordinate2dpolar position, double radius, Color3d color, double rad_vel, int life);
+		Satellite(Coordinate2d center, Coordinate2dpolar position, double radius, Color3f color, double rad_vel, int life);
 		bool recalc();
 		void draw();
 };
 
-Satellite::Satellite(Coordinate2d center, Coordinate2dpolar position, double radius, Color3d color, double rad_velocity, int life)
+Satellite::Satellite(Coordinate2d center, Coordinate2dpolar position, double radius, Color3f color, double rad_velocity, int life)
 	: center(center), position(position), radius(radius), color(color), rad_velocity(rad_velocity), life(life)
 {
 }
@@ -48,9 +48,9 @@ void Satellite::draw()
 void createSatellite()
 {
 	if (randomi(0,1))
-		layer1->registerObject(new Satellite(Coordinate2d(400,300), Coordinate2dpolar(randomi(100,200), randomd() * 2 * M_PI), 8, Color3d(1,0,0), randomd() / 100, randomi(500, 1000)), NULL);
+		layer1->registerObject(new Satellite(Coordinate2d(400,300), Coordinate2dpolar(randomi(100,200), randomd() * 2 * M_PI), 8, Color3f(1,0,0), randomd() / 100, randomi(500, 1000)), NULL);
 	else
-		layer2->registerObject(new Satellite(Coordinate2d(200,150), Coordinate2dpolar(randomi(50,100), randomd() * 2 * M_PI), 4, Color3d(0,0,1), randomd() / 100, randomi(500, 1000)), NULL);
+		layer2->registerObject(new Satellite(Coordinate2d(200,150), Coordinate2dpolar(randomi(50,100), randomd() * 2 * M_PI), 4, Color3f(0,0,1), randomd() / 100, randomi(500, 1000)), NULL);
 	StarTimer::registerTimer(10, createSatellite);
 }
 

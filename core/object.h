@@ -36,6 +36,7 @@ class Star2dObject : public StarObject
 	public:
 		Star2dObject(Coordinate2d position, Coordinate2d halfsize, double angle = 0, Star2dModel *model = NULL);
 		~Star2dObject();
+		void setVelocity(Coordinate2d);
 };
 
 class StarWidget : public StarObject
@@ -73,6 +74,7 @@ class Star3dObject : public StarObject
 	public:
 		Star3dObject(Coordinate3d position, Coordinate3d halfsize, Coordinate3d angle, Star3dModel *model = NULL);
 		~Star3dObject();
+		void setVelocity(Coordinate3d);
 };
 
 }

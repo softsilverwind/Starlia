@@ -1,5 +1,6 @@
 #include <GL/gl.h>
 #include <fstream>
+#include <cstdio>
 #include "model.h"
 #include "texture.h"
 
@@ -67,7 +68,10 @@ StarObjModel::StarObjModel(string filename, string texfile)
 			}
 		}
 	}
-	tex = genBMPTex(texfile);
+	if (!texfile.empty())
+		tex = genBMPTex(texfile);
+	else
+		tex = 0;
 }
 
 void StarObjModel::draw()
@@ -97,9 +101,9 @@ void StarObjModel::draw()
 
 	for (int i = 0; i < (int) vertices.size(); ++i)
 	{
-		glColor3d(1,0,0);
+		glColor3f(1,0,0);
 		glVertex3d(vertices[i].x, vertices[i].y, vertices[i].z);
-		glColor3d(0,1,0);
+		glColor3f(0,1,0);
 		glVertex3d(vertices[i].x + normals[i].x, vertices[i].y + normals[i].y, vertices[i].z + normals[i].z);
 	}
 	glEnd();

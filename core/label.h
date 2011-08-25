@@ -27,7 +27,7 @@ class StarLabel : public StarWidget
 
 		double charHeight;
 		double charWidth;
-		Color3d color;
+		Color3f color;
 		unsigned int charsPerLine;
 		double charsPerLineD;
 		unsigned int linesPrinted;
@@ -38,7 +38,7 @@ class StarLabel : public StarWidget
 
 	public:
 
-		StarLabel(string text, Coordinate2d topLeft, Coordinate2d botRight, double charHeight, Color3d, Justify justify = LEFT, void (*onClick)(StarWidget *, Coordinate2d) = NULL);
+		StarLabel(string text, Coordinate2d topLeft, Coordinate2d botRight, double charHeight, Color3f, Justify justify = LEFT, void (*onClick)(StarWidget *, Coordinate2d) = NULL);
 
 		void chText(const string& newText);
 

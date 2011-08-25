@@ -51,6 +51,11 @@ Star2dObject::~Star2dObject()
 		delete model;
 }
 
+void Star2dObject::setVelocity(Coordinate2d vel)
+{
+	velocity = vel;
+}
+
 StarWidget::StarWidget(Coordinate2d topLeft, Coordinate2d botRight, void (*onClick)(StarWidget *, Coordinate2d), void (*onMouseOver)(StarWidget *, Coordinate2d))
 	: topLeft(topLeft), botRight(botRight), onClick(onClick), onMouseOver(onMouseOver)
 {
@@ -116,6 +121,11 @@ Star3dObject::~Star3dObject()
 {
 	if (model)
 		delete model;
+}
+
+void Star3dObject::setVelocity(Coordinate3d vel)
+{
+	velocity = vel;
 }
 
 }

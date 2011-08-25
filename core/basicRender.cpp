@@ -47,12 +47,12 @@ void Circle::prepare()
 
 }
 
-void Circle::draw(Color3d color)
+void Circle::draw(Color3f color)
 {
 	if (!initialized)
 		prepare();
 
-	glColor3d(color.r, color.g, color.b);
+	glColor3f(color.r, color.g, color.b);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_DOUBLE, 0, vertex);
@@ -65,14 +65,14 @@ void Circle::draw()
 	draw(color);
 }
 
-Circle::Circle(Color3d color)
+Circle::Circle(Color3f color)
 	: color(color)
 {
 }
 
-void Line::draw(Coordinate2d start, Coordinate2d end, Color3d color, unsigned int thickness)
+void Line::draw(Coordinate2d start, Coordinate2d end, Color3f color, unsigned int thickness)
 {
-	glColor3d(color.r, color.g, color.b);
+	glColor3f(color.r, color.g, color.b);
 	glLineWidth(thickness);
 
 	glBegin(GL_LINES);

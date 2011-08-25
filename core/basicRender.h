@@ -16,21 +16,21 @@ class Circle : public Star2dModel
 	private:
 		static bool initialized;
 		static Coordinate2d vertex[POINTS];
-		Color3d color;
+		Color3f color;
 		static void prepare();
 
 	public:
-		static void draw(Color3d color);
+		static void draw(Color3f color);
 		
 		void draw();
-		Circle(Color3d color);
+		Circle(Color3f color);
 };
 
 
 class Line
 {
 	public:
-		static void draw(Coordinate2d start, Coordinate2d end, Color3d color, unsigned int thickness = 1);
+		static void draw(Coordinate2d start, Coordinate2d end, Color3f color, unsigned int thickness = 1);
 };
 
 class VectorLetter

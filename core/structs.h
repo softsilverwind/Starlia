@@ -99,13 +99,13 @@ inline ostream& operator << (ostream& os, const Coordinate3d& coord)
 	return os << "(" << coord.x << ", " << coord.y << ", " << coord.z << ")";
 }
 
-typedef struct Color3d
+typedef struct Color3f
 {
-	double r,g,b;
-	Color3d() {};
-	Color3d(double r, double g, double b) : r(r), g(g), b(b) {};
+	float r,g,b;
+	Color3f() {};
+	Color3f(float r, float g, float b) : r(r), g(g), b(b) {};
 }
-Color3d;
+Color3f;
 
 }
 

@@ -4,7 +4,9 @@
 #include <SDL/SDL.h>
 #include <list>
 #include <map>
+#include <vector>
 #include "object.h"
+#include "starLight.h"
 
 using namespace std;
 
@@ -90,6 +92,8 @@ class Star3dLayer : public StarLayer
 		Coordinate3d campos;
 		Coordinate3d lookpos;
 		Coordinate3d n;
+		list<StarLight *> lights;
+		vector<GLenum> lightNums;
 
 	public:
 		Star3dLayer(Coordinate3d campos, Coordinate3d lookpos, Coordinate3d n);
@@ -98,6 +102,9 @@ class Star3dLayer : public StarLayer
 
 		void registerObject(StarObject *object, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
 		void unregisterObject(StarObject *object);
+
+		void registerObject(StarLight *light, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
+		void unregisterObject(StarLight *light);
 };
 
 }
