@@ -58,8 +58,8 @@ int main(int argc, char** argv)
 
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, light_model);
 
-	layer = new Star3dLayer(Coordinate3d(400, 0, -50), Coordinate3d(400,300,0), Coordinate3d(0,1,0));
-	layer->registerObject(new StarLight(Color3f(0.7,0.7,0.7), Color3f(0.8,0.8,0.8), Color3f(0.4,0.4,0.4), Coordinate3d(400,300,-1000), Coordinate3d(0,0,0), Coordinate3d(0,0,0)));
+	layer = new Star3dLayer(new StarCamera(Coordinate3d(400, -100, 150), Coordinate3d(-25,0,0)));
+	layer->registerObject(new StarLight(Color3f(0.7,0.7,0.7), Color3f(0.8,0.8,0.8), Color3f(0.4,0.4,0.4), Coordinate3d(400,300,1000), Coordinate3d(0,0,0), Coordinate3d(0,0,0)));
 	StarCore::registerLayer(layer);
 	StarTimer::registerTimer(10, createSatellite);
 	StarCore::loop();

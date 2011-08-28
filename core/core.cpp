@@ -130,6 +130,9 @@ inline void StarCore::keypress(SDL_keysym c)
 	for(list<Star2dObjectLayer *>::reverse_iterator it = objectLayers.rbegin();
 			it != objectLayers.rend() && !(*it)->keypress(c.sym); ++it)
 		;
+
+	if (layer3d)
+		layer3d->keypress(c.sym);
 }
 
 inline void StarCore::keyrelease(SDL_keysym c)
@@ -140,6 +143,9 @@ inline void StarCore::keyrelease(SDL_keysym c)
 	for(list<Star2dObjectLayer *>::reverse_iterator it = objectLayers.rbegin();
 			it != objectLayers.rend() && !(*it)->keyrelease(c.sym); ++it)
 		;
+
+	if (layer3d)
+		layer3d->keyrelease(c.sym);
 }
 
 inline void StarCore::mouseOver(int x, int y)

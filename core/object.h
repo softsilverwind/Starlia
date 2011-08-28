@@ -28,6 +28,7 @@ class Star2dObject : public StarObject
 		Coordinate2d velocity;
 		Coordinate2d halfsize;
 		double angle;
+		double angvelocity;
 		Star2dModel *model;
 
 		virtual void draw();
@@ -37,6 +38,7 @@ class Star2dObject : public StarObject
 		Star2dObject(Coordinate2d position, Coordinate2d halfsize, double angle = 0, Star2dModel *model = NULL);
 		~Star2dObject();
 		void setVelocity(Coordinate2d);
+		void setAngVelocity(double);
 };
 
 class StarWidget : public StarObject
@@ -66,6 +68,7 @@ class Star3dObject : public StarObject
 		Coordinate3d velocity;
 		Coordinate3d halfsize;
 		Coordinate3d angle;
+		Coordinate3d angvelocity;
 		Star3dModel *model;
 
 		virtual void draw();
@@ -75,6 +78,7 @@ class Star3dObject : public StarObject
 		Star3dObject(Coordinate3d position, Coordinate3d halfsize, Coordinate3d angle, Star3dModel *model = NULL);
 		~Star3dObject();
 		void setVelocity(Coordinate3d);
+		void setAngVelocity(Coordinate3d);
 };
 
 }

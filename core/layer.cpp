@@ -6,6 +6,7 @@
 #include "core.h"
 #include "layer.h"
 #include "starLight.h"
+#include "camera.h"
 	
 using namespace std;
 
@@ -239,8 +240,8 @@ bool StarWidgetLayer::mouseOver(Coordinate2d position)
 	return blockFallThrough;
 }
 
-Star3dLayer::Star3dLayer(Coordinate3d campos, Coordinate3d lookpos, Coordinate3d n)
-	: campos(campos), lookpos(lookpos), n(n)
+Star3dLayer::Star3dLayer(StarCamera *camera)
+	: camera(camera)
 {
 	lightNums.push_back(GL_LIGHT7);
 	lightNums.push_back(GL_LIGHT6);
@@ -250,6 +251,12 @@ Star3dLayer::Star3dLayer(Coordinate3d campos, Coordinate3d lookpos, Coordinate3d
 	lightNums.push_back(GL_LIGHT2);
 	lightNums.push_back(GL_LIGHT1);
 	lightNums.push_back(GL_LIGHT0);
+}
+
+Star3dLayer::~Star3dLayer()
+{
+	if (camera)
+		delete camera;
 }
 
 void Star3dLayer::draw()
@@ -272,14 +279,10 @@ void Star3dLayer::draw()
 	for (list<StarLight *>::iterator it = lights.begin(); it != lights.end(); ++it)
 		(*it)->prepLight();
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45, StarCore::getScale().x / StarCore::getScale().y, 1, 10000);
-	gluLookAt(campos.x, campos.y, campos.z, lookpos.x, lookpos.y, lookpos.z, n.x, n.y, n.z);
+	camera->draw();
+
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 
 	StarLayer::draw();
 
@@ -296,6 +299,12 @@ void Star3dLayer::draw()
 
 	glDisable(GL_LIGHTING);
 	glDisable(GL_NORMALIZE);
+}
+
+bool Star3dLayer::recalc()
+{
+	camera->recalc();
+	return StarLayer::recalc();
 }
 
 void Star3dLayer::registerObject(StarObject *object, void (*onEnd)(), bool remove, bool destroy)
@@ -335,6 +344,13 @@ void Star3dLayer::unregisterObject(StarLight *light)
 
 	lightNums.push_back(light->getLightNum());
 	unregisterObject((Star3dObject *) light);
+}
+
+void Star3dLayer::registerObject(StarCamera *cam, bool deletePrev)
+{
+	if (deletePrev)
+		delete camera;
+	camera = cam;
 }
 
 }

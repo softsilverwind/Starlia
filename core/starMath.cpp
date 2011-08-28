@@ -54,7 +54,15 @@ double randomdDown(double mul, double div)
 	return (mul * randomd() / div);
 }
 
+Coordinate3d randomCoord3d(int min, int max)
+{
+	if (!isInit)
+		initialize();
 
+	const int range = max - min + 1;
+
+	return Coordinate3d(rand() % range + min, rand() % range + min, rand() % range + min);
+}
 
 double angleOf(Coordinate2d start, Coordinate2d end)
 {

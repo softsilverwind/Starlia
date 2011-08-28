@@ -7,6 +7,7 @@
 #include <vector>
 #include "object.h"
 #include "starLight.h"
+#include "camera.h"
 
 using namespace std;
 
@@ -89,22 +90,24 @@ class StarWidgetLayer : public Star2dLayer
 class Star3dLayer : public StarLayer
 {
 	private:
-		Coordinate3d campos;
-		Coordinate3d lookpos;
-		Coordinate3d n;
 		list<StarLight *> lights;
 		vector<GLenum> lightNums;
+		StarCamera *camera;
 
 	public:
-		Star3dLayer(Coordinate3d campos, Coordinate3d lookpos, Coordinate3d n);
+		Star3dLayer(StarCamera *camera);
+		~Star3dLayer();
 
 		void draw();
+		bool recalc();
 
 		void registerObject(StarObject *object, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
 		void unregisterObject(StarObject *object);
 
 		void registerObject(StarLight *light, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
 		void unregisterObject(StarLight *light);
+
+		void registerObject(StarCamera *camera, bool deletePrev = true);
 };
 
 }

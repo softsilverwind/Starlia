@@ -20,6 +20,7 @@ int randomsgn();
 int randomi(int min, int max);
 double randomdUp(double mul, double div);
 double randomdDown(double mul, double div);
+Coordinate3d randomCoord3d(int min, int max);
 
 double angleOf(Coordinate2d start, Coordinate2d end);
 double length(Coordinate2d start, Coordinate2d end);
