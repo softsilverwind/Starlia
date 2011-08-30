@@ -111,9 +111,9 @@ void Star3dObject::draw()
 		return;
 
 	glTranslated(position.x, position.y, position.z);
+	glRotated(angle.z,0,0,1);
 	glRotated(angle.x,1,0,0);
 	glRotated(angle.y,0,1,0);
-	glRotated(angle.z,0,0,1);
 	glScaled(halfsize.x, halfsize.y, halfsize.z);
 	model->draw();
 }
@@ -123,10 +123,10 @@ bool Star3dObject::recalc()
 	position += velocity;
 	angle += angvelocity;
 
-	if (angle.x < 0)
-		angle.x += 360;
-	else if (angle.x >= 360)
-		angle.x -= 360;
+	if (angle.x < -90)
+		angle.x = -90;
+	else if (angle.x > 90)
+		angle.x = 90;
 
 	if (angle.y < 0)
 		angle.y += 360;
@@ -161,5 +161,20 @@ void Star3dObject::setAngVelocity(Coordinate3d angvel)
 {
 	angvelocity = angvel;
 }
+/*
+Coordinate3d Star3dObject::getNormalX()
+{
+	return Coordinate3d(cos(angle.z), sin(angle.z), 0);
+}
 
+Coordinate3d Star3dObject::getNormalY()
+{
+	return Coordinate3d(cos(angle.z), (sin(angle.z) + cos(angle.x)) / 2, sin(angle.x));
+}
+
+Coordinate3d Star3dObject::getNormalZ()
+{
+	return Coordinate3d(-cos(angle.z), -sin(angle.z), 0);
+}
+*/
 }

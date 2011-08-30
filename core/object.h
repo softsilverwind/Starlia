@@ -79,6 +79,9 @@ class Star3dObject : public StarObject
 		~Star3dObject();
 		void setVelocity(Coordinate3d);
 		void setAngVelocity(Coordinate3d);
+		Coordinate3d getNormalX();
+		Coordinate3d getNormalY();
+		Coordinate3d getNormalZ();
 };
 
 }

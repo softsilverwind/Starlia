@@ -14,8 +14,9 @@ void StarCamera::draw()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glRotated(-angle.x - 90,1,0,0);
+	glRotated(-90,1,0,0);
 	glRotated(-angle.y,0,1,0);
+	glRotated(-angle.x,1,0,0);
 	glRotated(-angle.z,0,0,1);
 	glTranslated(-position.x, -position.y, -position.z);
 }
