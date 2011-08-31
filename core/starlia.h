@@ -8,6 +8,7 @@
 #include "structs.h"
 #include "starMath.h"
 #include "label.h"
+#include "texture.h"
 #include "timer.h"
 #include "sound.h"
 

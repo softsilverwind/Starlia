@@ -50,6 +50,7 @@ typedef struct Coordinate2d
 	Coordinate2d operator+=(Coordinate2d second) { return Coordinate2d(x += second.x, y += second.y); }
 	Coordinate2d operator-=(Coordinate2d second) { return Coordinate2d(x -= second.x, y -= second.y); }
 	Coordinate2d operator*=(Coordinate2d second) { return Coordinate2d(x *= second.x, y *= second.y); }
+	Coordinate2d operator*=(int second) { return Coordinate2d(x *= second, y *= second); }
 }
 Coordinate2d;
 
@@ -79,13 +80,14 @@ typedef struct Coordinate3d
 
 	Coordinate3d operator+(const Coordinate3d& second) { return Coordinate3d(x + second.x, y + second.y, z + second.z); }
 	Coordinate3d operator-(const Coordinate3d& second) { return Coordinate3d(x - second.x, y - second.y, z - second.z); }
-	Coordinate3d operator/(int second) { return Coordinate3d(x / second, y / second, z / second); }
-	Coordinate3d operator*(int second) { return Coordinate3d(x * second, y * second, z * second); }
+	Coordinate3d operator/(double second) { return Coordinate3d(x / second, y / second, z / second); }
+	Coordinate3d operator*(double second) { return Coordinate3d(x * second, y * second, z * second); }
 	Coordinate3d operator/(const Coordinate3d& second) { return Coordinate3d(x / second.x, y / second.y, z / second.z); }
 
 	Coordinate3d operator+=(Coordinate3d second) { return Coordinate3d(x += second.x, y += second.y, z += second.z); }
 	Coordinate3d operator-=(Coordinate3d second) { return Coordinate3d(x -= second.x, y -= second.y, z -= second.z); }
 	Coordinate3d operator*=(Coordinate3d second) { return Coordinate3d(x *= second.x, y *= second.y, z *= second.z); }
+	Coordinate3d operator*=(double second) { return Coordinate3d(x *= second, y *= second, z *= second); }
 }
 Coordinate3d;
 

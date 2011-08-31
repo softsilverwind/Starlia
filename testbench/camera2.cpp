@@ -30,10 +30,10 @@ void keyboard(int key)
 			angvel.y = 1;
 			break;
 		case 'z':
-			vel.y = 10;
+			vel = camera->getNormalY() * 10;
 			break;
 		case 'c':
-			vel.y = -10;
+			vel = camera->getNormalY() * -10;
 			break;
 		default:
 			return;
