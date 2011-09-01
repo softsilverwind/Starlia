@@ -65,10 +65,12 @@ class Star3dObject : public StarObject
 {
 	protected:
 		Coordinate3d position;
-		Coordinate3d velocity;
 		Coordinate3d halfsize;
 		Coordinate3d angle;
+		Coordinate3d velocity;
 		Coordinate3d angvelocity;
+		Coordinate3d thrust;
+		Coordinate3d actualVelocity;
 		Star3dModel *model;
 
 		virtual void draw();
@@ -77,8 +79,11 @@ class Star3dObject : public StarObject
 	public:
 		Star3dObject(Coordinate3d position, Coordinate3d halfsize, Coordinate3d angle, Star3dModel *model = NULL);
 		~Star3dObject();
+
 		void setVelocity(Coordinate3d);
 		void setAngVelocity(Coordinate3d);
+		void setThrust(Coordinate3d);
+
 		Coordinate3d getNormalX();
 		Coordinate3d getNormalY();
 		Coordinate3d getNormalZ();
