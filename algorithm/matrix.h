@@ -66,7 +66,7 @@ class Matrix
 
 		T& operator() (Coordinate2i pos, bool getDummy = false)
 		{
-			return *this(pos.x, pos.y, getDummy);
+			return (*this)(pos.x, pos.y, getDummy);
 		}
 
 		Coordinate2i getSize()
