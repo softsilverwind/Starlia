@@ -47,10 +47,10 @@ class StarLayer : public StarObject
 
 		bool keypress(SDLKey);
 		bool keyrelease(SDLKey);
-		void registerKeyPress(SDLKey, void (*)(int), int);
-		void registerKeyPress(char, void (*)(int), int);
-		void registerKeyRelease(SDLKey, void (*)(int), int);
-		void registerKeyRelease(char, void (*)(int), int);
+		void registerKeyPress(SDLKey, void (*)(int), int val=42);
+		void registerKeyPress(char, void (*)(int), int val=42);
+		void registerKeyRelease(SDLKey, void (*)(int), int val=42);
+		void registerKeyRelease(char, void (*)(int), int val=42);
 
 		void setBlockFallThrough(bool);
 };

@@ -118,48 +118,6 @@ void Ball::changeDirection(double x, bool up)
 	velocity.x = (position.x - x) / 10;
 }
 
-void keyboard(int key)
-{
-	switch (key)
-	{
-		case 'a':
-			player[0]->goLeft();
-			break;
-		case 'd':
-			player[0]->goRight();
-			break;
-		case 'j':
-			player[1]->goLeft();
-			break;
-		case 'l':
-			player[1]->goRight();
-			break;
-		default:
-			break;
-	}
-}
-
-void keyboardup(int key)
-{
-	switch (key)
-	{
-		case 'a':
-			player[0]->stopLeft();
-			break;
-		case 'd':
-			player[0]->stopRight();
-			break;
-		case 'j':
-			player[1]->stopLeft();
-			break;
-		case 'l':
-			player[1]->stopRight();
-			break;
-		default:
-			break;
-	}
-}
-
 void start();
 
 void restart()
@@ -183,14 +141,14 @@ int main(int argc, char** argv)
 
 	layer->registerObject(player[0]);
 	layer->registerObject(player[1]);
-	layer->registerKeyPress('a', keyboard, 'a');
-	layer->registerKeyPress('d', keyboard, 'd');
-	layer->registerKeyPress('j', keyboard, 'j');
-	layer->registerKeyPress('l', keyboard, 'l');
-	layer->registerKeyRelease('a', keyboardup, 'a');
-	layer->registerKeyRelease('d', keyboardup, 'd');
-	layer->registerKeyRelease('j', keyboardup, 'j');
-	layer->registerKeyRelease('l', keyboardup, 'l');
+	layer->registerKeyPress('a', [](int _){ player[0]->goLeft(); });
+	layer->registerKeyPress('d', [](int _){ player[0]->goRight(); });
+	layer->registerKeyPress('j', [](int _){ player[1]->goLeft(); });
+	layer->registerKeyPress('l', [](int _){ player[1]->goRight(); });
+	layer->registerKeyRelease('a', [](int _){ player[0]->stopLeft(); });
+	layer->registerKeyRelease('d', [](int _){ player[0]->stopRight(); });
+	layer->registerKeyRelease('j', [](int _){ player[1]->stopLeft(); });
+	layer->registerKeyRelease('l', [](int _){ player[1]->stopRight(); });
 	restart();
 	StarCore::loop();
 
