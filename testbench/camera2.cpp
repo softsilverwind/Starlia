@@ -63,22 +63,22 @@ int main(int argc, char** argv)
 		layer->registerObject(new Star3dObject(randomCoord3d(-1000, 1000), Coordinate3d(5,5,5), randomCoord3d(-1000, 1000), new StarObjModel("fruit.obj", "fruit_Sphere.bmp")));
 	layer->registerObject(new StarLight(Color3f(0.7,0.7,0.7), Color3f(0.8,0.8,0.8), Color3f(0.4,0.4,0.4), Coordinate3d(5,-2,-2), Coordinate3d(0,0,0), Coordinate3d(0,0,0)));
 	
-	layer->registerKeyPress('w', keyboard, 'w');
-	layer->registerKeyPress('a', keyboard, 'a');
-	layer->registerKeyPress('s', keyboard, 's');
-	layer->registerKeyPress('d', keyboard, 'd');
-	layer->registerKeyPress('q', keyboard, 'q');
-	layer->registerKeyPress('e', keyboard, 'e');
-	layer->registerKeyPress('c', keyboard, 'c');
-	layer->registerKeyPress('z', keyboard, 'z');
-	layer->registerKeyRelease('w', keyboardup, 'w');
-	layer->registerKeyRelease('a', keyboardup, 'a');
-	layer->registerKeyRelease('s', keyboardup, 's');
-	layer->registerKeyRelease('d', keyboardup, 'd');
-	layer->registerKeyRelease('q', keyboardup, 'q');
-	layer->registerKeyRelease('e', keyboardup, 'e');
-	layer->registerKeyRelease('c', keyboardup, 'c');
-	layer->registerKeyRelease('z', keyboardup, 'z');
+	layer->registerKeyPress('w', [](){ keyboard('w'); });
+	layer->registerKeyPress('a', [](){ keyboard('a'); });
+	layer->registerKeyPress('s', [](){ keyboard('s'); });
+	layer->registerKeyPress('d', [](){ keyboard('d'); });
+	layer->registerKeyPress('q', [](){ keyboard('q'); });
+	layer->registerKeyPress('e', [](){ keyboard('e'); });
+	layer->registerKeyPress('c', [](){ keyboard('c'); });
+	layer->registerKeyPress('z', [](){ keyboard('z'); });
+	layer->registerKeyRelease('w', [](){ keyboardup('w'); });
+	layer->registerKeyRelease('a', [](){ keyboardup('a'); });
+	layer->registerKeyRelease('s', [](){ keyboardup('s'); });
+	layer->registerKeyRelease('d', [](){ keyboardup('d'); });
+	layer->registerKeyRelease('q', [](){ keyboardup('q'); });
+	layer->registerKeyRelease('e', [](){ keyboardup('e'); });
+	layer->registerKeyRelease('c', [](){ keyboardup('c'); });
+	layer->registerKeyRelease('z', [](){ keyboardup('z'); });
 
 	StarCore::registerLayer(layer);
 	StarCore::loop();

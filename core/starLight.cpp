@@ -14,7 +14,7 @@ void StarLight::prepLight()
 {
 	glEnable(lightNum);
 
-	float pos[4] = { position.x, position.y, position.z, 1 };
+	float pos[4] = { (float) position.x, (float) position.y, (float) position.z, 1 };
 
 	glLightfv(lightNum, GL_SPECULAR, (float *) &specular);
 	glLightfv(lightNum, GL_DIFFUSE, (float *) &diffuse);

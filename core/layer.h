@@ -30,8 +30,8 @@ class StarLayer : public StarObject
 		EntryType;
 
 		list<EntryType> objectList;
-		map<SDLKey, pair<void (*)(int), int> > keypresses;
-		map<SDLKey, pair<void (*)(int), int> > keyreleases;
+		map<SDLKey, void (*)()> keypresses;
+		map<SDLKey, void (*)()> keyreleases;
 
 		bool blockFallThrough;
 
@@ -47,10 +47,10 @@ class StarLayer : public StarObject
 
 		bool keypress(SDLKey);
 		bool keyrelease(SDLKey);
-		void registerKeyPress(SDLKey, void (*)(int), int val=42);
-		void registerKeyPress(char, void (*)(int), int val=42);
-		void registerKeyRelease(SDLKey, void (*)(int), int val=42);
-		void registerKeyRelease(char, void (*)(int), int val=42);
+		void registerKeyPress(SDLKey, void (*)());
+		void registerKeyPress(char, void (*)());
+		void registerKeyRelease(SDLKey, void (*)());
+		void registerKeyRelease(char, void (*)());
 
 		void setBlockFallThrough(bool);
 };

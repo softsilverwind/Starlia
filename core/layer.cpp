@@ -86,11 +86,11 @@ bool StarLayer::recalc()
 
 bool StarLayer::keypress(SDLKey c)
 {
-	map<SDLKey, pair<void (*)(int), int> >::iterator it = keypresses.find(c);
+	map<SDLKey, void (*)()>::iterator it = keypresses.find(c);
 
 	if (it != keypresses.end())
 	{
-		(*(it->second.first))(it->second.second);
+		(*(it->second))();
 		return true;
 	}
 
@@ -99,35 +99,35 @@ bool StarLayer::keypress(SDLKey c)
 
 bool StarLayer::keyrelease(SDLKey c)
 {
-	map<SDLKey, pair<void (*)(int), int> >::iterator it = keyreleases.find(c);
+	map<SDLKey, void (*)()>::iterator it = keyreleases.find(c);
 
 	if (it != keyreleases.end())
 	{
-		(*(it->second.first))(it->second.second);
+		(*(it->second))();
 		return true;
 	}
 
 	return blockFallThrough;
 }
 
-void StarLayer::registerKeyPress(SDLKey c, void (*fun)(int), int x)
+void StarLayer::registerKeyPress(SDLKey c, void (*fun)())
 {
-	keypresses[c] = make_pair(fun, x);
+	keypresses[c] = fun;
 }
 
-void StarLayer::registerKeyPress(char c, void (*fun)(int), int x)
+void StarLayer::registerKeyPress(char c, void (*fun)())
 {
-	keypresses[(SDLKey) c] = make_pair(fun, x);
+	keypresses[(SDLKey) c] = fun;
 }
 
-void StarLayer::registerKeyRelease(SDLKey c, void (*fun)(int), int x)
+void StarLayer::registerKeyRelease(SDLKey c, void (*fun)())
 {
-	keyreleases[c] = make_pair(fun, x);
+	keyreleases[c] = fun;
 }
 
-void StarLayer::registerKeyRelease(char c, void (*fun)(int), int x)
+void StarLayer::registerKeyRelease(char c, void (*fun)())
 {
-	keyreleases[(SDLKey) c] = make_pair(fun, x);
+	keyreleases[(SDLKey) c] = fun;
 }
 
 void StarLayer::setBlockFallThrough(bool block)

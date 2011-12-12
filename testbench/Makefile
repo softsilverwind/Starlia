@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-Wall -O3 -g
+CXXFLAGS=-Wall -O3 -g -std=c++0x
 
 all: circle satellites satellites2 pong physics physics2 label label2 label3 model model2 satellitesModel coord camera camera2
 

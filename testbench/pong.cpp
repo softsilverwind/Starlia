@@ -141,14 +141,14 @@ int main(int argc, char** argv)
 
 	layer->registerObject(player[0]);
 	layer->registerObject(player[1]);
-	layer->registerKeyPress('a', [](int _){ player[0]->goLeft(); });
-	layer->registerKeyPress('d', [](int _){ player[0]->goRight(); });
-	layer->registerKeyPress('j', [](int _){ player[1]->goLeft(); });
-	layer->registerKeyPress('l', [](int _){ player[1]->goRight(); });
-	layer->registerKeyRelease('a', [](int _){ player[0]->stopLeft(); });
-	layer->registerKeyRelease('d', [](int _){ player[0]->stopRight(); });
-	layer->registerKeyRelease('j', [](int _){ player[1]->stopLeft(); });
-	layer->registerKeyRelease('l', [](int _){ player[1]->stopRight(); });
+	layer->registerKeyPress('a', [](){ player[0]->goLeft(); });
+	layer->registerKeyPress('d', [](){ player[0]->goRight(); });
+	layer->registerKeyPress('j', [](){ player[1]->goLeft(); });
+	layer->registerKeyPress('l', [](){ player[1]->goRight(); });
+	layer->registerKeyRelease('a', [](){ player[0]->stopLeft(); });
+	layer->registerKeyRelease('d', [](){ player[0]->stopRight(); });
+	layer->registerKeyRelease('j', [](){ player[1]->stopLeft(); });
+	layer->registerKeyRelease('l', [](){ player[1]->stopRight(); });
 	restart();
 	StarCore::loop();
 
