@@ -8,6 +8,7 @@
 namespace Starlia
 {
 
+// Far away, this ship has taken me far away...
 class StarLight : public Star3dObject
 {
 	private:
