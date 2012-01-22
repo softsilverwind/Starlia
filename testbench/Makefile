@@ -1,7 +1,7 @@
 CXX=g++
 CXXFLAGS=-Wall -O3 -g -std=c++0x
 
-all: circle satellites satellites2 pong physics physics2 label label2 label3 model model2 satellitesModel coord camera camera2
+all: circle satellites satellites2 pong physics physics2 label label2 label3 model model2 satellitesModel coord camera camera2 blackhole
 
 circle: circle.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL -lSDL_mixer
@@ -48,6 +48,9 @@ camera: camera.o
 camera2: camera2.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL -lSDL_mixer
 
+blackhole: blackhole.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ -lSDL -lGLU -lstarlia -lGL -lSDL_mixer
+
 #1.exe: main1.cpp
 #	i586-mingw32msvc-g++ $(CXXFLAGS) -o $@ $^ -I ~/Applications/freeglut/include/ -L ~/Applications/freeglut/lib/ -lopengl32 -lfreeglut -lglu32; strip 1.exe
 
@@ -55,4 +58,4 @@ clean:
 	$(RM) *.o
 
 distclean: clean
-	$(RM) circle satellites satellites2 pong physics physics2 label label2 label3 model model2 satellitesModel coord camera camera2
+	$(RM) circle satellites satellites2 pong physics physics2 label label2 label3 model model2 satellitesModel coord camera camera2 blackhole
