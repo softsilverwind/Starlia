@@ -89,8 +89,6 @@ void P_Engine::draw()
 	for (int i = 0; i < 200; ++i)
 	{
 		particles[i]->draw();
-		cout << i << ": ";
-		particles[i]->yield();
 	}
 }
 
