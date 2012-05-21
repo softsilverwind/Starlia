@@ -31,12 +31,8 @@ Satellite::Satellite(Coord2d center, Polar2d position, double radius, Color3f co
 void Satellite::recalc()
 {
 	position.a += rad_velocity;
-	--life;
-	if (life <= 0)
-	{
+	if (--life <= 0)
 		EMIT(_delete);
-		EMIT(_remove);
-	}
 }
 
 void Satellite::draw()

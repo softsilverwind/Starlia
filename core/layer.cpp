@@ -54,13 +54,16 @@ void StarLayer::recalc()
 	for (auto it = objectList.begin(); it != objectList.end(); ++it)
 	{
 		bool del = false, rem = false;
+		StarObject::canHasEmit = true;
 		(*it)->recalc();
+		StarObject::canHasEmit = false;
 
 		for(string& str : StarObject::emittedSignals)
 		{
 			if (!str.compare("_delete"))
 			{
 				del = true;
+				rem = true;
 			}
 			else if (!str.compare("_remove"))
 			{

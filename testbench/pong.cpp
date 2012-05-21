@@ -95,7 +95,6 @@ void Ball::recalc()
 	if (position.y > 600 || position.y < 0)
 	{
 		EMIT(_delete);
-		EMIT(_remove);
 		EMIT(restart);
 	}
 }

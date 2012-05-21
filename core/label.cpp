@@ -1,3 +1,4 @@
+#include <functional>
 #include <iostream>
 #include <cstdio>
 #include <cctype>
@@ -39,7 +40,7 @@ void StarLabel::breakText(const string& text)
 	linesPrinted = min((unsigned int) maxlineD, (unsigned int) textArray.size());
 }
 
-StarLabel::StarLabel(string text, Coord2d topLeft, Coord2d botRight, double charHeight, Color3f color, Justify justify, void (*onClick)(Coord2d))
+StarLabel::StarLabel(string text, Coord2d topLeft, Coord2d botRight, double charHeight, Color3f color, Justify justify, function<void (Coord2d)> onClick)
 	: StarWidget(topLeft, botRight, onClick), charHeight(charHeight), color(color), justify(justify)
 {
 	charWidth = 0.5 * charHeight;

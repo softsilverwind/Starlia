@@ -44,10 +44,7 @@ void Ball::recalc()
 		velocity.y = -fabs(velocity.y * 0.8);
 
 	if (!(fabs(velocity.y) > 0.002 || center.y - radius > 10 || fabs(velocity.x) > 0.2))
-	{
 		EMIT(_delete);
-		EMIT(_remove);
-	}
 }
 
 void Ball::draw()

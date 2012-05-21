@@ -35,12 +35,8 @@ void Satellite::recalc()
 	position.x = pos.x;
 	position.y = pos.y;
 
-	--life;
-	if (life <= 0)
-	{
-		EMIT(_remove);
+	if (--life <= 0)
 		EMIT(_delete);
-	}
 }
 
 void Satellite::draw()

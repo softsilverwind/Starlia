@@ -93,7 +93,7 @@ void Ball::recalc()
 	if (!(fabs(velocity.y) > 0.002 || center.y - radius > 10 || fabs(velocity.x) > 0.2))
 	{
 		balls.erase(itpos);
-		EMIT(_remove);
+		
 		EMIT(_delete);
 	}
 }

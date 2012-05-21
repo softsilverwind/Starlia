@@ -12,6 +12,7 @@ namespace Starlia
 {
 
 vector<string> StarObject::emittedSignals;
+bool StarObject::canHasEmit = false;
 
 StarObject::StarObject()
 	: invalid(false)
@@ -38,6 +39,12 @@ void StarObject::connect(string str, function<void (void)> fun)
 
 void StarObject::emit(string str)
 {
+	if (!canHasEmit)
+	{
+		cerr << "Discarding emitting of \"" << str << "\" outside of recalc function!!!" << endl;
+		return;
+	}
+
 	emittedSignals.push_back(str);
 }
 

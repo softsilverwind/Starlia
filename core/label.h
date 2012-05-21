@@ -1,6 +1,7 @@
 #ifndef __LABEL_H__
 #define __LABEL_H__
 
+#include <functional>
 #include <string>
 #include <vector>
 #include <list>
@@ -38,7 +39,7 @@ class StarLabel : public StarWidget
 
 	public:
 
-		StarLabel(string text, Coord2d topLeft, Coord2d botRight, double charHeight, Color3f, Justify justify = LEFT, void (*onClick)(Coord2d) = NULL);
+		StarLabel(string text, Coord2d topLeft, Coord2d botRight, double charHeight, Color3f, Justify justify = LEFT, function<void (Coord2d)> onClick = NULL);
 
 		void chText(const string& newText);
 

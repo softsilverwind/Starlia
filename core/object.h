@@ -19,6 +19,7 @@ class StarObject
 {
 	private:
 		static vector<string> emittedSignals;
+		static bool canHasEmit;
 		map<string, function<void (void)> > connections;
 		bool invalid;
 
