@@ -1,6 +1,7 @@
 #include <SDL/SDL.h>
 #include <GL/glu.h>
 #include <iostream>
+#include <functional>
 #include <vector>
 #include <list>
 #include "core.h"
@@ -13,6 +14,11 @@ using namespace std;
 namespace Starlia
 {
 
+void StarLayer::invalidate(StarObject * so)
+{
+	so->invalid = true;
+}
+
 StarLayer::StarLayer()
 	: blockFallThrough(false), invalid(false)
 {
@@ -20,77 +26,82 @@ StarLayer::StarLayer()
 
 StarLayer::~StarLayer()
 {
-	clearLayer();
+	demolishLayer();
 }
 
-void StarLayer::clearLayer()
+void StarLayer::demolishLayer()
 {
-	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
-	{
-		if (it->destroy)
-			delete it->object;
+	for (auto it : objectList)
+		delete it;
 
-		objectList.erase(it--);
-	}
+	objectList.clear();
 }
 
 void StarLayer::draw()
 {
-	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
+	for (auto it : objectList)
 	{
-		if (it->invalid)
-		{
-			if (it->destroy)
-				delete it->object;
-
-			objectList.erase(it--);
-			continue;
-		}
-
 		glPushMatrix();
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
-		it->object->draw();
+		it->draw();
 		glPopAttrib();
 		glPopMatrix();
 	}
 }
 
-bool StarLayer::recalc()
+void StarLayer::recalc()
 {
-	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
+	for (auto it = objectList.begin(); it != objectList.end(); ++it)
 	{
-		if (it->invalid)
-		{
-			if (it->destroy)
-				delete it->object;
+		bool del = false, rem = false;
+		(*it)->recalc();
 
+		for(string& str : StarObject::emittedSignals)
+		{
+			if (!str.compare("_delete"))
+			{
+				del = true;
+			}
+			else if (!str.compare("_remove"))
+			{
+				rem = true;
+			}
+			else
+			{
+				auto fun = (*it)->connections[str];
+				if (fun)
+				{
+					fun();
+				}
+			}
+		}
+
+		StarObject::emittedSignals.clear();
+
+		if (del)
+		{
+			delete *it;
+		}
+		else if ((*it)->invalid)
+		{
 			objectList.erase(it--);
 			continue;
 		}
 
-		if (!(it->object->recalc()))
+		if (rem)
 		{
-			if (it->onEnd)
-				it->onEnd();
-
-			if (it->destroy)
-				delete it->object;
-
-			if (it->remove)
-				objectList.erase(it--);
+			objectList.erase(it--);
 		}
 	}
-
-	return true;
 }
 
 bool StarLayer::keypress(SDLKey c)
 {
-	map<SDLKey, void (*)()>::iterator it = keypresses.find(c);
+	map<SDLKey, function<void (void)> >::iterator it = keypresses.find(c);
 
 	if (it != keypresses.end())
 	{
-		(*(it->second))();
+		(it->second)();
 		return true;
 	}
 
@@ -99,33 +110,33 @@ bool StarLayer::keypress(SDLKey c)
 
 bool StarLayer::keyrelease(SDLKey c)
 {
-	map<SDLKey, void (*)()>::iterator it = keyreleases.find(c);
+	map<SDLKey, function<void (void)> >::iterator it = keyreleases.find(c);
 
 	if (it != keyreleases.end())
 	{
-		(*(it->second))();
+		(it->second)();
 		return true;
 	}
 
 	return blockFallThrough;
 }
 
-void StarLayer::registerKeyPress(SDLKey c, void (*fun)())
+void StarLayer::registerKeyPress(SDLKey c, function<void (void)> fun)
 {
 	keypresses[c] = fun;
 }
 
-void StarLayer::registerKeyPress(char c, void (*fun)())
+void StarLayer::registerKeyPress(char c, function<void (void)> fun)
 {
 	keypresses[(SDLKey) c] = fun;
 }
 
-void StarLayer::registerKeyRelease(SDLKey c, void (*fun)())
+void StarLayer::registerKeyRelease(SDLKey c, function<void (void)> fun)
 {
 	keyreleases[c] = fun;
 }
 
-void StarLayer::registerKeyRelease(char c, void (*fun)())
+void StarLayer::registerKeyRelease(char c, function<void (void)> fun)
 {
 	keyreleases[(SDLKey) c] = fun;
 }
@@ -135,7 +146,7 @@ void StarLayer::setBlockFallThrough(bool block)
 	blockFallThrough = block;
 }
 
-Star2dLayer::Star2dLayer(Coordinate2d size) : size(size)
+Star2dLayer::Star2dLayer(Coord2d size) : size(size)
 {
 }
 
@@ -150,90 +161,80 @@ void Star2dLayer::draw()
 	StarLayer::draw();
 }
 
-Star2dObjectLayer::Star2dObjectLayer(Coordinate2d size) : Star2dLayer(size)
+Star2dObjectLayer::Star2dObjectLayer(Coord2d size) : Star2dLayer(size)
 {
 }
 
-void Star2dObjectLayer::registerObject(StarObject *object, void (*onEnd)(), bool remove, bool destroy)
+void Star2dObjectLayer::registerObject(StarObject *object)
 {
-	if (destroy)
-		remove = true;
-
-	objectList.push_back(EntryType(object, onEnd, remove, destroy));
+	objectList.push_back(object);
 }
 
 void Star2dObjectLayer::unregisterObject(StarObject *object)
 {
-	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
-		if (it->object == object)
+	for (auto it : objectList)
+		if (it == object)
 		{
-			it->invalid = true;
+			invalidate(it);
 			return;
 		}
-
-	cerr << "Unregistering invalid object: " << object->tag << endl;
 }
 
-StarWidgetLayer::StarWidgetLayer(Coordinate2d size) : Star2dLayer(size)
+StarWidgetLayer::StarWidgetLayer(Coord2d size) : Star2dLayer(size)
 {
 }
 
-void StarWidgetLayer::registerObject(StarWidget *object, void (*onEnd)(), bool remove, bool destroy)
+void StarWidgetLayer::registerObject(StarWidget *object)
 {
-	if (destroy)
-		remove = true;
-
-	objectList.push_back(EntryType(object, onEnd, remove, destroy));
+	objectList.push_back(object);
 }
 
 void StarWidgetLayer::unregisterObject(StarWidget *object)
 {
-	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
-		if (it->object == object)
+	for (auto it : objectList)
+		if (it == object)
 		{
-			it->invalid = true;
+			invalidate(it);
 			return;
 		}
-
-	cerr << "Unregistering invalid object: " << object->tag << endl;
 }
 
-bool StarWidgetLayer::click(Coordinate2d position)
+bool StarWidgetLayer::click(Coord2d position)
 {
 	position *= size;
 
-	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
+	for (auto it : objectList)
 	{
-		StarWidget *it2 = (StarWidget *) it->object;
-		Coordinate2d tl, br;
+		StarWidget *it2 = (StarWidget *) it;
+		Coord2d tl, br;
 
 		tl = it2->getTopLeft();
 		br = it2->getBotRight();
 
 		if (position.x >= tl.x && position.x <= br.x && position.y <= tl.y && position.y >= br.y)
 		{
-			Coordinate2d pos((position - tl) / (br - tl));
+			Coord2d pos((position - tl) / (br - tl));
 			return it2->click(pos) || blockFallThrough;
 		}
 	}
 	return blockFallThrough;
 }
 
-bool StarWidgetLayer::mouseOver(Coordinate2d position)
+bool StarWidgetLayer::mouseOver(Coord2d position)
 {
 	position *= size;
 
-	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
+	for (auto it : objectList)
 	{
-		StarWidget *it2 = (StarWidget *) it->object;
-		Coordinate2d tl, br;
+		StarWidget *it2 = (StarWidget *) it;
+		Coord2d tl, br;
 
 		tl = it2->getTopLeft();
 		br = it2->getBotRight();
 
 		if (position.x >= tl.x && position.x <= br.x && position.y <= tl.y && position.y >= br.y)
 		{
-			Coordinate2d pos((position - tl) / (br - tl));
+			Coord2d pos((position - tl) / (br - tl));
 			return it2->mouseOver(pos) || blockFallThrough;
 		}
 	}
@@ -301,39 +302,33 @@ void Star3dLayer::draw()
 	glDisable(GL_NORMALIZE);
 }
 
-bool Star3dLayer::recalc()
+void Star3dLayer::recalc()
 {
 	camera->recalc();
 	return StarLayer::recalc();
 }
 
-void Star3dLayer::registerObject(StarObject *object, void (*onEnd)(), bool remove, bool destroy)
+void Star3dLayer::registerObject(StarObject *object)
 {
-	if (destroy)
-		remove = true;
-
-	objectList.push_back(EntryType(object, onEnd, remove, destroy));
+	objectList.push_back(object);
 }
 
 void Star3dLayer::unregisterObject(StarObject *object)
 {
-	for (list<EntryType>::iterator it = objectList.begin(); it != objectList.end(); ++it)
-		if (it->object == object)
+	for (auto it : objectList)
+		if (it == object)
 		{
-			it->invalid = true;
+			invalidate(it);
 			return;
 		}
-
-	cerr << "Unregistering invalid object: " << object->tag << endl;
 }
 
-
-void Star3dLayer::registerObject(StarLight *light, void (*onEnd)(), bool remove, bool destroy)
+void Star3dLayer::registerObject(StarLight *light)
 {
 	light->setLightNum(lightNums.back());
 	lightNums.pop_back();
 	lights.push_back(light);
-	registerObject((Star3dObject *) light, onEnd, remove, destroy);
+	registerObject((Star3dObject *) light);
 }
 
 void Star3dLayer::unregisterObject(StarLight *light)

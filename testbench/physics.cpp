@@ -11,23 +11,23 @@ Star2dObjectLayer *layer;
 class Ball : public StarObject
 {
 	private:
-		Coordinate2d center;
+		Coord2d center;
 		double radius;
 		Color3f color;
-		Coordinate2d velocity;
+		Coord2d velocity;
 
 	public:
-		Ball(Coordinate2d center, double radius, Color3f color, Coordinate2d velocity);
-		bool recalc();
+		Ball(Coord2d center, double radius, Color3f color, Coord2d velocity);
+		void recalc();
 		void draw();
 };
 
-Ball::Ball(Coordinate2d center, double radius, Color3f color, Coordinate2d velocity)
+Ball::Ball(Coord2d center, double radius, Color3f color, Coord2d velocity)
 	: center(center), radius(radius), color(color), velocity(velocity)
 {
 }
 
-bool Ball::recalc()
+void Ball::recalc()
 {
 	center += velocity;
 	velocity.y -= 0.1;
@@ -43,7 +43,11 @@ bool Ball::recalc()
 	if (center.y + radius > 600)
 		velocity.y = -fabs(velocity.y * 0.8);
 
-	return fabs(velocity.y) > 0.002 || center.y - radius > 10 || fabs(velocity.x) > 0.2;
+	if (!(fabs(velocity.y) > 0.002 || center.y - radius > 10 || fabs(velocity.x) > 0.2))
+	{
+		EMIT(_delete);
+		EMIT(_remove);
+	}
 }
 
 void Ball::draw()
@@ -57,14 +61,14 @@ void Ball::draw()
 
 void createBall()
 {
-	layer->registerObject(new Ball(Coordinate2d(randomi(200,600), randomi(300,500)), randomi(5,15), Color3f(randomd(), randomd(), randomd()), Coordinate2d(randomsgn() * randomd() * 10, randomsgn() * randomd() * 10)));
+	layer->registerObject(new Ball(Coord2d(randomi(200,600), randomi(300,500)), randomi(5,15), Color3f(randomd(), randomd(), randomd()), Coord2d(randomsgn() * randomd() * 10, randomsgn() * randomd() * 10)));
 	StarTimer::registerTimer(500, createBall);
 }
 
 int main(int argc, char** argv)
 {
 	StarCore::init("Starlia test bench");
-	layer = new Star2dObjectLayer(Coordinate2d(800, 600));
+	layer = new Star2dObjectLayer(Coord2d(800, 600));
 	StarCore::registerLayerForeground(layer);
 	StarTimer::registerTimer(500, createBall);
 	StarCore::loop();

@@ -38,12 +38,12 @@ class StarLabel : public StarWidget
 
 	public:
 
-		StarLabel(string text, Coordinate2d topLeft, Coordinate2d botRight, double charHeight, Color3f, Justify justify = LEFT, void (*onClick)(StarWidget *, Coordinate2d) = NULL);
+		StarLabel(string text, Coord2d topLeft, Coord2d botRight, double charHeight, Color3f, Justify justify = LEFT, void (*onClick)(Coord2d) = NULL);
 
 		void chText(const string& newText);
 
 		void draw();
-		bool recalc();
+		void recalc();
 		void speakYourMind();
 };
 

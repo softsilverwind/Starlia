@@ -54,17 +54,17 @@ double randomdDown(double mul, double div)
 	return (mul * randomd() / div);
 }
 
-Coordinate3d randomCoord3d(int min, int max)
+Coord3d randomCoord3d(int min, int max)
 {
 	if (!isInit)
 		initialize();
 
 	const int range = max - min + 1;
 
-	return Coordinate3d(rand() % range + min, rand() % range + min, rand() % range + min);
+	return Coord3d(rand() % range + min, rand() % range + min, rand() % range + min);
 }
 
-double angleOf(Coordinate2d start, Coordinate2d end)
+double angleOf(Coord2d start, Coord2d end)
 {
         if (end.x == start.x)
                 if (end.y > start.y)
@@ -77,18 +77,18 @@ double angleOf(Coordinate2d start, Coordinate2d end)
                 return atan((end.y - start.y) / (end.x - start.x)) + M_PI;
 }
 
-double length(Coordinate2d start, Coordinate2d end)
+double length(Coord2d start, Coord2d end)
 {
 	return sqrt((end.x - start.x) * (end.x - start.x) + (end.y - start.y) * (end.y - start.y));
 }
 
-Coordinate2d polarToXY(double radius, double angle)
+Coord2d polarToXY(double radius, double angle)
 {
-	return Coordinate2d(radius*cos(angle), radius*sin(angle));
+	return Coord2d(radius*cos(angle), radius*sin(angle));
 }
 
-Coordinate2d polarToXY(Coordinate2dpolar coord)
+Coord2d polarToXY(Polar2d coord)
 {
-	return Coordinate2d(coord.r * cos(coord.a), coord.r * sin(coord.a));
+	return Coord2d(coord.r * cos(coord.a), coord.r * sin(coord.a));
 }
 }

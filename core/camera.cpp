@@ -21,8 +21,8 @@ void StarCamera::draw()
 	glTranslated(-position.x, -position.y, -position.z);
 }
 
-StarCamera::StarCamera(Coordinate3d position, Coordinate3d angle)
-	: Star3dObject(position, Coordinate3d(), angle)
+StarCamera::StarCamera(Coord3d position, Coord3d angle)
+	: Star3dObject(position, Coord3d(), angle)
 {
 }
 

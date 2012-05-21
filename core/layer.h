@@ -2,6 +2,7 @@
 #define __LAYER_H__
 
 #include <SDL/SDL.h>
+#include <functional>
 #include <list>
 #include <map>
 #include <vector>
@@ -17,40 +18,31 @@ namespace Starlia
 class StarLayer : public StarObject
 {
 	protected:
-		typedef struct EntryType_tag
-		{
-			StarObject *object;
-			bool invalid;
-			void (*onEnd)();
-			bool remove;
-			bool destroy;
-			EntryType_tag (StarObject *object, void (*onEnd)(), bool remove, bool destroy)
-				: object(object), invalid(false), onEnd(onEnd), remove(remove), destroy(destroy) {};
-		}
-		EntryType;
+		list<StarObject *> objectList;
 
-		list<EntryType> objectList;
-		map<SDLKey, void (*)()> keypresses;
-		map<SDLKey, void (*)()> keyreleases;
-
+		static void invalidate(StarObject *);
 		bool blockFallThrough;
+
+	private:
+		map<SDLKey, function<void (void)> > keypresses;
+		map<SDLKey, function<void (void)> > keyreleases;
 
 	public:
 		bool invalid;
 
 		StarLayer();
 		virtual ~StarLayer();
-		void clearLayer();
+		void demolishLayer();
 
 		void draw();
-		bool recalc();
+		void recalc();
 
 		bool keypress(SDLKey);
 		bool keyrelease(SDLKey);
-		void registerKeyPress(SDLKey, void (*)());
-		void registerKeyPress(char, void (*)());
-		void registerKeyRelease(SDLKey, void (*)());
-		void registerKeyRelease(char, void (*)());
+		void registerKeyPress(SDLKey, function<void (void)>);
+		void registerKeyPress(char, function<void (void)>);
+		void registerKeyRelease(SDLKey, function<void (void)>);
+		void registerKeyRelease(char, function<void (void)>);
 
 		void setBlockFallThrough(bool);
 };
@@ -58,33 +50,33 @@ class StarLayer : public StarObject
 class Star2dLayer : public StarLayer
 {
 	protected:
-		Coordinate2d size;
+		Coord2d size;
 
 	public:
 		void draw();
-		Star2dLayer(Coordinate2d size);
+		Star2dLayer(Coord2d size);
 };
 
 class Star2dObjectLayer : public Star2dLayer
 {
 	public:
-		Star2dObjectLayer(Coordinate2d size);
+		Star2dObjectLayer(Coord2d size);
 
-		void registerObject(StarObject *object, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
+		void registerObject(StarObject *object);
 		void unregisterObject(StarObject *object);
 };
 
 class StarWidgetLayer : public Star2dLayer
 {
 	public:
-		StarWidgetLayer(Coordinate2d size);
+		StarWidgetLayer(Coord2d size);
 
-		void registerObject(StarWidget *object, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
+		void registerObject(StarWidget *object);
 		void unregisterObject(StarWidget *object);
 
 		/* returns true if the click is handled by the layer, false if it should fall through */
-		bool click(Coordinate2d position);
-		bool mouseOver(Coordinate2d position);
+		bool click(Coord2d position);
+		bool mouseOver(Coord2d position);
 };
 
 class Star3dLayer : public StarLayer
@@ -99,12 +91,12 @@ class Star3dLayer : public StarLayer
 		~Star3dLayer();
 
 		void draw();
-		bool recalc();
+		void recalc();
 
-		void registerObject(StarObject *object, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
+		void registerObject(StarObject *object);
 		void unregisterObject(StarObject *object);
 
-		void registerObject(StarLight *light, void (*onEnd)() = NULL, bool remove = true, bool destroy = true);
+		void registerObject(StarLight *light);
 		void unregisterObject(StarLight *light);
 
 		void registerObject(StarCamera *camera, bool deletePrev = true);

@@ -4,7 +4,7 @@
 namespace Starlia
 {
 	
-StarLight::StarLight(Color3f specular, Color3f diffuse, Color3f ambient, Coordinate3d pos, Coordinate3d halfsize, Coordinate3d angle, Star3dModel *model)
+StarLight::StarLight(Color3f specular, Color3f diffuse, Color3f ambient, Coord3d pos, Coord3d halfsize, Coord3d angle, Star3dModel *model)
 	: Star3dObject(pos, halfsize, angle, model), specular(specular), diffuse(diffuse), ambient(ambient)
 {
 }

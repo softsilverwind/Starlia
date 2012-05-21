@@ -20,12 +20,12 @@ int randomsgn();
 int randomi(int min, int max);
 double randomdUp(double mul, double div);
 double randomdDown(double mul, double div);
-Coordinate3d randomCoord3d(int min, int max);
+Coord3d randomCoord3d(int min, int max);
 
-double angleOf(Coordinate2d start, Coordinate2d end);
-double length(Coordinate2d start, Coordinate2d end);
-Coordinate2d polarToXY(double radius, double angle);
-Coordinate2d polarToXY(Coordinate2dpolar coord);
+double angleOf(Coord2d start, Coord2d end);
+double length(Coord2d start, Coord2d end);
+Coord2d polarToXY(double radius, double angle);
+Coord2d polarToXY(Polar2d coord);
 
 }
 

@@ -20,7 +20,7 @@ list<Star2dObjectLayer *> StarCore::objectLayers;
 list<StarWidgetLayer *> StarCore::widgetLayers;
 Star3dLayer *StarCore::layer3d = NULL;
 unsigned int StarCore::last_recalc = 0;
-Coordinate2d StarCore::scale;
+Coord2d StarCore::scale;
 
 void StarCore::draw()
 {
@@ -93,12 +93,6 @@ void StarCore::recalc()
 	last_recalc = time_now;
 }
 
-inline void StarCore::display()
-{
-	StarCore::draw();
-	SDL_GL_SwapBuffers();
-}
-
 inline void StarCore::resize(int width, int height)
 {
 	scale.x = width;
@@ -106,14 +100,9 @@ inline void StarCore::resize(int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-inline void StarCore::idle()
-{
-	StarCore::recalc();
-}
-
 inline void StarCore::click(int x, int y)
 {
-	Coordinate2d pos;
+	Coord2d pos;
 	pos.x = x / scale.x;
 	pos.y = 1 - y / scale.y;
 
@@ -150,7 +139,7 @@ inline void StarCore::keyrelease(SDL_keysym c)
 
 inline void StarCore::mouseOver(int x, int y)
 {
-	Coordinate2d pos;
+	Coord2d pos;
 	pos.x = x / scale.x;
 	pos.y = 1 - y / scale.y;
 
@@ -189,8 +178,9 @@ void StarCore::loop()
 					break;
 			}
 		}
-		idle();
-		display();
+		StarCore::recalc();
+		StarCore::draw();
+		SDL_GL_SwapBuffers();
 		StarTimer::loopTimers(last_recalc);
 		SDL_Delay(10);
 	}
@@ -227,8 +217,6 @@ void StarCore::unregisterLayer(Star2dObjectLayer *layer)
 			(*it)->invalid = true;
 			return;
 		}
-
-	cerr << "Unregistering invalid layer: " << layer->tag << endl;
 }
 
 void StarCore::registerLayerForeground(StarWidgetLayer *layer)
@@ -249,8 +237,6 @@ void StarCore::unregisterLayer(StarWidgetLayer *layer)
 			(*it)->invalid = true;
 			return;
 		}
-
-	cerr << "Unregistering invalid layer: " << layer->tag << endl;
 }
 
 void StarCore::registerLayer(Star3dLayer *layer)

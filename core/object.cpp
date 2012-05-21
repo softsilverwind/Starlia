@@ -1,6 +1,7 @@
 #include <iostream>
 #include <GL/gl.h>
 #include <string>
+#include <vector>
 #include "starMath.h"
 #include "object.h"
 #include "structs.h"
@@ -10,18 +11,34 @@ using namespace std;
 namespace Starlia
 {
 
+vector<string> StarObject::emittedSignals;
+
+StarObject::StarObject()
+	: invalid(false)
+{
+}
+
 void StarObject::draw()
 {
 	return;
 }
 
-bool StarObject::recalc()
+void StarObject::recalc()
 {
-	return true;
 }
 
 StarObject::~StarObject()
 {
+}
+
+void StarObject::connect(string str, function<void (void)> fun)
+{
+	connections[str] = fun;
+}
+
+void StarObject::emit(string str)
+{
+	emittedSignals.push_back(str);
 }
 
 void Star2dObject::draw()
@@ -35,7 +52,7 @@ void Star2dObject::draw()
 	model->draw();
 }
 
-bool Star2dObject::recalc()
+void Star2dObject::recalc()
 {
 	position += velocity;
 	angle += angvelocity;
@@ -44,11 +61,9 @@ bool Star2dObject::recalc()
 		angle += 360;
 	else if (angle >= 360)
 		angle -= 360;
-
-	return true;
 }
 
-Star2dObject::Star2dObject(Coordinate2d position, Coordinate2d halfsize, double angle, Star2dModel *model)
+Star2dObject::Star2dObject(Coord2d position, Coord2d halfsize, double angle, Star2dModel *model)
 	: position(position), velocity(0,0), halfsize(halfsize), angle(angle), angvelocity(0), model(model)
 {	
 }
@@ -59,7 +74,7 @@ Star2dObject::~Star2dObject()
 		delete model;
 }
 
-void Star2dObject::setVelocity(Coordinate2d vel)
+void Star2dObject::setVelocity(Coord2d vel)
 {
 	velocity = vel;
 }
@@ -69,7 +84,7 @@ void Star2dObject::setAngVelocity(double angvel)
 	angvelocity = angvel;
 }
 
-StarWidget::StarWidget(Coordinate2d topLeft, Coordinate2d botRight, void (*onClick)(StarWidget *, Coordinate2d), void (*onMouseOver)(StarWidget *, Coordinate2d))
+StarWidget::StarWidget(Coord2d topLeft, Coord2d botRight, function<void (Coord2d)> onClick, function<void (Coord2d)> onMouseOver)
 	: topLeft(topLeft), botRight(botRight), onClick(onClick), onMouseOver(onMouseOver)
 {
 }
@@ -79,27 +94,26 @@ void StarWidget::draw()
 	return;
 }
 
-bool StarWidget::recalc()
+void StarWidget::recalc()
 {
-	return true;
 }
 
-bool StarWidget::click(Coordinate2d pos)
+bool StarWidget::click(Coord2d pos)
 {
 	if (onClick)
 	{
-		onClick(this, pos);
+		onClick(pos);
 		return true;
 	}
 	else
 		return false;
 }
 
-bool StarWidget::mouseOver(Coordinate2d pos)
+bool StarWidget::mouseOver(Coord2d pos)
 {
 	if (onMouseOver)
 	{
-		onMouseOver(this, pos);
+		onMouseOver(pos);
 		return true;
 	}
 	else
@@ -119,7 +133,7 @@ void Star3dObject::draw()
 	glBegin(GL_LINES);
 
 	glColor3f(1,0,0);
-	Coordinate3d lol = this->getNormalX() * -10;
+	Coord3d lol = this->getNormalX() * -10;
 	glVertex3d(lol.x, lol.y, lol.z);
 	lol = this->getNormalX() * 10;
 	glVertex3d(lol.x, lol.y, lol.z);
@@ -148,7 +162,7 @@ void Star3dObject::draw()
 	model->draw();
 }
 
-bool Star3dObject::recalc()
+void Star3dObject::recalc()
 {
 	angle += angvelocity;
 
@@ -171,11 +185,9 @@ bool Star3dObject::recalc()
 		+ getNormalY() * thrust.y + getNormalZ() * thrust.z;
 
 	position += actualVelocity;
-
-	return true;
 }
 
-Star3dObject::Star3dObject(Coordinate3d position, Coordinate3d halfsize, Coordinate3d angle, Star3dModel *model)
+Star3dObject::Star3dObject(Coord3d position, Coord3d halfsize, Coord3d angle, Star3dModel *model)
 	: position(position), halfsize(halfsize), angle(angle), velocity(0,0,0), angvelocity(0,0,0), thrust(0,0,0), actualVelocity(0,0,0), model(model)
 {	
 }
@@ -186,43 +198,43 @@ Star3dObject::~Star3dObject()
 		delete model;
 }
 
-void Star3dObject::setVelocity(Coordinate3d vel)
+void Star3dObject::setVelocity(Coord3d vel)
 {
 	velocity = vel;
 }
 
-void Star3dObject::setAngVelocity(Coordinate3d angvel)
+void Star3dObject::setAngVelocity(Coord3d angvel)
 {
 	angvelocity = angvel;
 }
 
-void Star3dObject::setThrust(Coordinate3d thr)
+void Star3dObject::setThrust(Coord3d thr)
 {
 	thrust = thr;
 }
 
-Coordinate3d Star3dObject::getNormalX()
+Coord3d Star3dObject::getNormalX()
 {
-	Coordinate3d c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
-	Coordinate3d s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
+	Coord3d c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
+	Coord3d s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
 
-	return Coordinate3d(c.y*c.z - s.x*s.y*s.z, c.y*s.z + c.z*s.x*s.y, -c.x*s.y);
+	return Coord3d(c.y*c.z - s.x*s.y*s.z, c.y*s.z + c.z*s.x*s.y, -c.x*s.y);
 }
 
-Coordinate3d Star3dObject::getNormalY()
+Coord3d Star3dObject::getNormalY()
 {
-	Coordinate3d c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
-	Coordinate3d s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
+	Coord3d c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
+	Coord3d s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
 	
-	return Coordinate3d(-c.x*s.z, c.x*c.z, s.x);
+	return Coord3d(-c.x*s.z, c.x*c.z, s.x);
 }
 
-Coordinate3d Star3dObject::getNormalZ()
+Coord3d Star3dObject::getNormalZ()
 {
-	Coordinate3d c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
-	Coordinate3d s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
+	Coord3d c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
+	Coord3d s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
 
-	return Coordinate3d(c.z*s.y + c.y*s.x*s.z, s.y*s.z - c.y*c.z*s.x, c.x*c.y);
+	return Coord3d(c.z*s.y + c.y*s.x*s.z, s.y*s.z - c.y*c.z*s.x, c.x*c.y);
 }
 
 }

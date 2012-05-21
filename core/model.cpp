@@ -27,9 +27,9 @@ void Star3dModel::draw()
 
 StarObjModel::StarObjModel(string filename, string texfile)
 {
-	vector<Coordinate3d> vertex;
-	vector<Coordinate3d> normal;
-	vector<Coordinate2d> texture;
+	vector<Coord3d> vertex;
+	vector<Coord3d> normal;
+	vector<Coord2d> texture;
 	string type;
 
 	ifstream fin(filename.c_str());
@@ -37,19 +37,19 @@ StarObjModel::StarObjModel(string filename, string texfile)
 	{
 		if (!type.compare("v"))
 		{
-			Coordinate3d v;
+			Coord3d v;
 			fin >> v;
 			vertex.push_back(v);
 		}
 		else if (!type.compare("vn"))
 		{
-			Coordinate3d v;
+			Coord3d v;
 			fin >> v;
 			normal.push_back(v);
 		}
 		else if (!type.compare("vt"))
 		{
-			Coordinate2d v;
+			Coord2d v;
 			fin >> v;
 			texture.push_back(v);
 		}

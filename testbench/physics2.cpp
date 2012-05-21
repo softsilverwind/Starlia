@@ -12,16 +12,16 @@ class Ball : public StarObject
 	private:
 		static int id_pool;
 		int id;
-		Coordinate2d center;
+		Coord2d center;
 		double radius;
 		Color3f color;
-		Coordinate2d velocity;
+		Coord2d velocity;
 
 	public:
-		Ball(Coordinate2d center, double radius, Color3f color, Coordinate2d velocity);
-		bool recalc();
+		Ball(Coord2d center, double radius, Color3f color, Coord2d velocity);
+		void recalc();
 		void draw();
-		bool collides(Coordinate2d cnt2, double rad2);
+		bool collides(Coord2d cnt2, double rad2);
 		list<Ball *>::iterator itpos;
 };
 
@@ -29,18 +29,18 @@ int Ball::id_pool = 0;
 
 list<Ball *> balls;
 
-Ball::Ball(Coordinate2d center, double radius, Color3f color, Coordinate2d velocity)
+Ball::Ball(Coord2d center, double radius, Color3f color, Coord2d velocity)
 	: center(center), radius(radius), color(color), velocity(velocity)
 {
 	id = id_pool++;
 }
 
-bool Ball::collides(Coordinate2d cnt2, double rad2)
+bool Ball::collides(Coord2d cnt2, double rad2)
 {
 	return (fabs((center - cnt2).x) + fabs((center - cnt2).y) < radius + rad2);
 }
 
-bool Ball::recalc()
+void Ball::recalc()
 {
 	center += velocity;
 	velocity.y -= 0.1;
@@ -93,9 +93,9 @@ bool Ball::recalc()
 	if (!(fabs(velocity.y) > 0.002 || center.y - radius > 10 || fabs(velocity.x) > 0.2))
 	{
 		balls.erase(itpos);
-		return false;
+		EMIT(_remove);
+		EMIT(_delete);
 	}
-	return true;
 }
 
 void Ball::draw()
@@ -109,7 +109,7 @@ void Ball::draw()
 
 void createBall()
 {
-	balls.push_front(new Ball(Coordinate2d(randomi(200,600), randomi(300,500)), randomi(5,15), Color3f(randomd(), randomd(), randomd()), Coordinate2d(randomsgn() * randomd() * 10, randomsgn() * randomd() * 10)));
+	balls.push_front(new Ball(Coord2d(randomi(200,600), randomi(300,500)), randomi(5,15), Color3f(randomd(), randomd(), randomd()), Coord2d(randomsgn() * randomd() * 10, randomsgn() * randomd() * 10)));
 	balls.front()->itpos = balls.begin();
 	layer->registerObject(balls.front());
 	StarTimer::registerTimer(1000, createBall);
@@ -118,7 +118,7 @@ void createBall()
 int main(int argc, char** argv)
 {
 	StarCore::init("Starlia test bench");
-	layer = new Star2dObjectLayer(Coordinate2d(800, 600));
+	layer = new Star2dObjectLayer(Coord2d(800, 600));
 	StarCore::registerLayerForeground(layer);
 	StarTimer::registerTimer(500, createBall);
 	StarCore::loop();

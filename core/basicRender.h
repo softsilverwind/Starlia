@@ -15,7 +15,7 @@ class Circle : public Star2dModel
 {
 	private:
 		static bool initialized;
-		static Coordinate2d vertex[POINTS];
+		static Coord2d vertex[POINTS];
 		Color3f color;
 		static void prepare();
 
@@ -30,7 +30,7 @@ class Circle : public Star2dModel
 class Line
 {
 	public:
-		static void draw(Coordinate2d start, Coordinate2d end, Color3f color, unsigned int thickness = 1);
+		static void draw(Coord2d start, Coord2d end, Color3f color, unsigned int thickness = 1);
 };
 
 class VectorLetter
@@ -38,7 +38,7 @@ class VectorLetter
 	private:
 
 		static bool initialized;
-		static vector<Coordinate2d> character[128];
+		static vector<Coord2d> character[128];
 
 
 	public:

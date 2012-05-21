@@ -3,6 +3,7 @@
 
 #include <queue>
 #include <utility>
+#include <functional>
 
 using namespace std;
 
@@ -14,18 +15,18 @@ class StarTimer
 	private:
 		typedef struct
 		{
-			bool operator()(pair<unsigned int, void (*)()>& l, pair<unsigned int, void (*)()>& r) 
+			bool operator()(pair<unsigned int, function<void (void)> >& l, pair<unsigned int, function<void (void)> >& r) 
 			{
-				return l > r;
+				return l.first > r.first;
 			}
 		}
 		compare;
 
-		static priority_queue<pair<unsigned int, void (*)()>, vector<pair<unsigned int, void (*)()> >, compare> timers;
+		static priority_queue<pair<unsigned int, function<void (void)> >, vector<pair<unsigned int, function<void (void)> > >, compare> timers;
 		static void loopTimers(unsigned int last_recalc);
 
 	public:
-		static void registerTimer(unsigned short msecs, void (*fun)());
+		static void registerTimer(unsigned short msecs, function<void (void)> fun);
 
 	friend class StarCore;
 };

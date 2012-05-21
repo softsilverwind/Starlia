@@ -33,9 +33,9 @@ class Star3dModel : public StarModel
 class StarObjModel : public Star3dModel
 {
 	private:
-		vector<Coordinate3d> vertices;
-		vector<Coordinate3d> normals;
-		vector<Coordinate2d> textures;
+		vector<Coord3d> vertices;
+		vector<Coord3d> normals;
+		vector<Coord2d> textures;
 
 		unsigned int tex;
 

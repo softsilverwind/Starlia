@@ -12,7 +12,7 @@ class StarCamera : public Star3dObject
 		void draw();
 
 	public:
-		StarCamera(Coordinate3d position, Coordinate3d angle);
+		StarCamera(Coord3d position, Coord3d angle);
 
 	friend class Star3dLayer;
 };

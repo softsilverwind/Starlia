@@ -18,22 +18,20 @@ class StarCore
 		static list<StarWidgetLayer *> widgetLayers;
 		static Star3dLayer *layer3d;
 		static unsigned int last_recalc;
-		static Coordinate2d scale;
+		static Coord2d scale;
 
 
 		static void draw();
 		static void recalc();
 		
-		static void display();
 		static void resize(int width, int height);
-		static void idle();
 		static void click(int x, int y);
 		static void mouseOver(int x, int y);
 		static void keypress(SDL_keysym);
 		static void keyrelease(SDL_keysym);
 
 	public:
-		static const Coordinate2d& getScale() { return scale; };
+		static const Coord2d& getScale() { return scale; };
 		static void init(string title, int width = 800, int height = 600);
 		static void loop();
 

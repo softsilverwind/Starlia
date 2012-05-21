@@ -7,8 +7,8 @@ StarCamera *camera;
 
 void keyboard(int key)
 {
-	Coordinate3d angvel(0,0,0);
-	Coordinate3d vel(0,0,0);
+	Coord3d angvel(0,0,0);
+	Coord3d vel(0,0,0);
 	switch (key)
 	{
 		case 'w':
@@ -44,8 +44,8 @@ void keyboard(int key)
 
 void keyboardup(int key)
 {
-	camera->setAngVelocity(Coordinate3d(0,0,0));
-	camera->setVelocity(Coordinate3d(0,0,0));
+	camera->setAngVelocity(Coord3d(0,0,0));
+	camera->setVelocity(Coord3d(0,0,0));
 }
 
 int main(int argc, char** argv)
@@ -56,11 +56,11 @@ int main(int argc, char** argv)
 
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, light_model);
 
-	camera = new StarCamera(Coordinate3d(0, -5, 0), Coordinate3d(0, 0, 0));
+	camera = new StarCamera(Coord3d(0, -5, 0), Coord3d(0, 0, 0));
 	Star3dLayer *layer = new Star3dLayer(camera);
 
-	layer->registerObject(new Star3dObject(Coordinate3d(0,0,0), Coordinate3d(1,1,1), Coordinate3d(0,0,0), new StarObjModel("fruit.obj", "fruit_Sphere.bmp")));
-	layer->registerObject(new StarLight(Color3f(0.7,0.7,0.7), Color3f(0.8,0.8,0.8), Color3f(0.4,0.4,0.4), Coordinate3d(5,-2,-2), Coordinate3d(0,0,0), Coordinate3d(0,0,0)));
+	layer->registerObject(new Star3dObject(Coord3d(0,0,0), Coord3d(1,1,1), Coord3d(0,0,0), new StarObjModel("fruit.obj", "fruit_Sphere.bmp")));
+	layer->registerObject(new StarLight(Color3f(0.7,0.7,0.7), Color3f(0.8,0.8,0.8), Color3f(0.4,0.4,0.4), Coord3d(5,-2,-2), Coord3d(0,0,0), Coord3d(0,0,0)));
 	
 	layer->registerKeyPress('w', [](){ keyboard('w'); });
 	layer->registerKeyPress('a', [](){ keyboard('a'); });

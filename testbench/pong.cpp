@@ -10,16 +10,16 @@ Star2dObjectLayer *layer;
 class Racket : public StarObject
 {
 	private:
-		Coordinate2d position;
+		Coord2d position;
 		double halfheight;
 		double halfwidth;
-		Coordinate2d velocity;
+		Coord2d velocity;
 		Color3f color;
 
 	public:
-		Racket(Coordinate2d position, double halfheight, double halfwidth, Color3f color);
+		Racket(Coord2d position, double halfheight, double halfwidth, Color3f color);
 
-		bool recalc();
+		void recalc();
 		void draw();
 
 		double getTop() { return position.y + halfheight; }
@@ -33,17 +33,16 @@ class Racket : public StarObject
 		void  stopLeft() { if (velocity.x < 0) velocity.x = 0; }
 };
 
-Racket::Racket(Coordinate2d position, double halfheight, double halfwidth, Color3f color)
-	: position(position), halfheight(halfheight), halfwidth(halfwidth), velocity(Coordinate2d(0,0)), color(color)
+Racket::Racket(Coord2d position, double halfheight, double halfwidth, Color3f color)
+	: position(position), halfheight(halfheight), halfwidth(halfwidth), velocity(Coord2d(0,0)), color(color)
 {
 }
 
-bool Racket::recalc()
+void Racket::recalc()
 {
 	position += velocity;
 	if (position.x - halfwidth < 0 || position.x + halfwidth > 800)
 		position -= velocity;
-	return true;
 }
 
 void Racket::draw()
@@ -57,25 +56,25 @@ Racket *player[2];
 class Ball : public StarObject
 {
 	private:
-		Coordinate2d position;
+		Coord2d position;
 		double radius;
-		Coordinate2d velocity;
+		Coord2d velocity;
 		Color3f color;
 
 		void changeDirection(double x, bool up);
 
 	public:
-		Ball(Coordinate2d position, double radius, Coordinate2d velocity, Color3f color);
-		bool recalc();
+		Ball(Coord2d position, double radius, Coord2d velocity, Color3f color);
+		void recalc();
 		void draw();
 };
 
-Ball::Ball(Coordinate2d position, double radius, Coordinate2d velocity, Color3f color)
+Ball::Ball(Coord2d position, double radius, Coord2d velocity, Color3f color)
 	: position(position), radius(radius), velocity(velocity), color(color)
 {
 }
 
-bool Ball::recalc()
+void Ball::recalc()
 {
 	position += velocity;
 	if (position.y - radius < player[0]->getTop() && position.y + radius > player[0]->getBottom())
@@ -94,9 +93,11 @@ bool Ball::recalc()
 		velocity.x = -velocity.x;
 
 	if (position.y > 600 || position.y < 0)
-		return false;
-	else
-		return true;
+	{
+		EMIT(_delete);
+		EMIT(_remove);
+		EMIT(restart);
+	}
 }
 
 void Ball::draw()
@@ -127,16 +128,18 @@ void restart()
 
 void start()
 {
-	layer->registerObject(new Ball(Coordinate2d(400,300), 10, Coordinate2d(0.0, 3), Color3f(0,0,1)), restart);
+	Ball *ball = new Ball(Coord2d(400,300), 10, Coord2d(0.0, 3), Color3f(0,0,1));
+	ball->CONNECT(restart, restart);
+	layer->registerObject(ball);
 }
 
 int main(int argc, char** argv)
 {
 	StarCore::init("Starlia Pong - keys are \"A,D\" and \"J,L\"");
-	layer = new Star2dObjectLayer(Coordinate2d(800, 600));
+	layer = new Star2dObjectLayer(Coord2d(800, 600));
 
-	player[0] = new Racket(Coordinate2d(400,50), 10, 50, Color3f(1,0,0));
-	player[1] = new Racket(Coordinate2d(400,550), 10, 50, Color3f(0,1,0));
+	player[0] = new Racket(Coord2d(400,50), 10, 50, Color3f(1,0,0));
+	player[1] = new Racket(Coord2d(400,550), 10, 50, Color3f(0,1,0));
 	StarCore::registerLayerForeground(layer);
 
 	layer->registerObject(player[0]);
