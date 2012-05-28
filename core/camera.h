@@ -6,7 +6,7 @@
 namespace Starlia
 {
 
-class StarCamera : public Star3dObject
+class StarCamera : public Star3dDynObject
 {
 	protected:
 		void draw();

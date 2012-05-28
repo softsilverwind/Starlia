@@ -3,7 +3,7 @@
 
 using namespace Starlia;
 
-Star3dObject *myObj;
+Star3dDynObject *myObj;
 
 void keyboard(int key)
 {
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
 
 	Star3dLayer *layer = new Star3dLayer(new StarCamera(Coord3d(0, -5, 1), Coord3d(0, 0, 0)));
 
-	layer->registerObject(myObj = new Star3dObject(Coord3d(0,0,0), Coord3d(1,1,1), Coord3d(0,0,0), new StarObjModel("fruit.obj", "fruit_Sphere.bmp")));
+	layer->registerObject(myObj = new Star3dDynObject(Coord3d(0,0,0), Coord3d(1,1,1), Coord3d(0,0,0), new StarObjModel("fruit.obj", "fruit_Sphere.bmp")));
 	layer->registerObject(new StarLight(Color3f(0.7,0.7,0.7), Color3f(0.8,0.8,0.8), Color3f(0.4,0.4,0.4), Coord3d(5,-2,-2), Coord3d(0,0,0), Coord3d(0,0,0)));
 	
 	layer->registerKeyPress('w', [](){ keyboard('w'); });

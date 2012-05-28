@@ -22,7 +22,7 @@ void StarCamera::draw()
 }
 
 StarCamera::StarCamera(Coord3d position, Coord3d angle)
-	: Star3dObject(position, Coord3d(), angle)
+	: Star3dDynObject(position, Coord3d(), angle)
 {
 }
 

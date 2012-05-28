@@ -5,7 +5,7 @@ using namespace Starlia;
 
 Star2dObjectLayer *layer;
 
-class Particle : public Star2dObject
+class Particle : public Star2dDynObject
 {
 	private:
 		int life;
@@ -22,7 +22,7 @@ class Particle : public Star2dObject
 };
 
 Particle::Particle(Coord2d position, Coord2d velocity, int life)
-	: Star2dObject(position, Coord2d(2,2), 0, new Circle(Color3f(0.75,0.25,0))), life(life)
+	: Star2dDynObject(position, Coord2d(2,2), 0, new Circle(Color3f(0.75,0.25,0))), life(life)
 {
 	setVelocity(velocity);
 }
@@ -34,14 +34,14 @@ void Particle::yield()
 
 void Particle::recalc()
 {
-	Star2dObject::recalc();
+	Star2dDynObject::recalc();
 	--life;
 }
 
 void Particle::draw()
 {
 	glPushMatrix();
-	Star2dObject::draw();
+	Star2dDynObject::draw();
 	glPopMatrix();
 }
 

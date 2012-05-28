@@ -55,23 +55,17 @@ void Star2dObject::draw()
 
 	glTranslated(position.x, position.y, 0);
 	glRotated(angle,0,0,1);
-	glScaled(halfsize.x, halfsize.y, 1);
+	glScaled(radius.x, radius.y, 1);
 	model->draw();
 }
 
 void Star2dObject::recalc()
 {
-	position += velocity;
-	angle += angvelocity;
-
-	if (angle < 0)
-		angle += 360;
-	else if (angle >= 360)
-		angle -= 360;
+	return;
 }
 
-Star2dObject::Star2dObject(Coord2d position, Coord2d halfsize, double angle, Star2dModel *model)
-	: position(position), velocity(0,0), halfsize(halfsize), angle(angle), angvelocity(0), model(model)
+Star2dObject::Star2dObject(Coord2d position, Coord2d radius, double angle, Star2dModel *model)
+	: position(position), radius(radius), angle(angle), model(model)
 {	
 }
 
@@ -81,15 +75,29 @@ Star2dObject::~Star2dObject()
 		delete model;
 }
 
-void Star2dObject::setVelocity(Coord2d vel)
+Star2dDynObject::Star2dDynObject(Coord2d position, Coord2d radius, double angle, Star2dModel *model)
+	: Star2dObject(position, radius, angle, model), velocity(0,0), angvelocity(0)
 {
-	velocity = vel;
 }
 
-void Star2dObject::setAngVelocity(double angvel)
+void Star2dDynObject::draw()
 {
-	angvelocity = angvel;
+	Star2dObject::draw();
 }
+
+void Star2dDynObject::recalc()
+{
+	position += velocity;
+	angle += angvelocity;
+
+	if (angle < 0)
+		angle += 360;
+	else if (angle >= 360)
+		angle -= 360;
+
+	Star2dObject::recalc();
+}
+
 
 StarWidget::StarWidget(Coord2d topLeft, Coord2d botRight, function<void (Coord2d)> onClick, function<void (Coord2d)> onMouseOver)
 	: topLeft(topLeft), botRight(botRight), onClick(onClick), onMouseOver(onMouseOver)
@@ -165,11 +173,61 @@ void Star3dObject::draw()
 	glRotated(angle.z,0,0,1);
 	glRotated(angle.x,1,0,0);
 	glRotated(angle.y,0,1,0);
-	glScaled(halfsize.x, halfsize.y, halfsize.z);
+	glScaled(radius.x, radius.y, radius.z);
 	model->draw();
 }
 
 void Star3dObject::recalc()
+{
+	return;
+}
+
+Star3dObject::Star3dObject(Coord3d position, Coord3d radius, Coord3d angle, Star3dModel *model)
+	: position(position), radius(radius), angle(angle), model(model)
+{	
+}
+
+Star3dObject::~Star3dObject()
+{
+	if (model)
+		delete model;
+}
+
+Coord3d Star3dObject::getNormalX() const
+{
+	Coord3d c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
+	Coord3d s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
+
+	return Coord3d(c.y*c.z - s.x*s.y*s.z, c.y*s.z + c.z*s.x*s.y, -c.x*s.y);
+}
+
+Coord3d Star3dObject::getNormalY() const
+{
+	Coord3d c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
+	Coord3d s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
+	
+	return Coord3d(-c.x*s.z, c.x*c.z, s.x);
+}
+
+Coord3d Star3dObject::getNormalZ() const
+{
+	Coord3d c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
+	Coord3d s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
+
+	return Coord3d(c.z*s.y + c.y*s.x*s.z, s.y*s.z - c.y*c.z*s.x, c.x*c.y);
+}
+
+Star3dDynObject::Star3dDynObject(Coord3d position, Coord3d radius, Coord3d angle, Star3dModel *model)
+	: Star3dObject(position, radius, angle, model), velocity(0,0,0), angvelocity(0,0,0), thrust(0,0,0), actualVelocity(0,0,0)
+{
+}
+
+void Star3dDynObject::draw()
+{
+	Star3dObject::draw();
+}
+
+void Star3dDynObject::recalc()
 {
 	angle += angvelocity;
 
@@ -192,56 +250,10 @@ void Star3dObject::recalc()
 		+ getNormalY() * thrust.y + getNormalZ() * thrust.z;
 
 	position += actualVelocity;
+
+	Star3dObject::recalc();
 }
 
-Star3dObject::Star3dObject(Coord3d position, Coord3d halfsize, Coord3d angle, Star3dModel *model)
-	: position(position), halfsize(halfsize), angle(angle), velocity(0,0,0), angvelocity(0,0,0), thrust(0,0,0), actualVelocity(0,0,0), model(model)
-{	
-}
 
-Star3dObject::~Star3dObject()
-{
-	if (model)
-		delete model;
-}
-
-void Star3dObject::setVelocity(Coord3d vel)
-{
-	velocity = vel;
-}
-
-void Star3dObject::setAngVelocity(Coord3d angvel)
-{
-	angvelocity = angvel;
-}
-
-void Star3dObject::setThrust(Coord3d thr)
-{
-	thrust = thr;
-}
-
-Coord3d Star3dObject::getNormalX()
-{
-	Coord3d c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
-	Coord3d s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
-
-	return Coord3d(c.y*c.z - s.x*s.y*s.z, c.y*s.z + c.z*s.x*s.y, -c.x*s.y);
-}
-
-Coord3d Star3dObject::getNormalY()
-{
-	Coord3d c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
-	Coord3d s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
-	
-	return Coord3d(-c.x*s.z, c.x*c.z, s.x);
-}
-
-Coord3d Star3dObject::getNormalZ()
-{
-	Coord3d c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
-	Coord3d s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
-
-	return Coord3d(c.z*s.y + c.y*s.x*s.z, s.y*s.z - c.y*c.z*s.x, c.x*c.y);
-}
 
 }
