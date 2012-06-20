@@ -94,7 +94,6 @@ void StarLabel::draw()
 	}
 
 	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
 }
 
 void StarLabel::recalc()
