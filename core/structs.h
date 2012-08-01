@@ -7,99 +7,74 @@ using namespace std;
 namespace Starlia
 {
 
-typedef struct Coord2i
+template <typename T>
+struct Coord2
 {
-	int x,y;
-	Coord2i() {};
-	Coord2i(int x, int y) : x(x), y(y) {};
+	T x,y;
+	Coord2<T>() {};
+	Coord2<T>(T x, T y) : x(x), y(y) {};
 
-	Coord2i operator+(const Coord2i& second) { return Coord2i(x + second.x, y + second.y); }
-	Coord2i operator-(const Coord2i& second) { return Coord2i(x - second.x, y - second.y); }
-	Coord2i operator/(int second) { return Coord2i(x / second, y / second); }
-	Coord2i operator*(int second) { return Coord2i(x * second, y * second); }
-	Coord2i operator/(const Coord2i& second) { return Coord2i(x / second.x, y / second.y); }
+	Coord2<T> operator+(const Coord2<T>& second) { return Coord2<T>(x + second.x, y + second.y); }
+	Coord2<T> operator-(const Coord2<T>& second) { return Coord2<T>(x - second.x, y - second.y); }
+	Coord2<T> operator/(T second) { return Coord2<T>(x / second, y / second); }
+	Coord2<T> operator*(T second) { return Coord2<T>(x * second, y * second); }
+	Coord2<T> operator/(const Coord2<T>& second) { return Coord2<T>(x / second.x, y / second.y); }
 
-	Coord2i operator+=(Coord2i second) { return Coord2i(x += second.x, y += second.y); }
-	Coord2i operator-=(Coord2i second) { return Coord2i(x -= second.x, y -= second.y); }
-	Coord2i operator*=(Coord2i second) { return Coord2i(x *= second.x, y *= second.y); }
-}
-Coord2i;
+	Coord2<T> operator+=(Coord2<T> second) { return Coord2<T>(x += second.x, y += second.y); }
+	Coord2<T> operator-=(Coord2<T> second) { return Coord2<T>(x -= second.x, y -= second.y); }
+	Coord2<T> operator*=(Coord2<T> second) { return Coord2<T>(x *= second.x, y *= second.y); }
+	Coord2<T> operator*=(T second) { return Coord2<T>(x *= second, y *= second); }
+};
 
-inline istream& operator >> (istream& is, Coord2i& coord)
-{
-	return is >> coord.x >> coord.y;
-}
-
-inline ostream& operator << (ostream& os, const Coord2i& coord)
-{
-	return os << "(" << coord.x << ", " << coord.y << ")";
-}
-
-typedef struct Coord2d
-{
-	double x,y;
-	Coord2d() {};
-	Coord2d(double x, double y) : x(x), y(y) {};
-
-	Coord2d operator+(const Coord2d& second) { return Coord2d(x + second.x, y + second.y); }
-	Coord2d operator-(const Coord2d& second) { return Coord2d(x - second.x, y - second.y); }
-	Coord2d operator/(int second) { return Coord2d(x / second, y / second); }
-	Coord2d operator*(int second) { return Coord2d(x * second, y * second); }
-	Coord2d operator/(const Coord2d& second) { return Coord2d(x / second.x, y / second.y); }
-
-	Coord2d operator+=(Coord2d second) { return Coord2d(x += second.x, y += second.y); }
-	Coord2d operator-=(Coord2d second) { return Coord2d(x -= second.x, y -= second.y); }
-	Coord2d operator*=(Coord2d second) { return Coord2d(x *= second.x, y *= second.y); }
-	Coord2d operator*=(int second) { return Coord2d(x *= second, y *= second); }
-}
-Coord2d;
-
-inline istream& operator >> (istream& is, Coord2d& coord)
+template <typename T>
+inline istream& operator >> (istream& is, Coord2<T>& coord)
 {
 	return is >> coord.x >> coord.y;
 }
 
-inline ostream& operator << (ostream& os, const Coord2d& coord)
+template <typename T>
+inline ostream& operator << (ostream& os, const Coord2<T>& coord)
 {
 	return os << "(" << coord.x << ", " << coord.y << ")";
 }
 
-typedef struct Polar2d
+template <typename T>
+struct Coord3
 {
-	double r,a;
-	Polar2d() {};
-	Polar2d(double r, double a) : r(r), a(a) {};
-}
-Polar2d;
+	T x,y,z;
+	Coord3<T>() {};
+	Coord3<T>(T x, T y, T z) : x(x), y(y), z(z) {};
 
-typedef struct Coord3d
-{
-	double x,y,z;
-	Coord3d() {};
-	Coord3d(double x, double y, double z) : x(x), y(y), z(z) {};
+	Coord3<T> operator+(const Coord3<T>& second) { return Coord3<T>(x + second.x, y + second.y, z + second.z); }
+	Coord3<T> operator-(const Coord3<T>& second) { return Coord3<T>(x - second.x, y - second.y, z - second.z); }
+	Coord3<T> operator/(T second) { return Coord3<T>(x / second, y / second, z / second); }
+	Coord3<T> operator*(T second) { return Coord3<T>(x * second, y * second, z * second); }
+	Coord3<T> operator/(const Coord3<T>& second) { return Coord3<T>(x / second.x, y / second.y, z / second.z); }
 
-	Coord3d operator+(const Coord3d& second) { return Coord3d(x + second.x, y + second.y, z + second.z); }
-	Coord3d operator-(const Coord3d& second) { return Coord3d(x - second.x, y - second.y, z - second.z); }
-	Coord3d operator/(double second) { return Coord3d(x / second, y / second, z / second); }
-	Coord3d operator*(double second) { return Coord3d(x * second, y * second, z * second); }
-	Coord3d operator/(const Coord3d& second) { return Coord3d(x / second.x, y / second.y, z / second.z); }
+	Coord3<T> operator+=(Coord3<T> second) { return Coord3<T>(x += second.x, y += second.y, z += second.z); }
+	Coord3<T> operator-=(Coord3<T> second) { return Coord3<T>(x -= second.x, y -= second.y, z -= second.z); }
+	Coord3<T> operator*=(Coord3<T> second) { return Coord3<T>(x *= second.x, y *= second.y, z *= second.z); }
+	Coord3<T> operator*=(T second) { return Coord3<T>(x *= second, y *= second, z *= second); }
+};
 
-	Coord3d operator+=(Coord3d second) { return Coord3d(x += second.x, y += second.y, z += second.z); }
-	Coord3d operator-=(Coord3d second) { return Coord3d(x -= second.x, y -= second.y, z -= second.z); }
-	Coord3d operator*=(Coord3d second) { return Coord3d(x *= second.x, y *= second.y, z *= second.z); }
-	Coord3d operator*=(double second) { return Coord3d(x *= second, y *= second, z *= second); }
-}
-Coord3d;
-
-inline istream& operator >> (istream& is, Coord3d& coord)
+template <typename T>
+inline istream& operator >> (istream& is, Coord3<T>& coord)
 {
 	return is >> coord.x >> coord.y >> coord.z;
 }
 
-inline ostream& operator << (ostream& os, const Coord3d& coord)
+template <typename T>
+inline ostream& operator << (ostream& os, const Coord3<T>& coord)
 {
 	return os << "(" << coord.x << ", " << coord.y << ", " << coord.z << ")";
 }
+
+typedef Coord2<int> Coord2i;
+typedef Coord2<float> Coord2f;
+typedef Coord2<double> Coord2d;
+typedef Coord3<int> Coord3i;
+typedef Coord3<float> Coord3f;
+typedef Coord3<double> Coord3d;
 
 typedef struct Color3f
 {
@@ -108,6 +83,14 @@ typedef struct Color3f
 	Color3f(float r, float g, float b) : r(r), g(g), b(b) {};
 }
 Color3f;
+
+typedef struct Color4f
+{
+	float r,g,b,a;
+	Color4f() {};
+	Color4f(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) {};
+}
+Color4f;
 
 }
 

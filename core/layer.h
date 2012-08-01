@@ -18,14 +18,22 @@ namespace Starlia
 class StarLayer : public StarObject
 {
 	protected:
-		list<StarObject *> objectList;
+		list<StarObject *> objects;
 
 		static void invalidate(StarObject *);
 		bool blockFallThrough;
 
+		bool eventKeyPress(SDLKey);
+		bool eventKeyRelease(SDLKey);
+
+		virtual bool eventClick(Coord2d position);
+		virtual bool eventMouseOver(Coord2d position);
+
 	private:
 		map<SDLKey, function<void (void)> > keypresses;
 		map<SDLKey, function<void (void)> > keyreleases;
+
+		/* returns true if the mouse event is handled by the layer, false if it should fall through */
 
 	public:
 		bool invalid;
@@ -37,69 +45,45 @@ class StarLayer : public StarObject
 		void draw();
 		void recalc();
 
-		bool keypress(SDLKey);
-		bool keyrelease(SDLKey);
-		void registerKeyPress(SDLKey, function<void (void)>);
-		void registerKeyPress(char, function<void (void)>);
-		void registerKeyRelease(SDLKey, function<void (void)>);
-		void registerKeyRelease(char, function<void (void)>);
+		void addKeyPress(SDLKey, function<void (void)>);
+		void addKeyPress(char, function<void (void)>);
+		void addKeyRelease(SDLKey, function<void (void)>);
+		void addKeyRelease(char, function<void (void)>);
 
 		void setBlockFallThrough(bool);
+
+		friend class StarCore;
 };
 
-class Star2dLayer : public StarLayer
+class StarWidgetLayer : public StarLayer
 {
 	protected:
-		Coord2d size;
+		virtual void draw() override;
+		virtual void recalc() override;
+
+		virtual bool eventClick(Coord2d position) override;
+		virtual bool eventMouseOver(Coord2d position) override;
 
 	public:
-		void draw();
-		Star2dLayer(Coord2d size);
+		StarWidgetLayer();
+
+		void add(StarWidget *object);
+		void remove(StarWidget *object);
 };
 
-class Star2dObjectLayer : public Star2dLayer
+class StarObjectLayer : public StarLayer
 {
-	public:
-		Star2dObjectLayer(Coord2d size);
-
-		void registerObject(StarObject *object);
-		void unregisterObject(StarObject *object);
-};
-
-class StarWidgetLayer : public Star2dLayer
-{
-	public:
-		StarWidgetLayer(Coord2d size);
-
-		void registerObject(StarWidget *object);
-		void unregisterObject(StarWidget *object);
-
-		/* returns true if the click is handled by the layer, false if it should fall through */
-		bool click(Coord2d position);
-		bool mouseOver(Coord2d position);
-};
-
-class Star3dLayer : public StarLayer
-{
-	private:
-		list<StarLight *> lights;
-		vector<GLenum> lightNums;
-		StarCamera *camera;
+	protected:
+		// assets?
+		virtual void draw() override;
+		virtual void recalc() override;
 
 	public:
-		Star3dLayer(StarCamera *camera);
-		~Star3dLayer();
+		StarObjectLayer();
+		~StarObjectLayer();
 
-		void draw();
-		void recalc();
-
-		void registerObject(StarObject *object);
-		void unregisterObject(StarObject *object);
-
-		void registerObject(StarLight *light);
-		void unregisterObject(StarLight *light);
-
-		void registerObject(StarCamera *camera, bool deletePrev = true);
+		void add(StarObject *object);
+		void remove(StarObject *object);
 };
 
 }

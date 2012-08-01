@@ -16,9 +16,7 @@ using namespace std;
 namespace Starlia
 {
 
-list<Star2dObjectLayer *> StarCore::objectLayers;
-list<StarWidgetLayer *> StarCore::widgetLayers;
-Star3dLayer *StarCore::layer3d = NULL;
+list<StarLayer *> StarCore::layers;
 unsigned int StarCore::last_recalc = 0;
 Coord2d StarCore::scale;
 
@@ -27,27 +25,12 @@ void StarCore::draw()
 	glClearColor(0,0,0,0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	if (layer3d)
-		layer3d->draw();
-
-	for (list<Star2dObjectLayer *>::iterator it = objectLayers.begin(); it != objectLayers.end(); ++it)
+	for (list<StarLayer *>::iterator it = layers.begin(); it != layers.end(); ++it)
 	{
 		if ((*it)->invalid)
 		{
 			(*it)->invalid = false;
-			objectLayers.erase(it--);
-			continue;
-		}
-
-		(*it)->draw();
-	}
-
-	for (list<StarWidgetLayer *>::iterator it = widgetLayers.begin(); it != widgetLayers.end(); ++it)
-	{
-		if ((*it)->invalid)
-		{
-			(*it)->invalid = false;
-			widgetLayers.erase(it--);
+			layers.erase(it--);
 			continue;
 		}
 
@@ -61,34 +44,18 @@ void StarCore::recalc()
 
 	for (unsigned int i = 0; i < time_now/10 - last_recalc/10; ++i)
 	{
-		if (layer3d)
-			layer3d->recalc();
-
-		for (list<Star2dObjectLayer *>::iterator it = objectLayers.begin(); it != objectLayers.end(); ++it)
+		for (list<StarLayer *>::iterator it = layers.begin(); it != layers.end(); ++it)
 		{
 			if ((*it)->invalid)
 			{
 				(*it)->invalid = false;
-				objectLayers.erase(it--);
-				continue;
-			}
-
-			(*it)->recalc();
-		}
-
-		for (list<StarWidgetLayer *>::iterator it = widgetLayers.begin(); it != widgetLayers.end(); ++it)
-		{
-			if ((*it)->invalid)
-			{
-				(*it)->invalid = false;
-				widgetLayers.erase(it--);
+				layers.erase(it--);
 				continue;
 			}
 
 			(*it)->recalc();
 		}
 	}
-
 
 	last_recalc = time_now;
 }
@@ -106,35 +73,23 @@ inline void StarCore::click(int x, int y)
 	pos.x = x / scale.x;
 	pos.y = 1 - y / scale.y;
 
-	for(list<StarWidgetLayer *>::reverse_iterator it = widgetLayers.rbegin();
-			it != widgetLayers.rend() && !(*it)->click(pos); ++it)
+	for(list<StarLayer *>::reverse_iterator it = layers.rbegin();
+			it != layers.rend() && !(*it)->eventClick(pos); ++it)
 		;
 }
 
 inline void StarCore::keypress(SDL_keysym c)
 {
-	for(list<StarWidgetLayer *>::reverse_iterator it = widgetLayers.rbegin();
-			it != widgetLayers.rend() && !(*it)->keypress(c.sym); ++it)
+	for(list<StarLayer *>::reverse_iterator it = layers.rbegin();
+			it != layers.rend() && !(*it)->eventKeyPress(c.sym); ++it)
 		;
-	for(list<Star2dObjectLayer *>::reverse_iterator it = objectLayers.rbegin();
-			it != objectLayers.rend() && !(*it)->keypress(c.sym); ++it)
-		;
-
-	if (layer3d)
-		layer3d->keypress(c.sym);
 }
 
 inline void StarCore::keyrelease(SDL_keysym c)
 {
-	for(list<StarWidgetLayer *>::reverse_iterator it = widgetLayers.rbegin();
-			it != widgetLayers.rend() && !(*it)->keyrelease(c.sym); ++it)
+	for(list<StarLayer *>::reverse_iterator it = layers.rbegin();
+			it != layers.rend() && !(*it)->eventKeyRelease(c.sym); ++it)
 		;
-	for(list<Star2dObjectLayer *>::reverse_iterator it = objectLayers.rbegin();
-			it != objectLayers.rend() && !(*it)->keyrelease(c.sym); ++it)
-		;
-
-	if (layer3d)
-		layer3d->keyrelease(c.sym);
 }
 
 inline void StarCore::mouseOver(int x, int y)
@@ -143,8 +98,8 @@ inline void StarCore::mouseOver(int x, int y)
 	pos.x = x / scale.x;
 	pos.y = 1 - y / scale.y;
 
-	for(list<StarWidgetLayer *>::reverse_iterator it = widgetLayers.rbegin();
-			it != widgetLayers.rend() && !(*it)->mouseOver(pos); ++it)
+	for(list<StarLayer *>::reverse_iterator it = layers.rbegin();
+			it != layers.rend() && !(*it)->eventMouseOver(pos); ++it)
 		;
 }
 
@@ -199,49 +154,24 @@ void StarCore::init(string title, int width, int height)
 	StarSound::initialize();
 }
 
-void StarCore::registerLayerForeground(Star2dObjectLayer *layer)
+void StarCore::addFront(StarLayer *layer)
 {
-	objectLayers.push_back(layer);
+	layers.push_back(layer);
 }
 
-void StarCore::registerLayerBackground(Star2dObjectLayer *layer)
+void StarCore::addBack(StarLayer *layer)
 {
-	objectLayers.push_front(layer);
+	layers.push_front(layer);
 }
 
-void StarCore::unregisterLayer(Star2dObjectLayer *layer)
+void StarCore::remove(StarLayer *layer)
 {
-	for (list<Star2dObjectLayer *>::iterator it = objectLayers.begin(); it != objectLayers.end(); ++it)
+	for (list<StarLayer *>::iterator it = layers.begin(); it != layers.end(); ++it)
 		if (*it == layer)
 		{
 			(*it)->invalid = true;
 			return;
 		}
-}
-
-void StarCore::registerLayerForeground(StarWidgetLayer *layer)
-{
-	widgetLayers.push_back(layer);
-}
-
-void StarCore::registerLayerBackground(StarWidgetLayer *layer)
-{
-	widgetLayers.push_front(layer);
-}
-
-void StarCore::unregisterLayer(StarWidgetLayer *layer)
-{
-	for (list<StarWidgetLayer *>::iterator it = widgetLayers.begin(); it != widgetLayers.end(); ++it)
-		if (*it == layer)
-		{
-			(*it)->invalid = true;
-			return;
-		}
-}
-
-void StarCore::registerLayer(Star3dLayer *layer)
-{
-	layer3d = layer;
 }
 
 }

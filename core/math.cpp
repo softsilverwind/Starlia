@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "starMath.h"
+#include "math.h"
 
 namespace Starlia
 {
@@ -87,8 +87,4 @@ Coord2d polarToXY(double radius, double angle)
 	return Coord2d(radius*cos(angle), radius*sin(angle));
 }
 
-Coord2d polarToXY(Polar2d coord)
-{
-	return Coord2d(coord.r * cos(coord.a), coord.r * sin(coord.a));
-}
 }

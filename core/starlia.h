@@ -6,7 +6,7 @@
 #include "basicRender.h"
 #include "core.h"
 #include "structs.h"
-#include "starMath.h"
+#include "math.h"
 #include "label.h"
 #include "texture.h"
 #include "timer.h"

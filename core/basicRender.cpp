@@ -1,6 +1,6 @@
 #include <GL/gl.h>
 #include "basicRender.h"
-#include "starMath.h"
+#include "math.h"
 #include "structs.h"
 
 namespace Starlia
@@ -58,16 +58,6 @@ void Circle::draw(Color3f color)
 	glVertexPointer(2, GL_DOUBLE, 0, vertex);
 	glDrawArrays(GL_POLYGON, 0, POINTS);
 	glDisableClientState(GL_VERTEX_ARRAY);
-}
-
-void Circle::draw()
-{
-	draw(color);
-}
-
-Circle::Circle(Color3f color)
-	: color(color)
-{
 }
 
 void Line::draw(Coord2d start, Coord2d end, Color3f color, unsigned int thickness)

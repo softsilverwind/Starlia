@@ -11,21 +11,19 @@
 namespace Starlia
 {
 
-class Circle : public Star2dModel
+class Circle
 {
 	private:
 		static bool initialized;
 		static Coord2d vertex[POINTS];
-		Color3f color;
 		static void prepare();
 
 	public:
 		static void draw(Color3f color);
-		
-		void draw();
-		Circle(Color3f color);
-};
 
+	private:
+		Circle() = delete;
+};
 
 class Line
 {
@@ -36,17 +34,17 @@ class Line
 class VectorLetter
 {
 	private:
-
 		static bool initialized;
 		static vector<Coord2d> character[128];
-
+		static void prepare();
 
 	public:
-
 		static void writeCharacter(unsigned char);
-		static void prepare();
+
+	private:
+		VectorLetter() = delete;
 };
 
 }
 
-#endif /* __BR_ENGINE_H__ */
+#endif /* __BASICRENDER_H__ */

@@ -2,7 +2,7 @@
 #include <GL/gl.h>
 #include <string>
 #include <vector>
-#include "starMath.h"
+#include "math.h"
 #include "object.h"
 #include "structs.h"
 
@@ -113,7 +113,7 @@ void StarWidget::recalc()
 {
 }
 
-bool StarWidget::click(Coord2d pos)
+bool StarWidget::eventClick(Coord2d pos)
 {
 	if (onClick)
 	{
@@ -124,7 +124,7 @@ bool StarWidget::click(Coord2d pos)
 		return false;
 }
 
-bool StarWidget::mouseOver(Coord2d pos)
+bool StarWidget::eventMouseOver(Coord2d pos)
 {
 	if (onMouseOver)
 	{

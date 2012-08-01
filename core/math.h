@@ -5,11 +5,11 @@
 #include "structs.h"
 
 #ifndef M_PI
-        /* 
-	 * cmath in linux defines Mathematical PI, but this is not a
+	/* 
+	 * cmath in linux defines pi, but this is not a
 	 * standard, so Visual Studio does not.
 	 */
-        #define M_PI 3.14159 
+	#define M_PI 3.14159 
 #endif
 
 namespace Starlia
@@ -25,7 +25,6 @@ Coord3d randomCoord3d(int min, int max);
 double angleOf(Coord2d start, Coord2d end);
 double length(Coord2d start, Coord2d end);
 Coord2d polarToXY(double radius, double angle);
-Coord2d polarToXY(Polar2d coord);
 
 }
 
