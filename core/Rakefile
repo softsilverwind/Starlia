@@ -1,0 +1,83 @@
+Compilers = {
+	:cpp => ['g++', ['c', 'Wall', 'O3', 'std=c++0x'] ],
+	:ar => ['ar', ['cvsr'] ]
+}
+
+Rm = 'rm -f'
+
+Libdir = '/usr/local/lib'
+Incldir = '/usr/local/include/'
+
+Final = 'libstarlia.a'
+Depend = 'depend.dep'
+Src = FileList['*.cpp']
+Obj = Src.ext('o')
+Head = Src.ext('h')
+
+
+def invoke compiler, source, output, outputflag = '-o'
+	it = "#{Compilers[compiler][0]} "
+	Compilers[compiler][1].each { |flag| it += "-#{flag} " }
+
+	it += "#{outputflag} #{output} #{source}"
+
+	sh it  # lol
+end
+
+def gencppdeps filename
+	file = File.open filename, 'r'
+
+	content = file.read
+
+	return content.scan(/#include "([^"]*)"/).map { |i| i[0] }
+end
+
+def objify filename
+	FileList[filename].ext('o')[0]
+end
+
+def makedep
+	dep = File.open Depend, 'w'
+	Src.each do |x|
+		dep.puts "rule '#{objify x}' => #{(gencppdeps x) << x} do"
+		dep.puts "\tinvoke :cpp, '#{x}', '#{objify x}'"
+		dep.puts "end"
+		dep.puts
+	end
+	dep.close
+end
+
+
+task :default => [:parallel, Final]
+
+file Depend do
+	makedep
+end
+
+import Depend
+
+multitask :parallel => Obj
+
+rule Final => Obj do
+	invoke :ar, Obj, Final, ''
+end
+
+task :clean do
+	sh "#{Rm} #{Obj}"
+	sh "#{Rm} #{Depend}"
+end
+
+task :distclean => :clean do
+	sh "#{Rm} #{Final}"
+end
+
+task :install => Final do
+	sh "su -c 'cp #{Final} #{Libdir} && cp #{Head} #{Incldir}'"
+end
+
+task :uninstall do
+	str = "#{Libdir}#{Final} "
+	Head.each { |h| str += "#{Incldir}#{h} " }
+
+	sh "su -c '#{Rm} #{str}'"
+end
