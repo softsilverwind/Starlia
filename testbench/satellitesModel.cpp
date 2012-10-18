@@ -1,7 +1,7 @@
 #include <GL/gl.h>
 #include <cstdio>
 #include <cstdlib>
-#include "starlia.h"
+#include <starlia/starlia.h>
 
 using namespace Starlia;
 

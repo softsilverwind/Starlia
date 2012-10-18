@@ -1,5 +1,5 @@
 #include <GL/gl.h>
-#include "starlia.h"
+#include <starlia/starlia.h>
 
 using namespace Starlia;
 
