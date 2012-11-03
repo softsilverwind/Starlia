@@ -23,6 +23,8 @@ void StarTimer::loopTimers(unsigned int last_recalc)
 	}
 }
 
+// Known issue: Overflow occurs at 49.71 days, so timers might fire when should
+// not. On the other hand, this bug might help the poor soul get a life :)
 void StarTimer::registerTimer(unsigned short msecs, function<void (void)> fun)
 {
 	unsigned int time_now = SDL_GetTicks();
