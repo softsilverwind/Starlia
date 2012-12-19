@@ -24,7 +24,7 @@ void StarObject::draw()
 	return;
 }
 
-void StarObject::recalc()
+void StarObject::update()
 {
 }
 
@@ -41,7 +41,7 @@ void StarObject::emit(string str)
 {
 	if (!canHasEmit)
 	{
-		cerr << "Discarding emitting of \"" << str << "\" outside of recalc function!!!" << endl;
+		cerr << "Discarding emitting of \"" << str << "\" outside of update function!!!" << endl;
 		return;
 	}
 
@@ -59,7 +59,7 @@ void Star2dObject::draw()
 	model->draw();
 }
 
-void Star2dObject::recalc()
+void Star2dObject::update()
 {
 	return;
 }
@@ -85,7 +85,7 @@ void Star2dDynObject::draw()
 	Star2dObject::draw();
 }
 
-void Star2dDynObject::recalc()
+void Star2dDynObject::update()
 {
 	position += velocity;
 	angle += angvelocity;
@@ -95,7 +95,7 @@ void Star2dDynObject::recalc()
 	else if (angle >= 360)
 		angle -= 360;
 
-	Star2dObject::recalc();
+	Star2dObject::update();
 }
 
 
@@ -109,7 +109,7 @@ void StarWidget::draw()
 	return;
 }
 
-void StarWidget::recalc()
+void StarWidget::update()
 {
 }
 
@@ -177,7 +177,7 @@ void Star3dObject::draw()
 	model->draw();
 }
 
-void Star3dObject::recalc()
+void Star3dObject::update()
 {
 	return;
 }
@@ -227,7 +227,7 @@ void Star3dDynObject::draw()
 	Star3dObject::draw();
 }
 
-void Star3dDynObject::recalc()
+void Star3dDynObject::update()
 {
 	angle += angvelocity;
 
@@ -251,7 +251,7 @@ void Star3dDynObject::recalc()
 
 	position += actualVelocity;
 
-	Star3dObject::recalc();
+	Star3dObject::update();
 }
 
 

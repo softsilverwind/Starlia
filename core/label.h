@@ -44,7 +44,7 @@ class StarLabel : public StarWidget
 		void chText(const string& newText);
 
 		void draw();
-		void recalc();
+		void update();
 		void speakYourMind();
 };
 

@@ -96,7 +96,7 @@ void StarLabel::draw()
 	glPopMatrix();
 }
 
-void StarLabel::recalc()
+void StarLabel::update()
 {
 }
 

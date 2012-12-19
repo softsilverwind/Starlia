@@ -16,11 +16,11 @@ class StarCore
 	private:
 		static list<StarLayer *> layers;
 
-		static unsigned int last_recalc;
+		static unsigned int last_update;
 		static Coord2d scale;
 
 		static void draw();
-		static void recalc();
+		static void update();
 		
 		static void resize(int width, int height);
 		static void click(int x, int y);

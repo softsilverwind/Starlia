@@ -14,9 +14,9 @@ namespace Starlia
 
 priority_queue<pair<unsigned int, function<void (void)> >, vector<pair<unsigned int, function<void (void)> > >, StarTimer::compare> StarTimer::timers;
 
-void StarTimer::loopTimers(unsigned int last_recalc)
+void StarTimer::loopTimers(unsigned int last_update)
 {
-	while (!timers.empty() && timers.top().first <= last_recalc)
+	while (!timers.empty() && timers.top().first <= last_update)
 	{
 		timers.top().second();
 		timers.pop();

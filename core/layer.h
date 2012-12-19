@@ -15,13 +15,14 @@ using namespace std;
 namespace Starlia
 {
 
-class StarLayer : public StarObject
+class StarLayer
 {
-	protected:
-		list<StarObject *> objects;
-
-		static void invalidate(StarObject *);
+	private:
+		bool invalid;
 		bool blockFallThrough;
+
+		map<SDLKey, function<void (void)> > keypresses;
+		map<SDLKey, function<void (void)> > keyreleases;
 
 		bool eventKeyPress(SDLKey);
 		bool eventKeyRelease(SDLKey);
@@ -29,21 +30,15 @@ class StarLayer : public StarObject
 		virtual bool eventClick(Coord2d position);
 		virtual bool eventMouseOver(Coord2d position);
 
-	private:
-		map<SDLKey, function<void (void)> > keypresses;
-		map<SDLKey, function<void (void)> > keyreleases;
-
-		/* returns true if the mouse event is handled by the layer, false if it should fall through */
+		virtual void draw();
+		virtual void update();
 
 	public:
-		bool invalid;
-
 		StarLayer();
 		virtual ~StarLayer();
 		void demolishLayer();
 
-		void draw();
-		void recalc();
+		void invalidate();
 
 		void addKeyPress(SDLKey, function<void (void)>);
 		void addKeyPress(char, function<void (void)>);
@@ -58,14 +53,17 @@ class StarLayer : public StarObject
 class StarWidgetLayer : public StarLayer
 {
 	protected:
+		list<StarWidget *> widgets;
+
 		virtual void draw() override;
-		virtual void recalc() override;
+		virtual void update() override;
 
 		virtual bool eventClick(Coord2d position) override;
 		virtual bool eventMouseOver(Coord2d position) override;
 
 	public:
 		StarWidgetLayer();
+		virtual ~StarWidgetLayer() override;
 
 		void add(StarWidget *object);
 		void remove(StarWidget *object);
@@ -74,13 +72,14 @@ class StarWidgetLayer : public StarLayer
 class StarObjectLayer : public StarLayer
 {
 	protected:
-		// assets?
+		list<StarObject *> objects;
+
 		virtual void draw() override;
-		virtual void recalc() override;
+		virtual void update() override;
 
 	public:
 		StarObjectLayer();
-		~StarObjectLayer();
+		virtual ~StarObjectLayer() override;
 
 		void add(StarObject *object);
 		void remove(StarObject *object);

@@ -23,7 +23,7 @@ class StarTimer
 		compare;
 
 		static priority_queue<pair<unsigned int, function<void (void)> >, vector<pair<unsigned int, function<void (void)> > >, compare> timers;
-		static void loopTimers(unsigned int last_recalc);
+		static void loopTimers(unsigned int last_update);
 
 	public:
 		static void registerTimer(unsigned short msecs, function<void (void)> fun);

@@ -17,7 +17,7 @@ namespace Starlia
 {
 
 list<StarLayer *> StarCore::layers;
-unsigned int StarCore::last_recalc = 0;
+unsigned int StarCore::last_update = 0;
 Coord2d StarCore::scale;
 
 void StarCore::draw()
@@ -38,11 +38,11 @@ void StarCore::draw()
 	}
 }
 
-void StarCore::recalc()
+void StarCore::update()
 {
 	unsigned int time_now = SDL_GetTicks();
 
-	for (unsigned int i = 0; i < time_now/10 - last_recalc/10; ++i)
+	for (unsigned int i = 0; i < time_now/10 - last_update/10; ++i)
 	{
 		for (list<StarLayer *>::iterator it = layers.begin(); it != layers.end(); ++it)
 		{
@@ -53,11 +53,11 @@ void StarCore::recalc()
 				continue;
 			}
 
-			(*it)->recalc();
+			(*it)->update();
 		}
 	}
 
-	last_recalc = time_now;
+	last_update = time_now;
 }
 
 inline void StarCore::resize(int width, int height)
@@ -133,10 +133,10 @@ void StarCore::loop()
 					break;
 			}
 		}
-		StarCore::recalc();
+		StarCore::update();
 		StarCore::draw();
 		SDL_GL_SwapBuffers();
-		StarTimer::loopTimers(last_recalc);
+		StarTimer::loopTimers(last_update);
 		SDL_Delay(10);
 	}
 }

@@ -14,11 +14,6 @@ using namespace std;
 namespace Starlia
 {
 
-void StarLayer::invalidate(StarObject * so)
-{
-	so->invalid = true;
-}
-
 StarLayer::StarLayer()
 	: blockFallThrough(false), invalid(false)
 {
@@ -37,6 +32,11 @@ void StarLayer::demolishLayer()
 	objects.clear();
 }
 
+void StarLayer::invalidate()
+{
+	invalid = true;
+}
+
 void StarLayer::draw()
 {
 	for (auto it : objects)
@@ -49,13 +49,13 @@ void StarLayer::draw()
 	}
 }
 
-void StarLayer::recalc()
+void StarLayer::update()
 {
 	for (auto it = objects.begin(); it != objects.end(); ++it)
 	{
 		bool del = false, rem = false;
 		StarObject::canHasEmit = true;
-		(*it)->recalc();
+		(*it)->update();
 		StarObject::canHasEmit = false;
 
 		for(string& str : StarObject::emittedSignals)
@@ -224,9 +224,9 @@ void StarObjectLayer::draw()
 	glDisable(GL_DEPTH_TEST);
 }
 
-void StarObjectLayer::recalc()
+void StarObjectLayer::update()
 {
-	return StarLayer::recalc();
+	return StarLayer::update();
 }
 
 void StarObjectLayer::add(StarObject *object)

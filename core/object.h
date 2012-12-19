@@ -9,30 +9,29 @@
 
 using namespace std;
 
-#define CONNECT($1, $2) StarObject::connect(string(#$1), $2)
-#define EMIT($1) StarObject::emit(string(#$1))
-
 namespace Starlia
 {
 
 class StarObject
 {
 	private:
-		static vector<string> emittedSignals;
-		static bool canHasEmit;
+		vector<string> emittedSignals;
 		map<string, function<void (void)> > connections;
 		bool invalid;
 
 	protected:
 		virtual void draw();
-		virtual void recalc();
+		virtual void update();
+
+		void emit(string);
 
 	public:
 		StarObject();
 		virtual ~StarObject();
 
 		void connect(string, function<void (void)>);
-		static void emit(string);
+
+		void invalidate();
 
 	friend class StarLayer;
 };
@@ -46,7 +45,7 @@ class Star2dObject : public StarObject
 		Star2dModel *model;
 
 		virtual void draw() override;
-		virtual void recalc() override;
+		virtual void update() override;
 
 	public:
 		Star2dObject(Coord2d position, Coord2d radius, double angle = 0, Star2dModel *model = NULL);
@@ -67,7 +66,7 @@ class Star2dDynObject : public Star2dObject
 		double angvelocity;
 
 		virtual void draw();
-		virtual void recalc();
+		virtual void update();
 
 	public:
 		Star2dDynObject(Coord2d position, Coord2d radius, double angle = 0, Star2dModel *model = NULL);
@@ -88,7 +87,7 @@ class StarWidget : public StarObject
 		function<void (Coord2d)> onMouseOver;
 
 		virtual void draw();
-		virtual void recalc();
+		virtual void update();
 
 	public:
 		StarWidget();
@@ -109,7 +108,7 @@ class Star3dObject : public StarObject
 		Star3dModel *model;
 
 		virtual void draw();
-		virtual void recalc();
+		virtual void update();
 
 	public:
 		Star3dObject(Coord3d position, Coord3d radius, Coord3d angle, Star3dModel *model = NULL);
@@ -136,7 +135,7 @@ class Star3dDynObject : public Star3dObject
 		Coord3d actualVelocity;
 
 		virtual void draw();
-		virtual void recalc();
+		virtual void update();
 
 	public:
 		Star3dDynObject(Coord3d position, Coord3d radius, Coord3d angle, Star3dModel *model = NULL);
