@@ -16,22 +16,24 @@ using namespace std;
 namespace Starlia
 {
 
-// enum indicating whether keypresses, mouse events, draw
-// events are allowed to the next layer or not (e.g. in game
-// menus probably want to block events)
+// Enumeration indicating whether keypresses, mouse events, draw events
+// are allowed to the next layer or not (e.g. in game menus probably want
+// to block events)
+
 enum FallthroughType
 {
 	Allow, Block
 };
 
-// SLayer is a set of objects. It also handles events and defines
-// how its objects will be presented. For example, light sources
-// should be defined on the Layer level, so that every object in
-// the same layer shares light source information.
+// An SLayer denotes a set of objects. It also handles events and defines
+// how its objects will be presented. For example, light sources should
+// be defined on the Layer level, so that every object in the same layer
+// shares light source information.
+
 class SLayer
 {
 	private:
-		bool invalid; // whether layer should be deleted
+		bool invalid; // denotes whether layer should be deleted
 		FallthroughType blockMouse, blockKeyboard, blockDraw, blockUpdate;
 
 		map<SDLKey, function<void (void)> > keypresses;
@@ -41,10 +43,15 @@ class SLayer
 		virtual void draw();
 		virtual void update();
 
-		// event* functions are called by the StarCore class, on an event (key, mouse, etc)
-		virtual bool eventKeyPress(SDLKey);
-		virtual bool eventKeyRelease(SDLKey);
+		// event* functions are called by the StarCore class, on an event
+		// (key, mouse, etc)
 
+		// search over a list of keypresses-function pairs, and call the
+		// corresponding function.
+		bool eventKeyPress(SDLKey);
+		bool eventKeyRelease(SDLKey);
+
+		// left to be defined by the subclasses
 		virtual bool eventClick(Coord2d position);
 		virtual bool eventMouseOver(Coord2d position);
 
@@ -68,41 +75,42 @@ class SLayer
 		friend class StarCore;
 };
 
-class SWidgetLayer : public SLayer
-{
-	protected:
-		list<SWidget *> widgets;
+// An SListLayer is an implementation of an SLayer, using a list. Its draw and
+// update functions iterate on the list elements, calling the corresponding
+// functions.
 
+template <typename T>
+class SListLayer : public SLayer
+{
+	private:
+		list<T *> elements;
+
+	protected:
+		// call draw and update on each object, iteratively
 		virtual void draw() override;
 		virtual void update() override;
 
+	public:
+		SListLayer();
+		virtual ~SListLayer() override;
+
+		void add(T *);
+		void remove(T *);
+};
+
+
+class SWidgetLayer : public SListLayer<SWidget>
+{
+	protected:
 		// mouse events should dispatch the call to the right widget
 		virtual bool eventClick(Coord2d position) override;
 		virtual bool eventMouseOver(Coord2d position) override;
-
-	public:
-		SWidgetLayer();
-		virtual ~SWidgetLayer() override;
-
-		void add(SWidget *widget);
-		void remove(SWidget *widget);
 };
 
-class SObjectLayer : public SLayer
+class SObjectLayer : public SListLayer<SObject>
 {
 	protected:
-		list<SObject *> objects;
-		shared_ptr<SCamera> *camera;
-
-		virtual void draw() override;
-		virtual void update() override;
-
-	public:
-		SObjectLayer();
-		virtual ~SObjectLayer() override;
-
-		void add(SObject *object);
-		void remove(SObject *object);
+		shared_ptr<SCamera> camera;
 };
 
 }
