@@ -1,7 +1,7 @@
 #ifndef __CAMERA_H__
 #define __CAMERA_H__
 
-#include "object.h"
+#include <starlia/core/object.h>
 
 namespace Starlia
 {

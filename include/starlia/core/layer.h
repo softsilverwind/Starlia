@@ -1,28 +1,40 @@
+namespace Starlia
+{
+	class SLayer;
+	template<typename T> class SListLayer;
+}
+
 #ifndef __LAYER_H__
 #define __LAYER_H__
 
 #include <functional>
+#include <string>
 #include <memory>
 #include <list>
 #include <map>
 
 #include <SDL/SDL.h>
+#include <glm/glm.hpp>
 
-#include <starlia/core/object.h>
 #include <starlia/core/camera.h>
-
-using namespace std;
+#include <starlia/core/object.h>
 
 namespace Starlia
 {
 
-// Enumeration indicating whether keypresses, mouse events, draw events
-// are allowed to the next layer or not (e.g. in game menus probably want
-// to block events)
+using namespace std;
+using namespace glm;
 
-enum FallthroughType
+// Enumeration indicating which of [keypresses, mouse events, draw calls,
+// update calls] are blocked from going to the next layer (e.g. in game
+// menus probably want to block events)
+
+enum BlockType
 {
-	Allow, Block
+	Block_Mouse = 0x1,
+	Block_Keyboard = 0x2,
+	Block_Draw = 0x4,
+	Block_Update = 0x8
 };
 
 // An SLayer denotes a set of objects. It also handles events and defines
@@ -34,43 +46,46 @@ class SLayer
 {
 	private:
 		bool invalid; // denotes whether layer should be deleted
-		FallthroughType blockMouse, blockKeyboard, blockDraw, blockUpdate;
+		unsigned block;
 
 		map<SDLKey, function<void (void)> > keypresses;
 		map<SDLKey, function<void (void)> > keyreleases;
 
+		mat4 world, view, projection, wvp;
+
 	protected:
-		virtual void draw();
-		virtual void update();
+		unsigned program;
+
+		virtual void draw() {};
+		virtual void update() {};
 
 		// event* functions are called by the StarCore class, on an event
 		// (key, mouse, etc)
-
-		// search over a list of keypresses-function pairs, and call the
-		// corresponding function.
 		bool eventKeyPress(SDLKey);
 		bool eventKeyRelease(SDLKey);
 
-		// left to be defined by the subclasses
-		virtual bool eventClick(Coord2d position);
-		virtual bool eventMouseOver(Coord2d position);
+		virtual bool eventClick(Coord2d position) {};
+		virtual bool eventMouseOver(Coord2d position) {};
 
 	public:
 		SLayer();
-		virtual ~SLayer(); // destructor should be handled mostly by StarCore
+		// destructor should be handled mostly by StarCore
+		virtual ~SLayer() {};
 
-		void invalidate(); // marks the layer for deletion by StarCore 
+		// marks the layer for deletion by StarCore 
+		void invalidate();
 
-		// add actions on key events
 		void addKeyPress(SDLKey, function<void (void)>);
 		void addKeyPress(char, function<void (void)>);
 		void addKeyRelease(SDLKey, function<void (void)>);
 		void addKeyRelease(char, function<void (void)>);
 
-		void setBlockMouse(FallthroughType);
-		void setBlockKeyboard(FallthroughType);
-		void setBlockDraw(FallthroughType);
-		void setBlockUpdate(FallthroughType);
+		void setBlock(unsigned);
+
+		void setWorld(const mat4&);
+		void setView(const mat4&);
+		void setProjection(const mat4&);
+		int getAttrib(const string&);
 
 		friend class StarCore;
 };
@@ -83,7 +98,7 @@ template <typename T>
 class SListLayer : public SLayer
 {
 	private:
-		list<T *> elements;
+		list<shared_ptr<T>> elements;
 
 	protected:
 		// call draw and update on each object, iteratively
@@ -92,13 +107,12 @@ class SListLayer : public SLayer
 
 	public:
 		SListLayer();
-		virtual ~SListLayer() override;
 
-		void add(T *);
-		void remove(T *);
+		void add(shared_ptr<T>);
 };
 
-
+/*
+// TODO
 class SWidgetLayer : public SListLayer<SWidget>
 {
 	protected:
@@ -112,6 +126,9 @@ class SObjectLayer : public SListLayer<SObject>
 	protected:
 		shared_ptr<SCamera> camera;
 };
+*/
+
+#include <starlia/core/layer.inl>
 
 }
 

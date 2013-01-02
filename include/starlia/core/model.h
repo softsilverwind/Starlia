@@ -6,10 +6,10 @@
 
 #include <starlia/core/structs.h>
 
-using namespace std;
-
 namespace Starlia
 {
+
+using namespace std;
 
 class SModel
 {

@@ -3,10 +3,10 @@
 
 #include <iostream>
 
-using namespace std;
-
 namespace Starlia
 {
+
+using namespace std;
 
 template <typename T>
 struct Coord3;

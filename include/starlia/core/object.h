@@ -1,3 +1,13 @@
+namespace Starlia
+{
+	class SObject;
+	class S2dObject;
+	class S2dDynObject;
+	class SWidget;
+	class S3dObject;
+	class S3dDynObject;
+}
+
 #ifndef __OBJECT_H__
 #define __OBJECT_H__
 
@@ -5,13 +15,23 @@
 #include <string>
 #include <map>
 
-#include <starlia/core/model.h>
 #include <starlia/core/structs.h>
+#include <starlia/core/model.h>
 
-using namespace std;
+// work around cyclical dependency
+#ifndef __LAYER_H__
+	#define __LAYER_H__
+	#include <starlia/core/layer.h>
+	#undef __LAYER_H__
+#else
+	#include <starlia/core/layer.h>
+#endif
+
 
 namespace Starlia
 {
+
+using namespace std;
 
 class SObject
 {
@@ -25,6 +45,8 @@ class SObject
 		virtual void update();
 
 		void emit(string);
+
+		SLayer *layer;
 
 	public:
 		SObject();

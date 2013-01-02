@@ -4,13 +4,16 @@
 #include <string>
 #include <list>
 
-#include <starlia/core/object.h>
-#include <starlia/core/layer.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
-using namespace std;
+#include <starlia/core/layer.h>
+#include <starlia/core/object.h>
 
 namespace Starlia
 {
+
+using namespace std;
 
 class StarCore
 {
@@ -24,10 +27,10 @@ class StarCore
 		static void update();
 		
 		static void resize(int width, int height);
-		static void click(int x, int y);
-		static void mouseOver(int x, int y);
-		static void keypress(SDL_keysym);
-		static void keyrelease(SDL_keysym);
+		static void eventClick(int x, int y);
+		static void eventMouseOver(int x, int y);
+		static void eventKeyPress(SDL_keysym);
+		static void eventKeyRelease(SDL_keysym);
 
 	public:
 		static const Coord2d& getScale() { return scale; };
