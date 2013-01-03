@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include <list>
 
 #include <GL/glew.h>
@@ -15,7 +16,7 @@ using namespace std;
 namespace Starlia
 {
 
-list<SLayer *> StarCore::layers;
+list<shared_ptr<SLayer>> StarCore::layers;
 unsigned int StarCore::last_update = 0;
 Coord2d StarCore::scale;
 
@@ -40,7 +41,7 @@ inline void StarCore::draw()
 	if (fit != layers.end())
 		++fit;
 
-	for (auto rit = reverse_iterator<list<SLayer *>::iterator>(fit);
+	for (auto rit = reverse_iterator<list<shared_ptr<SLayer>>::iterator>(fit);
 			rit != layers.rend(); ++rit)
 		(*rit)->draw();
 }
@@ -171,12 +172,23 @@ void StarCore::init(string title, int width, int height)
 
 void StarCore::addFront(SLayer *layer)
 {
-	layers.push_back(layer);
+	layers.push_front(shared_ptr<SLayer>(layer));
 }
+
+void StarCore::addFront(shared_ptr<SLayer> layer)
+{
+	layers.push_front(layer);
+}
+
 
 void StarCore::addBack(SLayer *layer)
 {
-	layers.push_front(layer);
+	layers.push_back(shared_ptr<SLayer>(layer));
+}
+
+void StarCore::addBack(shared_ptr<SLayer> layer)
+{
+	layers.push_back(layer);
 }
 
 }

@@ -1,5 +1,5 @@
-require '../scripts/rakefuns.rb'
-require '../scripts/rakeconsts.rb'
+require '../../scripts/rakefuns.rb'
+require '../../scripts/rakeconsts.rb'
 
 Libdir = '/usr/local/lib'
 Incldir = '/usr/local/include/starlia'

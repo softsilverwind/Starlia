@@ -15,9 +15,9 @@ using namespace std;
 class SModel
 {
 	public:
-		virtual void draw(SLayer *);
+		virtual void draw(SLayer *) {};
 
-		virtual ~SModel();
+		virtual ~SModel() {};
 };
 
 class STexModel : public SModel
@@ -38,7 +38,7 @@ class SObjModel : public SModel
 		unsigned int tex;
 
 	public:
-		virtual void draw(SLayer *);
+		virtual void draw(SLayer *) override;
 
 		SObjModel(istream source);
 		SObjModel(string filename);

@@ -2,6 +2,7 @@
 #define __CORE_H__
 
 #include <string>
+#include <memory>
 #include <list>
 
 #include <glm/glm.hpp>
@@ -18,7 +19,7 @@ using namespace std;
 class StarCore
 {
 	private:
-		static list<SLayer *> layers;
+		static list<shared_ptr<SLayer>> layers;
 
 		static unsigned int last_update;
 		static Coord2d scale;
@@ -38,7 +39,9 @@ class StarCore
 		static void loop();
 
 		static void addFront(SLayer *);
+		static void addFront(shared_ptr<SLayer>);
 		static void addBack(SLayer *);
+		static void addBack(shared_ptr<SLayer>);
 };
 
 }

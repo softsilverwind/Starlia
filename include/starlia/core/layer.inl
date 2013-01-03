@@ -1,14 +1,14 @@
-inline void SLayer::dispatchSignals(SObject *obj)
+inline void SLayer::dispatchSignals(shared_ptr<SObject> obj)
 {
 	obj->dispatchSignals();
 }
 
-inline bool& SLayer::getInvalidRef(SObject *obj)
+inline bool& SLayer::getInvalidRef(shared_ptr<SObject> obj)
 {
 	return obj->invalid;
 }
 
-inline void SLayer::setLayer(SObject *obj)
+inline void SLayer::setLayer(shared_ptr<SObject> obj)
 {
 	obj->layer = this;
 }
@@ -73,6 +73,14 @@ inline void SListLayer<T>::update()
 
 template <typename T>
 inline void SListLayer<T>::add(T *elem)
+{
+	shared_ptr<T> selem(elem);
+	SLayer::setLayer(selem);
+	elements.push_back(selem);
+}
+
+template <typename T>
+inline void SListLayer<T>::add(shared_ptr<T> elem)
 {
 	SLayer::setLayer(elem);
 	elements.push_back(elem);

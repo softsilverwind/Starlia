@@ -7,6 +7,7 @@ namespace Starlia
 #ifndef __LAYER_H__
 #define __LAYER_H__
 
+#include <iostream>
 #include <functional>
 #include <string>
 #include <memory>
@@ -67,9 +68,9 @@ class SLayer
 		virtual bool eventClick(Coord2d position) { return false; };
 		virtual bool eventMouseOver(Coord2d position) { return false; };
 
-		void dispatchSignals(SObject *);
-		bool& getInvalidRef(SObject *);
-		void setLayer(SObject *);
+		void dispatchSignals(shared_ptr<SObject>);
+		bool& getInvalidRef(shared_ptr<SObject>);
+		void setLayer(shared_ptr<SObject>);
 
 	public:
 		SLayer();
@@ -102,7 +103,7 @@ template <typename T>
 class SListLayer : public SLayer
 {
 	private:
-		list<T *> elements;
+		list<shared_ptr<T>> elements;
 
 	protected:
 		// call draw and update on each object, iteratively
@@ -111,6 +112,7 @@ class SListLayer : public SLayer
 
 	public:
 		void add(T *);
+		void add(shared_ptr<T>);
 };
 
 /*

@@ -58,10 +58,14 @@ void S2dObject::draw()
 
 
 S2dObject::S2dObject(Coord2f position, Coord2f radius, float angle, SModel *model)
-	: position(position), radius(radius), angle(angle), model(model)
+	: position(position), radius(radius), angle(angle), model(shared_ptr<SModel>(model))
 {	
 }
 
+S2dObject::S2dObject(Coord2f position, Coord2f radius, float angle, shared_ptr<SModel> model)
+	: position(position), radius(radius), angle(angle), model(model)
+{	
+}
 
 void S2dDynObject::update()
 {
@@ -73,6 +77,11 @@ void S2dDynObject::update()
 
 
 S2dDynObject::S2dDynObject(Coord2f position, Coord2f radius, float angle, SModel *model)
+	: S2dObject(position, radius, angle, shared_ptr<SModel>(model)), velocity(0,0), angvelocity(0)
+{
+}
+
+S2dDynObject::S2dDynObject(Coord2f position, Coord2f radius, float angle, shared_ptr<SModel> model)
 	: S2dObject(position, radius, angle, model), velocity(0,0), angvelocity(0)
 {
 }
@@ -113,6 +122,11 @@ void S3dObject::draw()
 }
 
 S3dObject::S3dObject(Coord3f position, Coord3f radius, Coord3f angle, SModel *model)
+	: position(position), radius(radius), angle(angle), model(shared_ptr<SModel>(model))
+{	
+}
+
+S3dObject::S3dObject(Coord3f position, Coord3f radius, Coord3f angle, shared_ptr<SModel> model)
 	: position(position), radius(radius), angle(angle), model(model)
 {	
 }
@@ -141,7 +155,13 @@ Coord3f S3dObject::getNormalZ() const
 	return Coord3f(c.z*s.y + c.y*s.x*s.z, s.y*s.z - c.y*c.z*s.x, c.x*c.y);
 }
 
+
 S3dDynObject::S3dDynObject(Coord3f position, Coord3f radius, Coord3f angle, SModel *model)
+	: S3dObject(position, radius, angle, shared_ptr<SModel>(model)), velocity(0,0,0), angvelocity(0,0,0), thrust(0,0,0), actualVelocity(0,0,0)
+{
+}
+
+S3dDynObject::S3dDynObject(Coord3f position, Coord3f radius, Coord3f angle, shared_ptr<SModel> model)
 	: S3dObject(position, radius, angle, model), velocity(0,0,0), angvelocity(0,0,0), thrust(0,0,0), actualVelocity(0,0,0)
 {
 }

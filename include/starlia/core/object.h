@@ -66,10 +66,11 @@ class S2dObject : public SObject
 		Coord2f position;
 		Coord2f radius;
 		float angle;
-		SModel *model;
+		shared_ptr<SModel> model;
 
 	public:
 		S2dObject(Coord2f position, Coord2f radius, float angle = 0, SModel *model = NULL);
+		S2dObject(Coord2f position, Coord2f radius, float angle = 0, shared_ptr<SModel> model = NULL);
 
 		virtual void draw() override;
 
@@ -89,6 +90,7 @@ class S2dDynObject : public S2dObject
 
 	public:
 		S2dDynObject(Coord2f position, Coord2f radius, float angle = 0, SModel *model = NULL);
+		S2dDynObject(Coord2f position, Coord2f radius, float angle = 0, shared_ptr<SModel> model = NULL);
 
 		virtual void update() override;
 
@@ -124,10 +126,11 @@ class S3dObject : public SObject
 		Coord3f position;
 		Coord3f radius;
 		Coord3f angle;
-		SModel *model;
+		shared_ptr<SModel> model;
 
 	public:
 		S3dObject(Coord3f position, Coord3f radius, Coord3f angle, SModel *model = NULL);
+		S3dObject(Coord3f position, Coord3f radius, Coord3f angle, shared_ptr<SModel> model = NULL);
 
 		virtual void draw() override;
 
@@ -153,6 +156,7 @@ class S3dDynObject : public S3dObject
 
 	public:
 		S3dDynObject(Coord3f position, Coord3f radius, Coord3f angle, SModel *model = NULL);
+		S3dDynObject(Coord3f position, Coord3f radius, Coord3f angle, shared_ptr<SModel> model = NULL);
 
 		virtual void update() override;
 
