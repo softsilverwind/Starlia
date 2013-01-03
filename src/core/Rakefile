@@ -1,0 +1,32 @@
+Basedir = '../..'
+
+require "#{Basedir}/scripts/rakefuns.rb"
+require "#{Basedir}/scripts/rakeconsts.rb"
+
+Incldir = "#{Basedir}/include/starlia"
+Builddir = "#{Basedir}/build"
+
+Compilers[:cpp][1] << "I #{Incldir}"
+
+Final = "#{Builddir}/libstarlia.a"
+
+task :default => Final
+
+file Depend do
+	makedep Src, Depend
+end
+
+import Depend
+
+concfile Final => Obj do
+	invoke Compilers[:ar], Obj, Final, ''
+end
+
+task :clean do
+	sh "#{Rm} #{Obj}"
+	sh "#{Rm} #{Depend}"
+end
+
+task :distclean => :clean do
+	sh "#{Rm} #{Final}"
+end

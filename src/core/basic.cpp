@@ -1,24 +1,25 @@
 #include <iostream>
-
-#include <starlia/core/basic.h>
+#include <cstdio>
 
 #include <GL/glew.h>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-using namespace std;
-using namespace glm;
+#include <core/basic.h>
 
 namespace Starlia
 {
 
+using namespace std;
+using namespace glm;
+
 bool SBasicLayer::initialized = false;
 
-const char * SBasicLayer::v_shader =
-		"#version 100\n"
+const char *SBasicLayer::v_shader =
+		"#version 120\n"
 		"attribute vec3 pos;\n"
 		"attribute vec3 color;\n"
+		"\n"
 		"varying vec3 f_color;\n"
 		"\n"
 		"void main(void)\n"
@@ -27,7 +28,8 @@ const char * SBasicLayer::v_shader =
 		"\tf_color = color;\n"
 		"}\n";
 
-const char * SBasicLayer::f_shader =
+const char *SBasicLayer::f_shader =
+		"#version 120\n"
 		"varying vec3 f_color;\n"
 		"\n"
 		"void main(void)\n"
@@ -76,7 +78,7 @@ void SCircle::initialize()
 {
 	initialized = true;
 
-	vertices.resize(128);
+	vertices.resize(POINTS);
 	for (int i = 0; i < POINTS / 8; i++)
 	{
 		vertices[i].x = cos(i * step);
@@ -131,5 +133,9 @@ void SCircle::draw()
 	glDisableVertexAttribArray(attrib_pos);
 	glDisableVertexAttribArray(attrib_color);
 }
+
+SCircle::SCircle(Coord2d position, Coord2d scale, Color3f color)
+	: position(position), scale(scale), color(color)
+{}
 
 }

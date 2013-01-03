@@ -16,8 +16,8 @@ namespace Starlia
 #include <SDL/SDL.h>
 #include <glm/glm.hpp>
 
-#include <starlia/core/camera.h>
-#include <starlia/core/object.h>
+#include "camera.h"
+#include "object.h"
 
 namespace Starlia
 {
@@ -56,7 +56,7 @@ class SLayer
 	protected:
 		unsigned program;
 
-		virtual void draw() {};
+		virtual void draw();
 		virtual void update() {};
 
 		// event* functions are called by the StarCore class, on an event
@@ -64,8 +64,12 @@ class SLayer
 		bool eventKeyPress(SDLKey);
 		bool eventKeyRelease(SDLKey);
 
-		virtual bool eventClick(Coord2d position) {};
-		virtual bool eventMouseOver(Coord2d position) {};
+		virtual bool eventClick(Coord2d position) { return false; };
+		virtual bool eventMouseOver(Coord2d position) { return false; };
+
+		void dispatchSignals(SObject *);
+		bool& getInvalidRef(SObject *);
+		void setLayer(SObject *);
 
 	public:
 		SLayer();
@@ -98,7 +102,7 @@ template <typename T>
 class SListLayer : public SLayer
 {
 	private:
-		list<shared_ptr<T>> elements;
+		list<T *> elements;
 
 	protected:
 		// call draw and update on each object, iteratively
@@ -106,9 +110,7 @@ class SListLayer : public SLayer
 		virtual void update() override;
 
 	public:
-		SListLayer();
-
-		void add(shared_ptr<T>);
+		void add(T *);
 };
 
 /*
@@ -124,11 +126,11 @@ class SWidgetLayer : public SListLayer<SWidget>
 class SObjectLayer : public SListLayer<SObject>
 {
 	protected:
-		shared_ptr<SCamera> camera;
+		SCamera * camera;
 };
 */
 
-#include <starlia/core/layer.inl>
+#include "layer.inl"
 
 }
 

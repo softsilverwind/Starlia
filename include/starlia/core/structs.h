@@ -103,6 +103,17 @@ typedef struct Color3f
 }
 Color3f;
 
+inline istream& operator >> (istream& is, Color3f& color)
+{
+	return is >> color.r >> color.g >> color.b;
+}
+
+inline ostream& operator << (ostream& os, const Color3f& color)
+{
+	return os << "(" << color.r << ", " << color.g << ", " << color.b << ")";
+}
+
+
 typedef struct Color4f
 {
 	float r,g,b,a;
@@ -110,6 +121,16 @@ typedef struct Color4f
 	Color4f(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) {};
 }
 Color4f;
+
+inline istream& operator >> (istream& is, Color4f& color)
+{
+	return is >> color.r >> color.g >> color.b >> color.a;
+}
+
+inline ostream& operator << (ostream& os, const Color4f& color)
+{
+	return os << "(" << color.r << ", " << color.g << ", " << color.b << ", " << color.a << ")";
+}
 
 }
 

@@ -2,12 +2,17 @@
 
 #include <GL/glew.h>
 
-#include <starlia/core/layer.h>
+#include <core/layer.h>
 
 using namespace std;
 
 namespace Starlia
 {
+
+void SLayer::draw()
+{
+	glUseProgram(program);
+}
 
 bool SLayer::eventKeyPress(SDLKey c)
 {
@@ -61,41 +66,6 @@ void SLayer::setProjection(const mat4& p)
 int SLayer::getAttrib(const string& attrib)
 {
 	return glGetAttribLocation(program, attrib.c_str());
-}
-
-template <typename T>
-void SListLayer<T>::draw()
-{
-	for (auto it = elements.begin(); it != elements.end(); ++it)
-	{
-		if ((*it)->invalid)
-		{
-			elements.remove(it--);
-			continue;
-		}
-		(*it)->draw();
-	}
-}
-
-template <typename T>
-void SListLayer<T>::update()
-{
-	for (auto it = elements.begin(); it != elements.end(); ++it)
-	{
-		if ((*it)->invalid)
-		{
-			elements.remove(it--);
-			continue;
-		}
-		(*it)->update();
-	}
-}
-
-template <typename T>
-void SListLayer<T>::add(shared_ptr<T> elem)
-{
-	elem->layer = this;
-	elements.push_back(elem);
 }
 
 }

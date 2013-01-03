@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-#include <starlia/core/structs.h>
+#include "structs.h"
 
 #ifndef M_PI
 	#define M_PI 3.14159 
@@ -14,21 +14,22 @@ namespace Starlia
 
 int randomsgn();
 int randomi(int min, int max);
-
 double randomd();
 
 double randomdUp(double mul, double div);
 double randomdDown(double mul, double div);
 
-Coord2d randomCoord2d(int min, int max);
+Coord2i randomCoord2i(int min, int max);
 
-Coord3d randomCoord3d(int min, int max);
+Coord3i randomCoord3i(int min, int max);
 
-double angleOf(Coord2d start, Coord2d end);
+double angleOf(Coord2d start, Coord2i end);
 
-double length(Coord2d start, Coord2d end);
+double length(Coord2d start, Coord2i end);
 
-Coord2d polarToXYd(double radius, double angle);
+double dmod(double first, int second);
+
+Coord2d polarToXY(double radius, double angle);
 
 }
 

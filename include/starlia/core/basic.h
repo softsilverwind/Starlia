@@ -1,8 +1,8 @@
 #ifndef __BASIC_H__
 #define __BASIC_H__
 
-#include <starlia/core/layer.h>
-#include <starlia/core/structs.h>
+#include "layer.h"
+#include "structs.h"
 
 #define POINTS 256
 #define step (2 * M_PI / POINTS)
@@ -10,12 +10,7 @@
 namespace Starlia
 {
 
-// for type safety reasons
-class SBasicObject : public SObject
-{
-};
-
-class SBasicLayer : public SListLayer<SBasicObject>
+class SBasicLayer : public SListLayer<SObject>
 {
 	private:
 		static bool initialized;
@@ -30,7 +25,7 @@ class SBasicLayer : public SListLayer<SBasicObject>
 };
 
 
-class SCircle : public SBasicObject
+class SCircle : public SObject
 {
 	private:
 		static bool initialized;
@@ -43,8 +38,9 @@ class SCircle : public SBasicObject
 		Color3f color;
 
 	public:
-		void draw();
 		SCircle(Coord2d position, Coord2d scale, Color3f color);
+
+		void draw();
 };
 
 }

@@ -1,0 +1,33 @@
+Basedir = '../..'
+
+require "#{Basedir}/scripts/rakefuns.rb"
+require "#{Basedir}/scripts/rakeconsts.rb"
+
+Incldir = "#{Basedir}/include"
+Builddir = "#{Basedir}/build"
+
+Compilers[:cpp][1] << "I #{Incldir}"
+Compilers[:ld][2] << "L #{Builddir}" << "lstarlia"
+
+Final = Src.ext('.e')
+
+task :default => Final
+
+file Depend do
+	makedep Src, Depend
+end
+
+import Depend
+
+rule '.e' => '.o' do |rule|
+	invoke Compilers[:ld], rule.source, rule.name
+end
+
+task :clean do
+	sh "#{Rm} #{Obj}"
+	sh "#{Rm} #{Depend}"
+end
+
+task :distclean => :clean do
+	sh "#{Rm} #{Final}"
+end

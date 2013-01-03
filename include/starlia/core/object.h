@@ -12,19 +12,20 @@ namespace Starlia
 #define __OBJECT_H__
 
 #include <functional>
+#include <memory>
 #include <string>
 #include <map>
 
-#include <starlia/core/structs.h>
-#include <starlia/core/model.h>
+#include "structs.h"
+#include "model.h"
 
 // work around cyclical dependency
 #ifndef __LAYER_H__
 	#define __LAYER_H__
-	#include <starlia/core/layer.h>
+	#include "layer.h"
 	#undef __LAYER_H__
 #else
-	#include <starlia/core/layer.h>
+	#include "layer.h"
 #endif
 
 
@@ -40,138 +41,130 @@ class SObject
 		map<string, function<void (void)> > connections;
 		bool invalid;
 
-	protected:
-		virtual void draw();
-		virtual void update();
+		void dispatchSignals();
 
+	protected:
 		void emit(string);
 
 		SLayer *layer;
 
 	public:
 		SObject();
-		virtual ~SObject();
+		virtual ~SObject() {};
+
+		virtual void draw() {};
+		virtual void update() {};
 
 		void connect(string, function<void (void)>);
 
-		void invalidate();
-
-	friend class SLayer;
+		friend class SLayer;
 };
 
 class S2dObject : public SObject
 {
 	protected:
-		Coord2d position;
-		Coord2d radius;
-		double angle;
+		Coord2f position;
+		Coord2f radius;
+		float angle;
 		SModel *model;
 
-		virtual void draw() override;
-		virtual void update() override;
-
 	public:
-		S2dObject(Coord2d position, Coord2d radius, double angle = 0, SModel *model = NULL);
-		~S2dObject();
+		S2dObject(Coord2f position, Coord2f radius, float angle = 0, SModel *model = NULL);
 
-		void setPosition(const Coord2d&);
-		const Coord2d& getPosition() const;
-		void setAngle(const double&);
-		double getAngle() const;
-		void setRadius(const Coord2d&);
-		const Coord2d& getRadius() const;
+		virtual void draw() override;
+
+		void setPosition(const Coord2f&);
+		const Coord2f& getPosition() const;
+		void setAngle(float);
+		float getAngle() const;
+		void setRadius(const Coord2f&);
+		const Coord2f& getRadius() const;
 };
 
 class S2dDynObject : public S2dObject
 {
 	protected:
-		Coord2d velocity;
-		double angvelocity;
-
-		virtual void draw();
-		virtual void update();
+		Coord2f velocity;
+		float angvelocity;
 
 	public:
-		S2dDynObject(Coord2d position, Coord2d radius, double angle = 0, SModel *model = NULL);
+		S2dDynObject(Coord2f position, Coord2f radius, float angle = 0, SModel *model = NULL);
 
-		void setVelocity(const Coord2d&);
-		const Coord2d& getVelocity() const;
-		void setAngVelocity(const double&);
-		double getAngVelocity() const;
+		virtual void update() override;
+
+		void setVelocity(const Coord2f&);
+		const Coord2f& getVelocity() const;
+		void setAngVelocity(float);
+		float getAngVelocity() const;
 };
 
 
 class SWidget : public SObject
 {
 	protected:
-		Coord2d topLeft;
-		Coord2d botRight;
-		function<void (Coord2d)> onClick;
-		function<void (Coord2d)> onMouseOver;
-
-		virtual void draw();
-		virtual void update();
+		Coord2f topLeft;
+		Coord2f botRight;
+		function<void (Coord2f)> onClick;
+		function<void (Coord2f)> onMouseOver;
 
 	public:
 		SWidget();
-		SWidget(Coord2d topLeft, Coord2d botRight, function<void (Coord2d)> onClick = NULL, function<void (Coord2d)> onMouseOver = NULL);
-		const Coord2d& getTopLeft() const;
-		const Coord2d& getBotRight() const;
-		bool eventClick(Coord2d pos);
-		bool eventMouseOver(Coord2d pos);
+		SWidget(Coord2f topLeft, Coord2f botRight);
+
+		const Coord2f& getTopLeft() const;
+		const Coord2f& getBotRight() const;
+		bool eventClick(Coord2f pos);
+		bool eventMouseOver(Coord2f pos);
 };
 
 
 class S3dObject : public SObject
 {
 	protected:
-		Coord3d position;
-		Coord3d radius;
-		Coord3d angle;
+		Coord3f position;
+		Coord3f radius;
+		Coord3f angle;
 		SModel *model;
 
-		virtual void draw();
-		virtual void update();
-
 	public:
-		S3dObject(Coord3d position, Coord3d radius, Coord3d angle, SModel *model = NULL);
-		~S3dObject();
+		S3dObject(Coord3f position, Coord3f radius, Coord3f angle, SModel *model = NULL);
 
-		Coord3d getNormalX() const;
-		Coord3d getNormalY() const;
-		Coord3d getNormalZ() const;
+		virtual void draw() override;
 
-		void setPosition(const Coord3d&);
-		const Coord3d& getPosition() const;
-		void setAngle(const Coord3d&);
-		const Coord3d& getAngle() const;
-		void setRadius(const Coord3d&);
-		const Coord3d& getRadius() const;
+		Coord3f getNormalX() const;
+		Coord3f getNormalY() const;
+		Coord3f getNormalZ() const;
+
+		void setPosition(const Coord3f&);
+		const Coord3f& getPosition() const;
+		void setAngle(const Coord3f&);
+		const Coord3f& getAngle() const;
+		void setRadius(const Coord3f&);
+		const Coord3f& getRadius() const;
 };
 
 class S3dDynObject : public S3dObject
 {
 	protected:
-		Coord3d velocity;
-		Coord3d angvelocity;
-		Coord3d thrust;
-		Coord3d actualVelocity;
-
-		virtual void draw();
-		virtual void update();
+		Coord3f velocity;
+		Coord3f angvelocity;
+		Coord3f thrust;
+		Coord3f actualVelocity;
 
 	public:
-		S3dDynObject(Coord3d position, Coord3d radius, Coord3d angle, SModel *model = NULL);
+		S3dDynObject(Coord3f position, Coord3f radius, Coord3f angle, SModel *model = NULL);
 
-		void setVelocity(const Coord3d&);
-		const Coord3d& getVelocity() const;
-		void setAngVelocity(const Coord3d&);
-		const Coord3d& getAngVelocity() const;
-		void setThrust(const Coord3d&);
-		const Coord3d& getThrust() const;
+		virtual void update() override;
+
+		void setVelocity(const Coord3f&);
+		const Coord3f& getVelocity() const;
+		void setAngVelocity(const Coord3f&);
+		const Coord3f& getAngVelocity() const;
+		void setThrust(const Coord3f&);
+		const Coord3f& getThrust() const;
 };
 
-#include <starlia/core/object.inl>
+#include "object.inl"
 
 }
 

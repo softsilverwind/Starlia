@@ -7,8 +7,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <starlia/core/layer.h>
-#include <starlia/core/object.h>
+#include "layer.h"
+#include "object.h"
 
 namespace Starlia
 {
@@ -39,7 +39,6 @@ class StarCore
 
 		static void addFront(SLayer *);
 		static void addBack(SLayer *);
-		static void remove(SLayer *);
 };
 
 }

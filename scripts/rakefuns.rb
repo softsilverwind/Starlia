@@ -46,7 +46,8 @@ end
 def invoke compiler, source, output, outputflag = '-o'
 	it = "#{compiler[0]} "
 	compiler[1].each { |flag| it += "-#{flag} " }
-	it += "#{outputflag} #{output} #{source}"
+	it += "#{outputflag} #{output} #{source} "
+	compiler[2].each { |flag| it += "-#{flag} " }
 
 	sh it  # lol
 end
