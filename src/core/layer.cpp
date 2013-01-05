@@ -63,9 +63,19 @@ void SLayer::setProjection(const mat4& p)
 	wvp = world * view * projection;
 }
 
-int SLayer::getAttrib(const string& attrib)
+const mat4& SLayer::getWVP()
 {
-	return glGetAttribLocation(program, attrib.c_str());
+	return wvp;
+}
+
+int SLayer::getAttrib(const string& name)
+{
+	return glGetAttribLocation(program, name.c_str());
+}
+
+int SLayer::getUniform(const string& name)
+{
+	return glGetUniformLocation(program, name.c_str());
 }
 
 }

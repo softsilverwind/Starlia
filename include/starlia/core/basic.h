@@ -34,11 +34,11 @@ class SCircle : public SObject
 		static void initialize();
 
 		Coord2d position;
-		Coord2d scale;
+		Coord2d radius;
 		Color3f color;
 
 	public:
-		SCircle(Coord2d position, Coord2d scale, Color3f color);
+		SCircle(Coord2d position, Coord2d radius, Color3f color);
 
 		void draw();
 };

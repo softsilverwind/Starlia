@@ -90,7 +90,10 @@ class SLayer
 		void setWorld(const mat4&);
 		void setView(const mat4&);
 		void setProjection(const mat4&);
+		const mat4& getWVP();
+
 		int getAttrib(const string&);
+		int getUniform(const string&);
 
 		friend class StarCore;
 };

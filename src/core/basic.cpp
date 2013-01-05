@@ -4,6 +4,8 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 
 #include <core/basic.h>
 
@@ -20,11 +22,12 @@ const char *SBasicLayer::v_shader =
 		"attribute vec3 pos;\n"
 		"attribute vec3 color;\n"
 		"\n"
+		"uniform mat4 wvp;\n"
 		"varying vec3 f_color;\n"
 		"\n"
 		"void main(void)\n"
 		"{\n"
-		"\tgl_Position = vec4(pos, 1.0);\n"
+		"\t gl_Position = wvp * vec4(pos, 1.0);\n"
 		"\tf_color = color;\n"
 		"}\n";
 
@@ -117,11 +120,14 @@ void SCircle::draw()
 
 	vector<Color3f> colors(POINTS, color);
 
-	layer->setWorld(translate(mat4(1.0f), vec3(position.x, position.y, 0)));
+	layer->setWorld(scale(translate(mat4(1.0f), vec3(position.x, position.y, 0)), vec3(radius.x, radius.y, 1)));
 
 	int attrib_pos = layer->getAttrib("pos");
 	int attrib_color = layer->getAttrib("color");
+	int uniform_wvp = layer->getUniform("wvp");
 
+	glUniformMatrix4fv(uniform_wvp, 1, GL_FALSE, value_ptr(layer->getWVP()));
+	
 	glEnableVertexAttribArray(attrib_pos);
 	glVertexAttribPointer(attrib_pos, 2, GL_DOUBLE, GL_FALSE, 0, &vertices.front());
 	glEnableVertexAttribArray(attrib_color);
@@ -134,8 +140,8 @@ void SCircle::draw()
 	glDisableVertexAttribArray(attrib_color);
 }
 
-SCircle::SCircle(Coord2d position, Coord2d scale, Color3f color)
-	: position(position), scale(scale), color(color)
+SCircle::SCircle(Coord2d position, Coord2d radius, Color3f color)
+	: position(position), radius(radius), color(color)
 {}
 
 }
