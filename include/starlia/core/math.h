@@ -23,13 +23,14 @@ Coord2i randomCoord2i(int min, int max);
 
 Coord3i randomCoord3i(int min, int max);
 
-double angleOf(Coord2d start, Coord2i end);
+double angleOf(Coord2f start, Coord2i end);
 
-double length(Coord2d start, Coord2i end);
+double length(Coord2f start, Coord2i end);
 
 double dmod(double first, int second);
 
-Coord2d polarToXY(double radius, double angle);
+Coord2f polarToXY(double radius, double angle);
+Coord2f polarToXY(Polar2f pol);
 
 }
 

@@ -22,7 +22,7 @@ class StarCore
 		static list<shared_ptr<SLayer>> layers;
 
 		static unsigned int last_update;
-		static Coord2d scale;
+		static Coord2f scale;
 
 		static void draw();
 		static void update();
@@ -34,7 +34,7 @@ class StarCore
 		static void eventKeyRelease(SDL_keysym);
 
 	public:
-		static const Coord2d& getScale() { return scale; };
+		static const Coord2f& getScale() { return scale; };
 		static void init(string title, int width = 800, int height = 600);
 		static void loop();
 

@@ -12,7 +12,7 @@ class SCamera : public S3dDynObject
 		void draw();
 
 	public:
-		SCamera(Coord3d position, Coord3d angle);
+		SCamera(Coord3f position, Coord3f angle);
 
 	friend class SObjectLayer;
 };

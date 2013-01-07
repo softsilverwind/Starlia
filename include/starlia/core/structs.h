@@ -95,13 +95,12 @@ typedef Coord3<float> Coord3f;
 typedef Coord3<double> Coord3d;
 
 
-typedef struct Color3f
+struct Color3f
 {
 	float r,g,b;
 	Color3f() {};
 	Color3f(float r, float g, float b) : r(r), g(g), b(b) {};
-}
-Color3f;
+};
 
 inline istream& operator >> (istream& is, Color3f& color)
 {
@@ -114,13 +113,12 @@ inline ostream& operator << (ostream& os, const Color3f& color)
 }
 
 
-typedef struct Color4f
+struct Color4f
 {
 	float r,g,b,a;
 	Color4f() {};
 	Color4f(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) {};
-}
-Color4f;
+};
 
 inline istream& operator >> (istream& is, Color4f& color)
 {
@@ -131,6 +129,14 @@ inline ostream& operator << (ostream& os, const Color4f& color)
 {
 	return os << "(" << color.r << ", " << color.g << ", " << color.b << ", " << color.a << ")";
 }
+
+
+struct Polar2f
+{
+	float r, a;
+	Polar2f() {};
+	Polar2f(float r, float a) : r(r), a(a) {};
+};
 
 }
 

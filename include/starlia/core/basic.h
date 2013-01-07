@@ -21,7 +21,7 @@ class SBasicLayer : public SListLayer<SObject>
 		static void initialize();
 
 	public:
-		SBasicLayer();
+		SBasicLayer(Coord2f botleft = Coord2f(-1, -1), Coord2f topright = Coord2f(1, 1));
 };
 
 
@@ -29,7 +29,7 @@ class SCircle : public SModel
 {
 	private:
 		static bool initialized;
-		static vector<Coord2d> vertices;
+		static vector<Coord2f> vertices;
 
 		static void initialize();
 

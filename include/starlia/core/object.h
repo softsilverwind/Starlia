@@ -39,12 +39,12 @@ class SObject
 	private:
 		vector<string> emittedSignals;
 		map<string, function<void (void)> > connections;
-		bool invalid;
 
 		void dispatchSignals();
 
 	protected:
 		void emit(string);
+		bool invalid;
 
 		SLayer *layer;
 

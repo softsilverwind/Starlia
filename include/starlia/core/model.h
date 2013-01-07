@@ -31,9 +31,9 @@ class STexModel : public SModel
 class SObjModel : public SModel
 {
 	private:
-		vector<Coord3d> vertices;
-		vector<Coord3d> normals;
-		vector<Coord2d> textures;
+		vector<Coord3f> vertices;
+		vector<Coord3f> normals;
+		vector<Coord2f> textures;
 
 		unsigned int tex;
 

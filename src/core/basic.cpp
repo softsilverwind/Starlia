@@ -66,16 +66,18 @@ void SBasicLayer::initialize()
 		cerr << "SBasicLayer failed to link shader" << endl;
 }
 
-SBasicLayer::SBasicLayer()
+SBasicLayer::SBasicLayer(Coord2f botleft, Coord2f topright)
 {
 	if (!initialized)
 		initialize();
+
+	setProjection(ortho(botleft.x, topright.x, botleft.y, topright.y));
 
 	program = linked_program;
 }
 
 bool SCircle::initialized = false;
-vector<Coord2d> SCircle::vertices;
+vector<Coord2f> SCircle::vertices;
 
 void SCircle::initialize()
 {
@@ -127,7 +129,7 @@ void SCircle::draw(SLayer *layer)
 	glUniformMatrix4fv(uniform_wvp, 1, GL_FALSE, value_ptr(layer->getWVP()));
 	
 	glEnableVertexAttribArray(attrib_pos);
-	glVertexAttribPointer(attrib_pos, 2, GL_DOUBLE, GL_FALSE, 0, &vertices.front());
+	glVertexAttribPointer(attrib_pos, 2, GL_FLOAT, GL_FALSE, 0, &vertices.front());
 	glEnableVertexAttribArray(attrib_color);
 	glVertexAttribPointer(attrib_color, 3, GL_FLOAT, GL_FALSE, 0, &colors.front());
 

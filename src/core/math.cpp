@@ -78,7 +78,7 @@ Coord3i randomCoord3i(int min, int max)
 	return Coord3i(rand() % range + min, rand() % range + min, rand() % range + min);
 }
 
-double angleOf(Coord2d start, Coord2d end)
+double angleOf(Coord2f start, Coord2f end)
 {
         if (end.x == start.x)
                 if (end.y > start.y)
@@ -91,7 +91,7 @@ double angleOf(Coord2d start, Coord2d end)
                 return atan((end.y - start.y) / (end.x - start.x)) + M_PI;
 }
 
-double length(Coord2d start, Coord2d end)
+double length(Coord2f start, Coord2f end)
 {
 	return sqrt((end.x - start.x) * (end.x - start.x) + (end.y - start.y) * (end.y - start.y));
 }
@@ -104,9 +104,14 @@ double dmod(double first, int second)
 	return (int) first % (int)second + dpart;
 }
 
-Coord2d polarToXY(double radius, double angle)
+Coord2f polarToXY(double radius, double angle)
 {
-	return Coord2d(radius*cos(angle), radius*sin(angle));
+	return Coord2f(radius*cos(angle), radius*sin(angle));
+}
+
+Coord2f polarToXY(Polar2f pol)
+{
+	return polarToXY(pol.r, pol.a);
 }
 
 }

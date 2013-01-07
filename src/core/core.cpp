@@ -18,7 +18,7 @@ namespace Starlia
 
 list<shared_ptr<SLayer>> StarCore::layers;
 unsigned int StarCore::last_update = 0;
-Coord2d StarCore::scale;
+Coord2f StarCore::scale;
 
 inline void StarCore::draw()
 {
@@ -80,7 +80,7 @@ inline void StarCore::resize(int width, int height)
 
 inline void StarCore::eventClick(int x, int y)
 {
-	Coord2d pos;
+	Coord2f pos;
 	pos.x = x / scale.x;
 	pos.y = 1 - y / scale.y;
 
@@ -105,7 +105,7 @@ inline void StarCore::eventKeyRelease(SDL_keysym c)
 
 inline void StarCore::eventMouseOver(int x, int y)
 {
-	Coord2d pos;
+	Coord2f pos;
 	pos.x = x / scale.x;
 	pos.y = 1 - y / scale.y;
 

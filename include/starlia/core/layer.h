@@ -65,8 +65,8 @@ class SLayer
 		bool eventKeyPress(SDLKey);
 		bool eventKeyRelease(SDLKey);
 
-		virtual bool eventClick(Coord2d position) { return false; };
-		virtual bool eventMouseOver(Coord2d position) { return false; };
+		virtual bool eventClick(Coord2f position) { return false; };
+		virtual bool eventMouseOver(Coord2f position) { return false; };
 
 		void dispatchSignals(shared_ptr<SObject>);
 		bool& getInvalidRef(shared_ptr<SObject>);
@@ -124,8 +124,8 @@ class SWidgetLayer : public SListLayer<SWidget>
 {
 	protected:
 		// mouse events should dispatch the call to the right widget
-		virtual bool eventClick(Coord2d position) override;
-		virtual bool eventMouseOver(Coord2d position) override;
+		virtual bool eventClick(Coord2f position) override;
+		virtual bool eventMouseOver(Coord2f position) override;
 };
 
 class SObjectLayer : public SListLayer<SObject>

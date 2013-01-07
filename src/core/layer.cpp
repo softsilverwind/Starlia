@@ -48,19 +48,19 @@ SLayer::SLayer()
 void SLayer::setWorld(const mat4& w)
 {
 	world = w;
-	wvp = world * view * projection;
+	wvp = projection * view * world;
 }
 
 void SLayer::setView(const mat4& v)
 {
 	view = v;
-	wvp = world * view * projection;
+	wvp = projection * view * world;
 }
 
 void SLayer::setProjection(const mat4& p)
 {
 	projection = p;
-	wvp = world * view * projection;
+	wvp = projection * view * world;
 }
 
 const mat4& SLayer::getWVP()
