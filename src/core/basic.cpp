@@ -113,14 +113,12 @@ void SCircle::initialize()
 	}
 }
 
-void SCircle::draw()
+void SCircle::draw(SLayer *layer)
 {
 	if (!initialized)
 		initialize();
 
 	vector<Color3f> colors(POINTS, color);
-
-	layer->setWorld(scale(translate(mat4(1.0f), vec3(position.x, position.y, 0)), vec3(radius.x, radius.y, 1)));
 
 	int attrib_pos = layer->getAttrib("pos");
 	int attrib_color = layer->getAttrib("color");
@@ -140,8 +138,8 @@ void SCircle::draw()
 	glDisableVertexAttribArray(attrib_color);
 }
 
-SCircle::SCircle(Coord2d position, Coord2d radius, Color3f color)
-	: position(position), radius(radius), color(color)
+SCircle::SCircle(Color3f color)
+	: color(color)
 {}
 
 }

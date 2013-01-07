@@ -25,7 +25,7 @@ class SBasicLayer : public SListLayer<SObject>
 };
 
 
-class SCircle : public SObject
+class SCircle : public SModel
 {
 	private:
 		static bool initialized;
@@ -33,14 +33,12 @@ class SCircle : public SObject
 
 		static void initialize();
 
-		Coord2d position;
-		Coord2d radius;
 		Color3f color;
 
 	public:
-		SCircle(Coord2d position, Coord2d radius, Color3f color);
+		SCircle(Color3f color);
 
-		void draw();
+		virtual void draw(SLayer *) override;
 };
 
 }
