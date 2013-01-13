@@ -10,7 +10,7 @@
 namespace Starlia
 {
 
-class SBasicLayer : public SListLayer<SObject>
+class SBasicColorLayer : public SListLayer<SObject>
 {
 	private:
 		static bool initialized;
@@ -20,8 +20,34 @@ class SBasicLayer : public SListLayer<SObject>
 
 		static void initialize();
 
+		shared_ptr<SCamera> camera;
+
+	protected:
+		virtual void draw() override;
+
 	public:
-		SBasicLayer(Coord2f botleft = Coord2f(-1, -1), Coord2f topright = Coord2f(1, 1));
+		SBasicColorLayer(shared_ptr<SCamera> camera);
+		SBasicColorLayer(SCamera *camera = new SOrthoCamera(Coord2f(-1, -1), Coord2f(1, 1)));
+};
+
+class SBasicObjectLayer : public SListLayer<SObject>
+{
+	private:
+		static bool initialized;
+		static const char *v_shader;
+		static const char *f_shader;
+		static unsigned linked_program;
+
+		static void initialize();
+
+		shared_ptr<SCamera> camera;
+
+	protected:
+		virtual void draw() override;
+
+	public:
+		SBasicObjectLayer(shared_ptr<SCamera> camera);
+		SBasicObjectLayer(SCamera *camera = new SOrthoCamera(Coord2f(-1, -1), Coord2f(1, 1)));
 };
 
 

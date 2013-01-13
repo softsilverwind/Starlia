@@ -16,23 +16,19 @@ namespace Starlia
 #include <string>
 #include <map>
 
+#include <glm/glm.hpp>
+//#include <glm/gtc/matrix_transform.hpp>
+
 #include "structs.h"
 #include "model.h"
-
-// work around cyclical dependency
-#ifndef __LAYER_H__
-	#define __LAYER_H__
-	#include "layer.h"
-	#undef __LAYER_H__
-#else
-	#include "layer.h"
-#endif
-
 
 namespace Starlia
 {
 
+class SLayer;
+
 using namespace std;
+using namespace glm;
 
 class SObject
 {
@@ -70,7 +66,7 @@ class S2dObject : public SObject
 
 	public:
 		S2dObject(Coord2f position, Coord2f radius, float angle = 0, SModel *model = NULL);
-		S2dObject(Coord2f position, Coord2f radius, float angle = 0, shared_ptr<SModel> model = NULL);
+		S2dObject(Coord2f position, Coord2f radius, float angle, shared_ptr<SModel> model);
 
 		virtual void draw() override;
 
@@ -90,7 +86,7 @@ class S2dDynObject : public S2dObject
 
 	public:
 		S2dDynObject(Coord2f position, Coord2f radius, float angle = 0, SModel *model = NULL);
-		S2dDynObject(Coord2f position, Coord2f radius, float angle = 0, shared_ptr<SModel> model = NULL);
+		S2dDynObject(Coord2f position, Coord2f radius, float angle, shared_ptr<SModel> model);
 
 		virtual void update() override;
 
@@ -130,7 +126,7 @@ class S3dObject : public SObject
 
 	public:
 		S3dObject(Coord3f position, Coord3f radius, Coord3f angle, SModel *model = NULL);
-		S3dObject(Coord3f position, Coord3f radius, Coord3f angle, shared_ptr<SModel> model = NULL);
+		S3dObject(Coord3f position, Coord3f radius, Coord3f angle, shared_ptr<SModel> model);
 
 		virtual void draw() override;
 
@@ -156,7 +152,7 @@ class S3dDynObject : public S3dObject
 
 	public:
 		S3dDynObject(Coord3f position, Coord3f radius, Coord3f angle, SModel *model = NULL);
-		S3dDynObject(Coord3f position, Coord3f radius, Coord3f angle, shared_ptr<SModel> model = NULL);
+		S3dDynObject(Coord3f position, Coord3f radius, Coord3f angle, shared_ptr<SModel> model);
 
 		virtual void update() override;
 
@@ -166,6 +162,37 @@ class S3dDynObject : public S3dObject
 		const Coord3f& getAngVelocity() const;
 		void setThrust(const Coord3f&);
 		const Coord3f& getThrust() const;
+};
+
+class SCamera
+{
+	public:
+		virtual mat4 getProjection() { return mat4(1.0f); };
+		virtual mat4 getView() { return mat4(1.0f); };
+};
+
+class SOrthoCamera : public SCamera
+{
+	private:
+		Coord2f topleft, botright;
+
+	public:
+		SOrthoCamera(Coord3f topleft, Coord3f botright);
+
+		virtual mat4 getProjection() override;
+		virtual mat4 getView() override;
+};
+
+class SPerspCamera : public SCamera, public S3dDynObject
+{
+	private:
+		float fov, near, far;
+
+	public:
+		SPerspCamera(Coord3f position, Coord3f angle, float fov = 45, float near = 1, float far = 100);
+
+		virtual mat4 getProjection() override;
+		virtual mat4 getView() override;
 };
 
 #include "object.inl"

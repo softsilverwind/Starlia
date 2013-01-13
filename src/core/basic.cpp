@@ -6,7 +6,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-
 #include <core/basic.h>
 
 namespace Starlia
@@ -15,9 +14,9 @@ namespace Starlia
 using namespace std;
 using namespace glm;
 
-bool SBasicLayer::initialized = false;
+bool SBasicColorLayer::initialized = false;
 
-const char *SBasicLayer::v_shader =
+const char *SBasicColorLayer::v_shader =
 		"#version 120\n"
 		"attribute vec3 pos;\n"
 		"attribute vec3 color;\n"
@@ -31,7 +30,7 @@ const char *SBasicLayer::v_shader =
 		"\tf_color = color;\n"
 		"}\n";
 
-const char *SBasicLayer::f_shader =
+const char *SBasicColorLayer::f_shader =
 		"#version 120\n"
 		"varying vec3 f_color;\n"
 		"\n"
@@ -40,9 +39,9 @@ const char *SBasicLayer::f_shader =
 		"\tgl_FragColor = vec4(f_color, 1.0);\n"
 		"}\n";
 
-unsigned SBasicLayer::linked_program = 0;
+unsigned SBasicColorLayer::linked_program = 0;
 
-void SBasicLayer::initialize()
+void SBasicColorLayer::initialize()
 {
 	initialized = true;
 
@@ -63,17 +62,33 @@ void SBasicLayer::initialize()
 	glGetProgramiv(linked_program, GL_LINK_STATUS, &link_ok);
 
 	if (!link_ok)
-		cerr << "SBasicLayer failed to link shader" << endl;
+		cerr << "SBasicColorLayer failed to link shader" << endl;
 }
 
-SBasicLayer::SBasicLayer(Coord2f botleft, Coord2f topright)
+SBasicColorLayer::SBasicColorLayer(shared_ptr<SCamera> camera)
+	: camera(camera)
 {
 	if (!initialized)
 		initialize();
 
-	setProjection(ortho(botleft.x, topright.x, botleft.y, topright.y));
+	program = linked_program;
+}
+
+SBasicColorLayer::SBasicColorLayer(SCamera *camera)
+	: camera(shared_ptr<SCamera>(camera))
+{
+	if (!initialized)
+		initialize();
 
 	program = linked_program;
+}
+
+void SBasicColorLayer::draw()
+{
+	setProjection(camera->getProjection());
+	setView(camera->getView());
+
+	SListLayer<SObject>::draw();
 }
 
 bool SCircle::initialized = false;
@@ -143,5 +158,77 @@ void SCircle::draw(SLayer *layer)
 SCircle::SCircle(Color3f color)
 	: color(color)
 {}
+
+/*
+bool SBasicObjectLayer::initialized = false;
+
+const char *SBasicObjectLayer::v_shader =
+		"#version 120\n"
+		"attribute vec3 pos;\n"
+		"attribute vec2 texcoord;\n"
+		"\n"
+		"varying vec2 f_texcoord;\n"
+		"\n"
+		"uniform mat4 trans;\n"
+		"\n"
+		"void main(void)\n"
+		"{\n"
+		"	gl_Position = trans * vec4(pos, 1.0);\n"
+		"	f_texcoord = texcoord;\n"
+		"}\n";
+
+const char *SBasicObjectLayer::f_shader =
+		"version 120\n"
+		"varying vec2 f_texcoord;\n"
+		"uniform sampler2D tex;\n"
+		"\n"
+		"void main(void)\n"
+		"{\n"
+		"	gl_FragColor = texture2D(tex, f_texcoord);\n"
+		"}\n";
+
+unsigned SBasicObjectLayer::linked_program = 0;
+
+void SBasicObjectLayer::initialize()
+{
+	initialized = true;
+
+	unsigned vs = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vs, 1, &v_shader, NULL);
+	glCompileShader(vs);
+
+	unsigned fs = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fs, 1, &f_shader, NULL);
+	glCompileShader(fs);
+
+	linked_program = glCreateProgram();
+	glAttachShader(linked_program, vs);
+	glAttachShader(linked_program, fs);
+	glLinkProgram(linked_program);
+
+	int link_ok = 0;
+	glGetProgramiv(linked_program, GL_LINK_STATUS, &link_ok);
+
+	if (!link_ok)
+		cerr << "SBasicObjectLayer failed to link shader" << endl;
+}
+
+SBasicObjectLayer::SBasicObjectLayer(shared_ptr<SCamera> camera)
+	: camera(camera)
+{
+}
+
+SBasicObjectLayer::SBasicObjectLayer(SCamera *camera)
+	: camera(shared_ptr<SCamera>(camera))
+{
+}
+
+
+void SBasicObjectLayer::draw()
+{
+	camera->draw();
+	SListLayer<SObject>::draw();
+}
+*/
 
 }

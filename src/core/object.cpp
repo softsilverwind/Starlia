@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <core/core.h>
 #include <core/layer.h>
 #include <core/math.h>
 #include <core/object.h>
@@ -110,11 +111,11 @@ void S3dObject::draw()
 	layer->setWorld(
 			scale(
 				rotate(
-				rotate(
-				rotate(
-					translate(mat4(1.0f), vec3(position.x, position.y, 0))
-				, angle.z, vec3(0, 0, 1))
-				, angle.x, vec3(1, 0, 0))
+					rotate(
+						rotate(
+							translate(mat4(1.0f), vec3(position.x, position.y, 0))
+							, angle.z, vec3(0, 0, 1))
+						, angle.x, vec3(1, 0, 0))
 				, angle.y, vec3(0, 1, 0))
 			, vec3(radius.x, radius.y, radius.z)));
 
@@ -180,5 +181,42 @@ void S3dDynObject::update()
 	position += actualVelocity;
 }
 
+
+SPerspCamera::SPerspCamera(Coord3f position, Coord3f angle, float fov, float near, float far)
+	: S3dDynObject(position, Coord3f(0,0,0), angle), fov(fov), near(near), far(far)
+{
+}
+
+mat4 SPerspCamera::getProjection()
+{
+	const Coord2f& scale = StarCore::getScale();
+	return perspective(fov, scale.x / scale.y, near, far);
+}
+
+mat4 SPerspCamera::getView()
+{
+	return translate(
+			rotate(
+				rotate(
+					rotate(mat4(1.0f), -angle.y, vec3(0, 1, 0))
+					, -angle.x, vec3(1, 0, 0))
+				, -angle.z, vec3(0, 0, 1))
+			, vec3(-position.x, -position.y, -position.z));
+}
+
+SOrthoCamera::SOrthoCamera(Coord3f topleft, Coord3f botright)
+	: topleft(topleft), botright(botright)
+{
+}
+
+mat4 SOrthoCamera::getProjection()
+{
+	return ortho(topleft.x, botright.x, botright.y, topleft.y);
+}
+
+mat4 SOrthoCamera::getView()
+{
+	return mat4(1.0f);
+}
 
 }

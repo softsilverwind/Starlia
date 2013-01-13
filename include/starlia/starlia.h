@@ -3,7 +3,6 @@
 
 #include "core/basic.h"
 #include "core/layer.h"
-#include "core/camera.h"
 #include "core/model.h"
 #include "core/object.h"
 #include "core/core.h"

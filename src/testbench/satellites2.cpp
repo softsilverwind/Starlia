@@ -5,8 +5,8 @@
 using namespace Starlia;
 using namespace std;
 
-shared_ptr<SBasicLayer> layer1;
-shared_ptr<SBasicLayer> layer2;
+shared_ptr<SBasicColorLayer> layer1;
+shared_ptr<SBasicColorLayer> layer2;
 
 class Satellite : public S2dObject
 {
@@ -48,8 +48,8 @@ void createSatellite()
 int main(int argc, char** argv)
 {
 	StarCore::init("Starlia test bench");
-	layer1 = make_shared<SBasicLayer>(Coord2f(0,0), Coord2f(800, 600));
-	layer2 = make_shared<SBasicLayer>(Coord2f(0,0), Coord2f(400, 300));
+	layer1 = make_shared<SBasicColorLayer>(new SOrthoCamera(Coord2f(0,0), Coord2f(800, 600)));
+	layer2 = make_shared<SBasicColorLayer>(new SOrthoCamera(Coord2f(0,0), Coord2f(400, 300)));
 	StarCore::addFront(layer1);
 	StarCore::addFront(layer2);
 	STimer::registerTimer(10, createSatellite);

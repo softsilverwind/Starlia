@@ -17,7 +17,6 @@ namespace Starlia
 #include <SDL/SDL.h>
 #include <glm/glm.hpp>
 
-#include "camera.h"
 #include "object.h"
 
 namespace Starlia
@@ -131,7 +130,7 @@ class SWidgetLayer : public SListLayer<SWidget>
 class SObjectLayer : public SListLayer<SObject>
 {
 	protected:
-		SCamera * camera;
+		SCamera *camera;
 };
 */
 

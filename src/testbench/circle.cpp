@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 {
 	StarCore::init("Starlia test bench");
 
-	SBasicLayer *layer = new SBasicLayer();
+	SBasicColorLayer *layer = new SBasicColorLayer();
 	layer->add(new S2dObject(Coord2f(0.3, 0.3), Coord2f(0.6,0.8), 0, new SCircle(Color3f(0.6,0,0.8))));
 	layer->add(new S2dObject(Coord2f(-0.3, -0.3), Coord2f(0.6,0.8), 0, new SCircle(Color3f(0,0.6,0))));
 

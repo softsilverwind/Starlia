@@ -4,11 +4,12 @@
 #include <istream>
 #include <vector>
 
-#include "layer.h"
 #include "structs.h"
 
 namespace Starlia
 {
+
+class SLayer;
 
 using namespace std;
 
