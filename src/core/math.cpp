@@ -104,6 +104,16 @@ double dmod(double first, int second)
 	return (int) first % (int)second + dpart;
 }
 
+double clamp(double operand, double dlimit, double ulimit)
+{
+	if (operand > ulimit)
+		operand = ulimit;
+	if (operand < dlimit)
+		operand = dlimit;
+
+	return operand;
+}
+
 Coord2f polarToXY(double radius, double angle)
 {
 	return Coord2f(radius*cos(angle), radius*sin(angle));

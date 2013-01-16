@@ -13,7 +13,10 @@ Final = Src.ext('.e')
 
 task :default => Final
 
+sh "#{Rm} #{Depend}"
+
 file Depend do
+	puts "Generating #{Depend}"
 	makedep Src, Depend
 end
 

@@ -53,7 +53,17 @@ def invoke compiler, source, output, outputflag = '-o'
 end
 
 def gencppdeps filename
-	File.read(filename).scan(/#include "([^"]*)"/).map { |i| i[0] }
+	compiler = Compilers[:cpp]
+	it = "#{compiler[0]} "
+	compiler[1].each { |flag| it += "-#{flag} " }
+	it += "#{filename} "
+	compiler[2].each { |flag| it += "-#{flag} " }
+	it += '-M'
+	x = File.popen "#{it}"
+	x = x.read.gsub!(/\\/) {}.split(' ')
+	x.shift
+	return x;
+#	File.read(filename).scan(/#include "([^"]*)"/).map { |i| i[0] }
 end
 
 def objify filename

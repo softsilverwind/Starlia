@@ -28,6 +28,7 @@ double angleOf(Coord2f start, Coord2i end);
 double length(Coord2f start, Coord2i end);
 
 double dmod(double first, int second);
+double clamp(double operand, double dlimit, double ulimit);
 
 Coord2f polarToXY(double radius, double angle);
 Coord2f polarToXY(Polar2f pol);

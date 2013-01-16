@@ -71,16 +71,16 @@ SBasicColorLayer::SBasicColorLayer(shared_ptr<SCamera> camera)
 	if (!initialized)
 		initialize();
 
+	shared_ptr<SObject> obj;
+	if (obj = dynamic_pointer_cast<SObject>(camera))
+		add(obj);
+
 	program = linked_program;
 }
 
 SBasicColorLayer::SBasicColorLayer(SCamera *camera)
-	: camera(shared_ptr<SCamera>(camera))
+	: SBasicColorLayer(shared_ptr<SCamera>(camera))
 {
-	if (!initialized)
-		initialize();
-
-	program = linked_program;
 }
 
 void SBasicColorLayer::draw()
@@ -90,6 +90,7 @@ void SBasicColorLayer::draw()
 
 	SListLayer<SObject>::draw();
 }
+
 
 bool SCircle::initialized = false;
 vector<Coord2f> SCircle::vertices;

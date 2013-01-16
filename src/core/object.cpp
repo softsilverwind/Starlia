@@ -113,7 +113,7 @@ void S3dObject::draw()
 				rotate(
 					rotate(
 						rotate(
-							translate(mat4(1.0f), vec3(position.x, position.y, 0))
+							translate(mat4(1.0f), vec3(position.x, position.y, position.z))
 							, angle.z, vec3(0, 0, 1))
 						, angle.x, vec3(1, 0, 0))
 				, angle.y, vec3(0, 1, 0))
@@ -171,7 +171,7 @@ void S3dDynObject::update()
 {
 	angle += angvelocity;
 
-	angle.x = dmod(angle.x + 90, 180) - 90;
+	angle.x = clamp(angle.x, -90, 90);
 	angle.y = dmod(angle.y, 360);
 	angle.z = dmod(angle.z, 360);
 
@@ -196,9 +196,11 @@ mat4 SPerspCamera::getProjection()
 mat4 SPerspCamera::getView()
 {
 	return translate(
-			rotate(
 				rotate(
-					rotate(mat4(1.0f), -angle.y, vec3(0, 1, 0))
+					rotate(
+						rotate(
+							rotate(mat4(1.0f), -90.0f, vec3(1, 0, 0))
+						, -angle.y, vec3(0, 1, 0))
 					, -angle.x, vec3(1, 0, 0))
 				, -angle.z, vec3(0, 0, 1))
 			, vec3(-position.x, -position.y, -position.z));

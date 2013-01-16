@@ -27,7 +27,7 @@ class SBasicColorLayer : public SListLayer<SObject>
 
 	public:
 		SBasicColorLayer(shared_ptr<SCamera> camera);
-		SBasicColorLayer(SCamera *camera = new SOrthoCamera(Coord2f(-1, -1), Coord2f(1, 1)));
+		SBasicColorLayer(SCamera *camera = new SOrthoCamera(Coord2f(-1, 1), Coord2f(1, -1)));
 };
 
 class SBasicObjectLayer : public SListLayer<SObject>
@@ -47,7 +47,7 @@ class SBasicObjectLayer : public SListLayer<SObject>
 
 	public:
 		SBasicObjectLayer(shared_ptr<SCamera> camera);
-		SBasicObjectLayer(SCamera *camera = new SOrthoCamera(Coord2f(-1, -1), Coord2f(1, 1)));
+		SBasicObjectLayer(SCamera *camera = new SOrthoCamera(Coord2f(-1, 1), Coord2f(1, -1)));
 };
 
 
