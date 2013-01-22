@@ -3,7 +3,7 @@
 
 using namespace Starlia;
 
-int main(int argc, char** argv)
+int main()
 {
 	StarCore::init("Starlia test bench");
 

@@ -41,7 +41,7 @@ void createSatellite()
 	STimer::registerTimer(10, createSatellite);
 }
 
-int main(int argc, char** argv)
+int main()
 {
 	StarCore::init("Starlia test bench");
 	layer = make_shared<SBasicColorLayer>(new SOrthoCamera(Coord2f(0,0), Coord2f(800, 600)));

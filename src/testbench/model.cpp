@@ -38,22 +38,22 @@ void keyboard(int key)
 			return;
 	}
 	camera->setAngVelocity(angvel);
-	camera->setVelocity(vel);
+	camera->setThrust(vel);
 }
 
-void keyboardup(int key)
+void keyboardup(int)
 {
 	camera->setAngVelocity(Coord3d(0,0,0));
-	camera->setVelocity(Coord3d(0,0,0));
+	camera->setThrust(Coord3d(0,0,0));
 
 	cerr << camera->getPosition() << camera->getAngle() << endl;
 }
 
-int main(int argc, char** argv)
+int main()
 {
 	StarCore::init("Starlia test bench");
 
-	StarCore::setClearColor(Color3f(1,1,1));
+	//StarCore::setClearColor(Color3f(1,1,1));
 
 	SBasicColorLayer *layer = new SBasicColorLayer(camera = make_shared<SPerspCamera>(Coord3f(0, 0, 5), Coord3f(0, 0, 0)));
 	SBasicObjectLayer *layer2 = new SBasicObjectLayer(camera);

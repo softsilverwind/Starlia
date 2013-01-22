@@ -110,8 +110,8 @@ const string SBasicObjectLayer::v_shader(
 		"\n"
 		"void main(void)\n"
 		"{\n"
-		"   gl_Position = wvp * vec4(pos, 1.0);\n"
-		"   f_texcoord = texcoord;\n"
+		"\tgl_Position = wvp * vec4(pos, 1.0);\n"
+		"\tf_texcoord = texcoord;\n"
 		"}\n");
 
 const string SBasicObjectLayer::f_shader(
@@ -121,7 +121,8 @@ const string SBasicObjectLayer::f_shader(
 		"\n"
 		"void main(void)\n"
 		"{\n"
-		"   gl_FragColor = texture2D(tex, f_texcoord);\n"
+		"\tvec2 flipped_texcoord = vec2(f_texcoord.x, 1.0 - f_texcoord.y);"
+		"\tgl_FragColor = texture2D(tex, flipped_texcoord);\n"
 		"}\n");
 
 

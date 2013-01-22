@@ -41,7 +41,7 @@ void keyboard(int key)
 	camera->setVelocity(vel);
 }
 
-void keyboardup(int key)
+void keyboardup(int)
 {
 	camera->setAngVelocity(Coord3d(0,0,0));
 	camera->setVelocity(Coord3d(0,0,0));
@@ -49,7 +49,7 @@ void keyboardup(int key)
 	cerr << camera->getPosition() << camera->getAngle() << endl;
 }
 
-int main(int argc, char** argv)
+int main()
 {
 	StarCore::init("Starlia test bench");
 
