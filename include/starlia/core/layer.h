@@ -64,8 +64,8 @@ class SLayer
 		bool eventKeyPress(SDLKey);
 		bool eventKeyRelease(SDLKey);
 
-		virtual bool eventClick(Coord2f position) { return false; };
-		virtual bool eventMouseOver(Coord2f position) { return false; };
+		virtual bool eventClick(Coord2f) { return false; };
+		virtual bool eventMouseOver(Coord2f) { return false; };
 
 		void dispatchSignals(shared_ptr<SObject>);
 		bool& getInvalidRef(shared_ptr<SObject>);

@@ -93,12 +93,12 @@ SWidget::SWidget(Coord2f topLeft, Coord2f botRight)
 {
 }
 
-bool SWidget::eventClick(Coord2f pos)
+bool SWidget::eventClick(Coord2f)
 {
 	return false;
 }
 
-bool SWidget::eventMouseOver(Coord2f pos)
+bool SWidget::eventMouseOver(Coord2f)
 {
 	return false;
 }
