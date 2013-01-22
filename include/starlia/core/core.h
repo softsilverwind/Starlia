@@ -23,6 +23,7 @@ class StarCore
 
 		static unsigned int last_update;
 		static Coord2f scale;
+		static Color3f clear_color;
 
 		static void draw();
 		static void update();
@@ -35,6 +36,8 @@ class StarCore
 
 	public:
 		static const Coord2f& getScale() { return scale; };
+		static void setClearColor(Color3f color) { clear_color = color; }
+
 		static void init(string title, int width = 800, int height = 600);
 		static void loop();
 
@@ -42,6 +45,8 @@ class StarCore
 		static void addFront(shared_ptr<SLayer>);
 		static void addBack(SLayer *);
 		static void addBack(shared_ptr<SLayer>);
+
+		static void printShaderErrors(unsigned int, ostream& = cerr);
 };
 
 }

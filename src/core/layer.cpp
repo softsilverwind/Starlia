@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 
 #include <GL/glew.h>
@@ -70,12 +71,14 @@ const mat4& SLayer::getWVP()
 
 int SLayer::getAttrib(const string& name)
 {
-	return glGetAttribLocation(program, name.c_str());
+	int ret = glGetAttribLocation(program, name.c_str());
+	return ret;
 }
 
 int SLayer::getUniform(const string& name)
 {
-	return glGetUniformLocation(program, name.c_str());
+	int ret = glGetUniformLocation(program, name.c_str());
+	return ret;
 }
 
 }

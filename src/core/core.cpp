@@ -19,10 +19,11 @@ namespace Starlia
 list<shared_ptr<SLayer>> StarCore::layers;
 unsigned int StarCore::last_update = 0;
 Coord2f StarCore::scale;
+Color3f StarCore::clear_color;
 
 inline void StarCore::draw()
 {
-	glClearColor(0,0,0,0);
+	glClearColor(clear_color.r, clear_color.g, clear_color.b, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	for (auto it = layers.begin(); it != layers.end(); ++it)
@@ -189,6 +190,35 @@ void StarCore::addBack(SLayer *layer)
 void StarCore::addBack(shared_ptr<SLayer> layer)
 {
 	layers.push_back(layer);
+}
+
+void StarCore::printShaderErrors(GLuint object, ostream& os)
+{
+	int length = 0;
+
+	if (glIsShader(object))
+	{
+		glGetShaderiv(object, GL_INFO_LOG_LENGTH, &length);
+	}
+	else if (glIsProgram(object))
+	{
+		glGetProgramiv(object, GL_INFO_LOG_LENGTH, &length);
+	}
+	else 
+	{
+		os << "printShaderErrors: Not a shader or a program" << endl;
+		return;
+	}
+
+	char* log = new char[length];
+
+	if (glIsShader(object))
+		glGetShaderInfoLog(object, length, NULL, log);
+	else if (glIsProgram(object))
+		glGetProgramInfoLog(object, length, NULL, log);
+
+	os << log;
+	delete log;
 }
 
 }

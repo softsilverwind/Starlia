@@ -12,7 +12,10 @@ Final = "#{Builddir}/libstarlia.a"
 
 task :default => Final
 
+sh "#{Rm} #{Depend}"
+
 file Depend do
+	puts "Generating #{Depend}"
 	makedep Src, Depend
 end
 

@@ -16,19 +16,26 @@ using namespace std;
 class SModel
 {
 	public:
+		static unsigned int genTex(string filename);
+
 		virtual void draw(SLayer *) {};
 
 		virtual ~SModel() {};
 };
 
+/* TODO for simple 2d games
 class STexModel : public SModel
 {
 	unsigned int tex;
 
-	STexModel(string filename);
-	~STexModel();	
+	public:
+		STexModel(string filename);
+		~STexModel();	
 };
+*/
 
+// A simple one-mesh, no-material obj loader, mostly for debugging purposes.
+// A more generic loader should come soon...
 class SObjModel : public SModel
 {
 	private:
@@ -41,8 +48,7 @@ class SObjModel : public SModel
 	public:
 		virtual void draw(SLayer *) override;
 
-		SObjModel(istream source);
-		SObjModel(string filename);
+		SObjModel(string filename, string texname);
 		~SObjModel();
 };
 

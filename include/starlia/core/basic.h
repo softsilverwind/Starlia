@@ -10,15 +10,10 @@
 namespace Starlia
 {
 
-class SBasicColorLayer : public SListLayer<SObject>
+class SStaticShaderLayer : public SListLayer<SObject>
 {
 	private:
-		static bool initialized;
-		static const char *v_shader;
-		static const char *f_shader;
-		static unsigned linked_program;
-
-		static void initialize();
+		unsigned linked_program;
 
 		shared_ptr<SCamera> camera;
 
@@ -26,30 +21,31 @@ class SBasicColorLayer : public SListLayer<SObject>
 		virtual void draw() override;
 
 	public:
-		SBasicColorLayer(shared_ptr<SCamera> camera);
-		SBasicColorLayer(SCamera *camera = new SOrthoCamera(Coord2f(-1, 1), Coord2f(1, -1)));
+		SStaticShaderLayer(shared_ptr<SCamera> camera, const string& f_shader, const string& v_shader);
+		SStaticShaderLayer(SCamera *camera, const string& f_shader, const string& v_shader);
 };
 
-class SBasicObjectLayer : public SListLayer<SObject>
+class SBasicColorLayer : public SStaticShaderLayer
 {
 	private:
-		static bool initialized;
-		static const char *v_shader;
-		static const char *f_shader;
-		static unsigned linked_program;
-
-		static void initialize();
-
-		shared_ptr<SCamera> camera;
-
-	protected:
-		virtual void draw() override;
+		static const string v_shader;
+		static const string f_shader;
 
 	public:
-		SBasicObjectLayer(shared_ptr<SCamera> camera);
-		SBasicObjectLayer(SCamera *camera = new SOrthoCamera(Coord2f(-1, 1), Coord2f(1, -1)));
+		SBasicColorLayer(shared_ptr<SCamera> camera) : SStaticShaderLayer(camera, v_shader, f_shader) {};
+		SBasicColorLayer(SCamera *camera = new SOrthoCamera(Coord2f(-1, 1), Coord2f(1, -1))) : SBasicColorLayer(shared_ptr<SCamera>(camera)) {};
 };
 
+class SBasicObjectLayer : public SStaticShaderLayer
+{
+	private:
+		static const string v_shader;
+		static const string f_shader;
+
+	public:
+		SBasicObjectLayer(shared_ptr<SCamera> camera) : SStaticShaderLayer(camera, v_shader, f_shader) {};
+		SBasicObjectLayer(SCamera *camera = new SOrthoCamera(Coord2f(-1, 1), Coord2f(1, -1))) : SBasicObjectLayer(shared_ptr<SCamera>(camera)) {};
+};
 
 class SCircle : public SModel
 {
