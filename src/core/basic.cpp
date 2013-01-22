@@ -71,7 +71,10 @@ void SStaticShaderLayer::draw()
 	setProjection(camera->getProjection());
 	setView(camera->getView());
 
+	glEnable(GL_DEPTH_TEST);
+	glClear(GL_DEPTH_BUFFER_BIT);
 	SListLayer<SObject>::draw();
+	glDisable(GL_DEPTH_TEST);
 }
 
 
