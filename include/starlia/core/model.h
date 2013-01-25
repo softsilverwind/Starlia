@@ -1,6 +1,8 @@
 #ifndef __MODEL_H__
 #define __MODEL_H__
 
+#include <assimp/scene.h>
+
 #include <istream>
 #include <vector>
 
@@ -16,7 +18,7 @@ using namespace std;
 class SModel
 {
 	public:
-		static unsigned int genTex(string filename);
+		static unsigned int genTex(const string& filename);
 
 		virtual void draw(SLayer *) {};
 
@@ -48,8 +50,25 @@ class SObjModel : public SModel
 	public:
 		virtual void draw(SLayer *) override;
 
-		SObjModel(string filename, string texname);
+		SObjModel(const string& filename, const string& texname = "");
 		~SObjModel();
+};
+
+class SAssimpModel : public SModel
+{
+	private:
+		vector<Coord3f> vertices;
+		vector<Coord3f> normals;
+		vector<Coord2f> textures;
+
+		unsigned int tex;
+
+		void initialize(const struct aiScene *scene, struct aiNode *node);
+
+	public:
+		SAssimpModel(const string& filename);
+
+		virtual void draw(SLayer *) override;
 };
 
 }

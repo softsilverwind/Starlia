@@ -124,7 +124,7 @@ const string SBasicObjectLayer::f_shader(
 		"\n"
 		"void main(void)\n"
 		"{\n"
-		"\tvec2 flipped_texcoord = vec2(f_texcoord.x, 1.0 - f_texcoord.y);"
+		"\tvec2 flipped_texcoord = vec2(f_texcoord.x, f_texcoord.y);"
 		"\tgl_FragColor = texture2D(tex, flipped_texcoord);\n"
 		"}\n");
 

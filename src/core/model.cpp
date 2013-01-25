@@ -10,12 +10,16 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include <assimp/cimport.h>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 using namespace std;
 
 namespace Starlia
 {
 
-unsigned int SModel::genTex(string filename)
+unsigned int SModel::genTex(const string& filename)
 {
 	SDL_Surface *img = IMG_Load(filename.c_str());
 	unsigned int texture;
@@ -57,7 +61,7 @@ unsigned int SModel::genTex(string filename)
 	return texture;
 }
 
-SObjModel::SObjModel(string filename, string texfile)
+SObjModel::SObjModel(const string& filename, const string& texfile)
 {
 	vector<Coord3f> vertex;
 	vector<Coord3f> normal;
@@ -83,6 +87,7 @@ SObjModel::SObjModel(string filename, string texfile)
 		{
 			Coord2f v;
 			fin >> v;
+			v.y = 1 - v.y;
 			texture.push_back(v);
 		}
 		else if (!type.compare("f"))
@@ -134,6 +139,82 @@ void SObjModel::draw(SLayer *layer)
 SObjModel::~SObjModel()
 {
 	glDeleteTextures(1, &tex);
+}
+
+
+void SAssimpModel::initialize(const struct aiScene *scene, struct aiNode *node)
+{
+	for (int i = 0; i < (int) node->mNumMeshes; ++i)
+	{
+		const struct aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		for (int j = 0; j < (int) mesh->mNumFaces; ++j)
+		{
+			const struct aiFace* face = &mesh->mFaces[j];
+
+			if (face->mNumIndices != 3)
+				continue;
+
+			for(int k = 0; k < (int) face->mNumIndices; k++)
+			{
+				int index = face->mIndices[k];
+				if(mesh->mNormals != NULL)
+					normals.push_back(Coord3f(mesh->mNormals[index].x, mesh->mNormals[index].y, mesh->mNormals[index].z));
+				vertices.push_back(Coord3f(mesh->mVertices[index].x, mesh->mVertices[index].y, mesh->mVertices[index].z));
+
+				textures.push_back(Coord2f(mesh->mTextureCoords[0][index].x, 1 - mesh->mTextureCoords[0][index].y));
+			}
+		}
+	}
+
+	for (int i = 0; i < (int) node->mNumChildren; ++i)
+		initialize(scene, node->mChildren[i]);
+}
+
+SAssimpModel::SAssimpModel(const string& filename)
+{
+	const aiScene *scene = aiImportFile(filename.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+
+	if (scene->mNumMaterials > 0)
+	{
+		aiString pth;
+		scene->mMaterials[1]->GetTexture(aiTextureType_DIFFUSE, 0, &pth);
+
+		string path = filename.substr(0, filename.rfind("/")) + "/" + string(pth.C_Str());
+		tex = genTex(path);
+	}
+	else
+	{
+		tex = 0;
+	}
+
+
+	initialize(scene, scene->mRootNode);
+
+	aiReleaseImport(scene);
+}
+
+void SAssimpModel::draw(SLayer *layer)
+{
+	int attrib_pos = layer->getAttrib("pos");
+	int attrib_texcoord = layer->getAttrib("texcoord");
+	int uniform_wvp = layer->getUniform("wvp");
+	int uniform_tex = layer->getUniform("tex");
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, tex);
+	glUniform1i(uniform_tex, 0);
+
+	glUniformMatrix4fv(uniform_wvp, 1, GL_FALSE, value_ptr(layer->getWVP()));
+
+	glEnableVertexAttribArray(attrib_pos);
+	glVertexAttribPointer(attrib_pos, 3, GL_FLOAT, GL_FALSE, 0, &vertices.front());
+	glEnableVertexAttribArray(attrib_texcoord);
+	glVertexAttribPointer(attrib_texcoord, 2, GL_FLOAT, GL_FALSE, 0, &textures.front());
+
+	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+
+	glDisableVertexAttribArray(attrib_pos);
+	glDisableVertexAttribArray(attrib_texcoord);
 }
 
 }
