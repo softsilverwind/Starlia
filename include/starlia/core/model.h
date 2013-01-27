@@ -18,7 +18,7 @@ using namespace std;
 class SModel
 {
 	public:
-		static unsigned int genTex(const string& filename);
+		static unsigned int genTex(const string& filename, unsigned int texhint = 0);
 
 		virtual void draw(SLayer *) {};
 

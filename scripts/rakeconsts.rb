@@ -9,5 +9,3 @@ Rm = 'rm -f'
 Depend = 'depend.dep'
 Src = FileList['*.cpp']
 Obj = Src.ext('o')
-Head = FileList['*.h']
-Inl = FileList['*.inl']

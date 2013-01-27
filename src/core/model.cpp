@@ -19,7 +19,7 @@ using namespace std;
 namespace Starlia
 {
 
-unsigned int SModel::genTex(const string& filename)
+unsigned int SModel::genTex(const string& filename, unsigned int texhint)
 {
 	SDL_Surface *img = IMG_Load(filename.c_str());
 	unsigned int texture;
@@ -42,7 +42,11 @@ unsigned int SModel::genTex(const string& filename)
 		return 0;
 	}
 
-	glGenTextures(1, &texture);
+	if (!texhint)
+		glGenTextures(1, &texture);
+	else
+		texture = texhint;
+
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
