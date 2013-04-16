@@ -20,14 +20,13 @@ struct Coord2
 
 	Coord2<T> operator+(const Coord2<T>& second) { return Coord2<T>(x + second.x, y + second.y); }
 	Coord2<T> operator-(const Coord2<T>& second) { return Coord2<T>(x - second.x, y - second.y); }
-	Coord2<T> operator/(T second) { return Coord2<T>(x / second, y / second); }
 	Coord2<T> operator*(T second) { return Coord2<T>(x * second, y * second); }
-	Coord2<T> operator/(const Coord2<T>& second) { return Coord2<T>(x / second.x, y / second.y); }
+	Coord2<T> operator/(T second) { return Coord2<T>(x / second, y / second); }
 
-	Coord2<T> operator+=(Coord2<T> second) { return Coord2<T>(x += second.x, y += second.y); }
-	Coord2<T> operator-=(Coord2<T> second) { return Coord2<T>(x -= second.x, y -= second.y); }
-	Coord2<T> operator*=(Coord2<T> second) { return Coord2<T>(x *= second.x, y *= second.y); }
-	Coord2<T> operator*=(T second) { return Coord2<T>(x *= second, y *= second); }
+	Coord2<T> operator+=(Coord2<T> second) { x += second.x; y += second.y; return *this; }
+	Coord2<T> operator-=(Coord2<T> second) { x -= second.x; y -= second.y; return *this; }
+	Coord2<T> operator*=(T second) { x *= second; y *= second; return *this; }
+	Coord2<T> operator/=(T second) { x /= second; y /= second; return *this; }
 
 	template<typename T2>
 	Coord2<T>(Coord2<T2> second) { x = second.x; y = second.y; }
@@ -62,14 +61,13 @@ struct Coord3
 
 	Coord3<T> operator+(const Coord3<T>& second) { return Coord3<T>(x + second.x, y + second.y, z + second.z); }
 	Coord3<T> operator-(const Coord3<T>& second) { return Coord3<T>(x - second.x, y - second.y, z - second.z); }
-	Coord3<T> operator/(T second) { return Coord3<T>(x / second, y / second, z / second); }
 	Coord3<T> operator*(T second) { return Coord3<T>(x * second, y * second, z * second); }
-	Coord3<T> operator/(const Coord3<T>& second) { return Coord3<T>(x / second.x, y / second.y, z / second.z); }
+	Coord3<T> operator/(T second) { return Coord3<T>(x / second, y / second, z / second); }
 
-	Coord3<T> operator+=(Coord3<T> second) { return Coord3<T>(x += second.x, y += second.y, z += second.z); }
-	Coord3<T> operator-=(Coord3<T> second) { return Coord3<T>(x -= second.x, y -= second.y, z -= second.z); }
-	Coord3<T> operator*=(Coord3<T> second) { return Coord3<T>(x *= second.x, y *= second.y, z *= second.z); }
-	Coord3<T> operator*=(T second) { return Coord3<T>(x *= second, y *= second, z *= second); }
+	Coord3<T> operator+=(Coord3<T> second) { x += second.x; y += second.y; z += second.z; return *this; }
+	Coord3<T> operator-=(Coord3<T> second) { x -= second.x; y -= second.y; z -= second.z; return *this; }
+	Coord3<T> operator*=(T second) { x *= second; y *= second; z *= second; return *this; }
+	Coord3<T> operator/=(T second) { x /= second; y /= second; z /= second; return *this; }
 
 	template <typename T2>
 	Coord3<T>(Coord3<T2> second) { x = second.x; y = second.y; z = second.z; }

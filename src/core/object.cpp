@@ -206,13 +206,38 @@ mat4 SPerspCamera::getView()
 			, vec3(-position.x, -position.y, -position.z));
 }
 
-SOrthoCamera::SOrthoCamera(Coord3f topleft, Coord3f botright)
-	: topleft(topleft), botright(botright)
+SOrthoCamera::SOrthoCamera(Coord2f center, Coord2f halfsize)
+	: center(center), halfsize(halfsize)
 {
+}
+
+void SOrthoCamera::zoom(float times)
+{
+	halfsize *= times;
+}
+
+void SOrthoCamera::move(Coord2f delta)
+{
+	center += delta;
+}
+
+Coord2f SOrthoCamera::unproject(Coord2f pos)
+{
+	pos *= 2;
+	pos -= Coord2f(1,1);
+
+	pos.x *= halfsize.x;
+	pos.y *= halfsize.y;
+
+	pos += center;
+
+	return pos;	
 }
 
 mat4 SOrthoCamera::getProjection()
 {
+	Coord2f topleft(center - halfsize);
+	Coord2f botright(center + halfsize);
 	return ortho(topleft.x, botright.x, botright.y, topleft.y);
 }
 

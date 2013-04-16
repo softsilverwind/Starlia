@@ -174,10 +174,14 @@ class SCamera
 class SOrthoCamera : public SCamera
 {
 	private:
-		Coord2f topleft, botright;
+		Coord2f center, halfsize;
 
 	public:
-		SOrthoCamera(Coord3f topleft, Coord3f botright);
+		SOrthoCamera(Coord2f center, Coord2f halfsize);
+
+		void zoom(float);
+		void move(Coord2f);
+		Coord2f unproject(Coord2f);
 
 		virtual mat4 getProjection() override;
 		virtual mat4 getView() override;

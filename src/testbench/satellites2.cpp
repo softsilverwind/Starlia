@@ -48,8 +48,8 @@ void createSatellite()
 int main()
 {
 	StarCore::init("Starlia test bench");
-	layer1 = make_shared<SBasicColorLayer>(new SOrthoCamera(Coord2f(0,0), Coord2f(800, 600)));
-	layer2 = make_shared<SBasicColorLayer>(new SOrthoCamera(Coord2f(0,0), Coord2f(400, 300)));
+	layer1 = make_shared<SBasicColorLayer>(new SOrthoCamera(Coord2f(400,300), Coord2f(400, 300)));
+	layer2 = make_shared<SBasicColorLayer>(new SOrthoCamera(Coord2f(200,150), Coord2f(200, 150)));
 	StarCore::addFront(layer1);
 	StarCore::addFront(layer2);
 	STimer::registerTimer(10, createSatellite);

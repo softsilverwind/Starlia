@@ -33,6 +33,10 @@ double clamp(double operand, double dlimit, double ulimit);
 Coord2f polarToXY(double radius, double angle);
 Coord2f polarToXY(Polar2f pol);
 
+template<typename T> int8_t sign(T arg);
+
+#include "math.inl"
+
 }
 
 #endif

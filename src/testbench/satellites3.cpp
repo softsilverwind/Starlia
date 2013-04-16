@@ -5,7 +5,28 @@
 using namespace Starlia;
 using namespace std;
 
-shared_ptr<SBasicColorLayer> layer;
+class MyLayer : public SBasicColorLayer
+{
+	protected:
+		virtual bool eventClick(Coord2f) override;
+
+	public:
+		MyLayer(SCamera *camera);
+};
+
+bool MyLayer::eventClick(Coord2f pos)
+{
+	cout << pos << endl;
+	cout << static_pointer_cast<SOrthoCamera>(camera)->unproject(pos) << endl;
+	return true;
+}
+
+MyLayer::MyLayer(SCamera *camera)
+	: SBasicColorLayer(camera)
+{
+}
+
+shared_ptr<MyLayer> layer;
 
 class Satellite : public S2dObject
 {
@@ -44,7 +65,16 @@ void createSatellite()
 int main()
 {
 	StarCore::init("Starlia test bench");
-	layer = make_shared<SBasicColorLayer>(new SOrthoCamera(Coord2f(400,300), Coord2f(400, 300)));
+	SOrthoCamera *cam = new SOrthoCamera(Coord2f(400,300), Coord2f(400, 300));
+	layer = make_shared<MyLayer>(cam);
+
+	layer->addKeyPress('w', [cam]{ cam->move(Coord2f(0, -42)); });
+	layer->addKeyPress('a', [cam]{ cam->move(Coord2f(-42, 0)); });
+	layer->addKeyPress('s', [cam]{ cam->move(Coord2f(0, 42)); });
+	layer->addKeyPress('d', [cam]{ cam->move(Coord2f(42, 0)); });
+	layer->addKeyPress('q', [cam]{ cam->zoom(2); });
+	layer->addKeyPress('e', [cam]{ cam->zoom(0.5); });
+
 	StarCore::addFront(layer);
 	STimer::registerTimer(10, createSatellite);
 	StarCore::loop();

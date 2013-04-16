@@ -15,9 +15,9 @@ class SStaticShaderLayer : public SListLayer<SObject>
 	private:
 		unsigned linked_program;
 
+	protected:
 		shared_ptr<SCamera> camera;
 
-	protected:
 		virtual void draw() override;
 
 	public:
