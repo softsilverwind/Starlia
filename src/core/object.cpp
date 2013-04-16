@@ -88,8 +88,8 @@ S2dDynObject::S2dDynObject(Coord2f position, Coord2f radius, float angle, shared
 }
 
 
-SWidget::SWidget(Coord2f topLeft, Coord2f botRight)
-	: topLeft(topLeft), botRight(botRight)
+SWidget::SWidget(Coord2f center, Coord2f halfsize)
+	: center(center), halfsize(halfsize)
 {
 }
 

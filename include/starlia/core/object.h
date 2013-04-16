@@ -100,17 +100,17 @@ class S2dDynObject : public S2dObject
 class SWidget : public SObject
 {
 	protected:
-		Coord2f topLeft;
-		Coord2f botRight;
+		Coord2f center;
+		Coord2f halfsize;
 		function<void (Coord2f)> onClick;
 		function<void (Coord2f)> onMouseOver;
 
 	public:
 		SWidget();
-		SWidget(Coord2f topLeft, Coord2f botRight);
+		SWidget(Coord2f center, Coord2f halfsize);
 
-		const Coord2f& getTopLeft() const;
-		const Coord2f& getBotRight() const;
+		const Coord2f& getCenter() const;
+		const Coord2f& getHalfSize() const;
 		bool eventClick(Coord2f pos);
 		bool eventMouseOver(Coord2f pos);
 };
