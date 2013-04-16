@@ -15,8 +15,8 @@ inline void S2dDynObject::setAngVelocity(float angvel) { angvelocity = angvel; }
 inline float S2dDynObject::getAngVelocity() const { return angvelocity; }
 
 
-inline const Coord2f& SWidget::getTopLeft() const { return topLeft; }
-inline const Coord2f& SWidget::getBotRight() const { return botRight; }
+inline const Coord2f& SWidget::getCenter() const { return center; }
+inline const Coord2f& SWidget::getHalfSize() const { return halfsize; }
 
 
 inline void S3dObject::setPosition(const Coord3f& pos) { position = pos; }
