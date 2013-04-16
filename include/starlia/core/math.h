@@ -23,9 +23,9 @@ Coord2i randomCoord2i(int min, int max);
 
 Coord3i randomCoord3i(int min, int max);
 
-double angleOf(Coord2f start, Coord2i end);
+double angleOf(Coord2f start, Coord2f end);
 
-double length(Coord2f start, Coord2i end);
+double length(Coord2f start, Coord2f end);
 
 double dmod(double first, int second);
 double clamp(double operand, double dlimit, double ulimit);
