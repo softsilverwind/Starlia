@@ -33,7 +33,7 @@ class SBasicColorLayer : public SStaticShaderLayer
 
 	public:
 		SBasicColorLayer(shared_ptr<SCamera> camera) : SStaticShaderLayer(camera, v_shader, f_shader) {};
-		SBasicColorLayer(SCamera *camera = new SOrthoCamera(Coord2f(-1, 1), Coord2f(1, -1))) : SBasicColorLayer(shared_ptr<SCamera>(camera)) {};
+		SBasicColorLayer(SCamera *camera = new SOrthoCamera(Coord2f(0, 0), Coord2f(1, 1))) : SBasicColorLayer(shared_ptr<SCamera>(camera)) {};
 };
 
 class SBasicObjectLayer : public SStaticShaderLayer
@@ -44,7 +44,7 @@ class SBasicObjectLayer : public SStaticShaderLayer
 
 	public:
 		SBasicObjectLayer(shared_ptr<SCamera> camera) : SStaticShaderLayer(camera, v_shader, f_shader) {};
-		SBasicObjectLayer(SCamera *camera = new SOrthoCamera(Coord2f(-1, 1), Coord2f(1, -1))) : SBasicObjectLayer(shared_ptr<SCamera>(camera)) {};
+		SBasicObjectLayer(SCamera *camera = new SOrthoCamera(Coord2f(0, 0), Coord2f(1, 1))) : SBasicObjectLayer(shared_ptr<SCamera>(camera)) {};
 };
 
 class SCircle : public SModel
