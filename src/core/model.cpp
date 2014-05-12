@@ -8,6 +8,7 @@
 #include <core/model.h>
 #include <core/layer.h>
 
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
 
 #include <assimp/cimport.h>

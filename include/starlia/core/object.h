@@ -16,8 +16,8 @@ namespace Starlia
 #include <string>
 #include <map>
 
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
-//#include <glm/gtc/matrix_transform.hpp>
 
 #include "structs.h"
 #include "model.h"
@@ -193,7 +193,7 @@ class SPerspCamera : public SCamera, public S3dDynObject
 		float fov, near, far;
 
 	public:
-		SPerspCamera(Coord3f position, Coord3f angle, float fov = 45, float near = 1, float far = 100);
+		SPerspCamera(Coord3f position, Coord3f angle, float fov = M_PI / 4, float near = 1, float far = 100);
 
 		virtual mat4 getProjection() override;
 		virtual mat4 getView() override;

@@ -96,12 +96,9 @@ double length(Coord2f start, Coord2f end)
 	return sqrt((end.x - start.x) * (end.x - start.x) + (end.y - start.y) * (end.y - start.y));
 }
 
-double dmod(double first, int second)
+double dmod(double first, double second)
 {
-	double ipart;
-	double dpart = modf(first, &ipart);
-
-	return (int) first % (int)second + dpart;
+	return first - ((int) first / (int) second) * second;
 }
 
 double clamp(double operand, double dlimit, double ulimit)

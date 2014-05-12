@@ -8,7 +8,7 @@ using namespace std;
 int main()
 {
 	{
-		cout << "2d conversions" << endl;
+		cout << "2d conversions (double -> float, double -> integer)" << endl;
 
 		Coord2d d(4.2142124412, 6.21948719);
 		Coord2f f = d;
@@ -18,7 +18,7 @@ int main()
 	}
 
 	{
-		cout << "3d conversions" << endl;
+		cout << "3d conversions (double -> float, double -> integer)" << endl;
 
 		Coord3d d(4.2142124412, 6.21948719, 4.12098);
 		Coord3f f = d;
@@ -28,7 +28,7 @@ int main()
 	}
 
 	{
-		cout << "2d -> 3d" << endl;
+		cout << "2d -> 3d (double -> integer)" << endl;
 
 		Coord2d d(4.2142124412, 6.21948719);
 		Coord3i i = d;
@@ -37,7 +37,7 @@ int main()
 	}
 
 	{
-		cout << "3d -> 2d" << endl;
+		cout << "3d -> 2d (double -> integer)" << endl;
 
 		Coord3d d(4.2142124412, 6.21948719, 4.12098);
 		Coord2i i = d;

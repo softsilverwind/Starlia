@@ -11,22 +11,22 @@ void keyboard(int key)
 	switch (key)
 	{
 		case 'w':
-			angvel.x = 1;
+			angvel.x = 0.01;
 			break;
 		case 'a':
-			angvel.z = 1;
+			angvel.z = 0.01;
 			break;
 		case 's':
-			angvel.x = -1;
+			angvel.x = -0.01;
 			break;
 		case 'd':
-			angvel.z = -1;
+			angvel.z = -0.01;
 			break;
 		case 'q':
-			angvel.y = -1;
+			angvel.y = -0.01;
 			break;
 		case 'e':
-			angvel.y = 1;
+			angvel.y = 0.01;
 			break;
 		case 'z':
 			vel.y = 0.1;

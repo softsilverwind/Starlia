@@ -3,6 +3,8 @@
 #include <vector>
 
 #include <GL/glew.h>
+
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -73,7 +75,7 @@ void S2dDynObject::update()
 	position += velocity;
 	angle += angvelocity;
 
-	angle = dmod(angle, 360);
+	angle = dmod(angle, M_PI * 2);
 }
 
 
@@ -134,24 +136,24 @@ S3dObject::S3dObject(Coord3f position, Coord3f radius, Coord3f angle, shared_ptr
 
 Coord3f S3dObject::getNormalX() const
 {
-	Coord3f c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
-	Coord3f s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
+	Coord3f c(cos(angle.x), cos(angle.y), cos(angle.z));
+	Coord3f s(sin(angle.x), sin(angle.y), sin(angle.z));
 
 	return Coord3f(c.y*c.z - s.x*s.y*s.z, c.y*s.z + c.z*s.x*s.y, -c.x*s.y);
 }
 
 Coord3f S3dObject::getNormalY() const
 {
-	Coord3f c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
-	Coord3f s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
+	Coord3f c(cos(angle.x), cos(angle.y), cos(angle.z));
+	Coord3f s(sin(angle.x), sin(angle.y), sin(angle.z));
 	
 	return Coord3f(-c.x*s.z, c.x*c.z, s.x);
 }
 
 Coord3f S3dObject::getNormalZ() const
 {
-	Coord3f c(cos(angle.x * M_PI / 180), cos(angle.y * M_PI / 180), cos(angle.z * M_PI / 180));
-	Coord3f s(sin(angle.x * M_PI / 180), sin(angle.y * M_PI / 180), sin(angle.z * M_PI / 180));
+	Coord3f c(cos(angle.x), cos(angle.y), cos(angle.z));
+	Coord3f s(sin(angle.x), sin(angle.y), sin(angle.z));
 
 	return Coord3f(c.z*s.y + c.y*s.x*s.z, s.y*s.z - c.y*c.z*s.x, c.x*c.y);
 }
@@ -171,9 +173,9 @@ void S3dDynObject::update()
 {
 	angle += angvelocity;
 
-	angle.x = clamp(angle.x, -90, 90);
-	angle.y = dmod(angle.y, 360);
-	angle.z = dmod(angle.z, 360);
+	angle.x = clamp(angle.x, -M_PI / 2, M_PI / 2);
+	angle.y = dmod(angle.y, M_PI * 2);
+	angle.z = dmod(angle.z, M_PI * 2);
 
 	actualVelocity = velocity + getNormalX() * thrust.x
 		+ getNormalY() * thrust.y + getNormalZ() * thrust.z;
@@ -199,7 +201,7 @@ mat4 SPerspCamera::getView()
 				rotate(
 					rotate(
 						rotate(
-							rotate(mat4(1.0f), -90.0f, vec3(1, 0, 0))
+							rotate(mat4(1.0f), (float) -M_PI / 2, vec3(1, 0, 0))
 						, -angle.y, vec3(0, 1, 0))
 					, -angle.x, vec3(1, 0, 0))
 				, -angle.z, vec3(0, 0, 1))
