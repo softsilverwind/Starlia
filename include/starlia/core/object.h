@@ -42,13 +42,11 @@ class SObject
 		void emit(string);
 		bool invalid;
 
-		SLayer *layer;
-
 	public:
 		SObject();
 		virtual ~SObject() {};
 
-		virtual void draw() {};
+		virtual void draw(SLayer *) {};
 		virtual void update() {};
 
 		void connect(string, function<void (void)>);
@@ -68,7 +66,7 @@ class S2dObject : public SObject
 		S2dObject(Coord2f position, Coord2f radius, float angle = 0, SModel *model = NULL);
 		S2dObject(Coord2f position, Coord2f radius, float angle, shared_ptr<SModel> model);
 
-		virtual void draw() override;
+		virtual void draw(SLayer *) override;
 
 		void setPosition(const Coord2f&);
 		const Coord2f& getPosition() const;
@@ -128,7 +126,7 @@ class S3dObject : public SObject
 		S3dObject(Coord3f position, Coord3f radius, Coord3f angle, SModel *model = NULL);
 		S3dObject(Coord3f position, Coord3f radius, Coord3f angle, shared_ptr<SModel> model);
 
-		virtual void draw() override;
+		virtual void draw(SLayer *) override;
 
 		Coord3f getNormalX() const;
 		Coord3f getNormalY() const;

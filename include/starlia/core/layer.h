@@ -71,7 +71,6 @@ class SLayer
 
 		void dispatchSignals(shared_ptr<SObject>);
 		bool& getInvalidRef(shared_ptr<SObject>);
-		void setLayer(shared_ptr<SObject>);
 
 	public:
 		SLayer();

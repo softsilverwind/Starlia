@@ -48,6 +48,9 @@ class StarCore
 		static void addBack(shared_ptr<SLayer>);
 
 		static void printShaderErrors(unsigned int, ostream& = cerr);
+
+		static int getFPS();
+		static int getMSPF();
 };
 
 }

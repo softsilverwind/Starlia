@@ -29,10 +29,7 @@ inline void StarCore::draw()
 	for (auto it = layers.begin(); it != layers.end(); ++it)
 	{
 		if ((*it)->invalid)
-		{
-			(*it)->invalid = false;
 			layers.erase(it--);
-		}
 	}
 
 	auto fit = layers.begin();
@@ -51,7 +48,7 @@ inline void StarCore::update()
 {
 	unsigned int time_now = SDL_GetTicks();
 
-	for (unsigned int i = 0; i < time_now/10 - last_update/10; ++i)
+	for (unsigned int i = 0; i < time_now / getMSPF() - last_update / getMSPF(); ++i)
 	{
 		for (auto it = layers.begin(); it != layers.end(); ++it)
 		{
@@ -60,7 +57,6 @@ inline void StarCore::update()
 
 			if ((*it)->invalid)
 			{
-				(*it)->invalid = false;
 				layers.erase(it--);
 				continue;
 			}
@@ -149,7 +145,7 @@ void StarCore::loop()
 		StarCore::draw();
 		SDL_GL_SwapBuffers();
 		STimer::loopTimers(last_update);
-		SDL_Delay(10);
+		SDL_Delay(getMSPF());
 	}
 }
 
@@ -219,6 +215,16 @@ void StarCore::printShaderErrors(GLuint object, ostream& os)
 
 	os << log;
 	delete log;
+}
+
+int StarCore::getFPS()
+{
+	return 100;
+}
+
+int StarCore::getMSPF()
+{
+	return 10;
 }
 
 }

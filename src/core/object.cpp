@@ -43,8 +43,7 @@ SObject::SObject()
 }
 
 
-
-void S2dObject::draw()
+void S2dObject::draw(SLayer *layer)
 {
 	if (!model)
 		return;
@@ -105,7 +104,7 @@ bool SWidget::eventMouseOver(Coord2f)
 	return false;
 }
 
-void S3dObject::draw()
+void S3dObject::draw(SLayer *layer)
 {
 	if (!model)
 		return;
