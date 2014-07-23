@@ -17,6 +17,26 @@ namespace Starlia
 using namespace std;
 using namespace glm;
 
+SClearColorLayer::SClearColorLayer(Color3f color)
+	: color(color)
+{
+}
+
+void SClearColorLayer::draw()
+{
+	glClearColor(color.r, color.g, color.b, 0);
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
+SClearDepthLayer::SClearDepthLayer()
+{
+}
+
+void SClearDepthLayer::draw()
+{
+	glClear(GL_DEPTH_BUFFER_BIT);
+}
+
 SStaticShaderLayer::SStaticShaderLayer(shared_ptr<SCamera> camera, const string& v_shader, const string& f_shader)
 	: camera(camera)
 {
@@ -73,10 +93,7 @@ void SStaticShaderLayer::draw()
 	setProjection(camera->getProjection());
 	setView(camera->getView());
 
-	glEnable(GL_DEPTH_TEST);
-	glClear(GL_DEPTH_BUFFER_BIT);
 	SListLayer<SObject>::draw();
-	glDisable(GL_DEPTH_TEST);
 }
 
 

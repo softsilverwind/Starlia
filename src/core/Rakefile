@@ -1,7 +1,6 @@
 Basedir = '../..'
 
-require "#{Basedir}/scripts/rakefuns.rb"
-require "#{Basedir}/scripts/rakeconsts.rb"
+require "#{Basedir}/scripts/starforge"
 
 Incldir = "#{Basedir}/include/starlia"
 Builddir = "#{Basedir}/build"
@@ -16,7 +15,7 @@ sh "#{Rm} #{Depend}"
 
 file Depend do
 	puts "Generating #{Depend}"
-	makedep Src, Depend
+	makedep Src, Embassy, Depend
 end
 
 import Depend
@@ -28,6 +27,7 @@ end
 task :clean do
 	sh "#{Rm} #{Obj}"
 	sh "#{Rm} #{Depend}"
+	sh "#{Rm} #{Embassy.ext('cpp')} #{Embassy.ext('h')}"
 end
 
 task :distclean => :clean do

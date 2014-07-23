@@ -8,4 +8,5 @@ Rm = 'rm -f'
 
 Depend = 'depend.dep'
 Src = FileList['*.cpp']
-Obj = Src.ext('o')
+Embassy = FileList['*.mby']
+Obj = Src.ext('o') + Embassy.ext('o')

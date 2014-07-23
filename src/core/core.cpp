@@ -26,6 +26,9 @@ inline void StarCore::draw()
 	glClearColor(clear_color.r, clear_color.g, clear_color.b, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	glEnable(GL_DEPTH_TEST);
+	glClear(GL_DEPTH_BUFFER_BIT);
+
 	for (auto it = layers.begin(); it != layers.end(); ++it)
 	{
 		if ((*it)->invalid)

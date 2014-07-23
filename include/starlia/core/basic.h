@@ -10,6 +10,25 @@
 namespace Starlia
 {
 
+class SClearColorLayer : public SLayer
+{
+	private:
+		Color3f color;
+
+	public:
+		SClearColorLayer(Color3f);
+
+		virtual void draw() override;
+};
+
+class SClearDepthLayer : public SLayer
+{
+	public:
+		SClearDepthLayer();
+
+		virtual void draw() override;
+};
+
 class SStaticShaderLayer : public SListLayer<SObject>
 {
 	private:

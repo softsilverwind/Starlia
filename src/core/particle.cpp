@@ -4,6 +4,33 @@
 namespace Starlia
 {
 
+const string ParticleLayer::v_shader(
+		"#version 120\n"
+		"attribute vec3 pos;\n"
+		"attribute vec2 texcoord;\n"
+		"\n"
+		"varying vec2 f_texcoord;\n"
+		"\n"
+		"uniform mat4 wvp;\n"
+		"\n"
+		"void main(void)\n"
+		"{\n"
+		"\tgl_Position = wvp * vec4(pos, 1.0);\n"
+		"\tf_texcoord = texcoord;\n"
+		"}\n");
+
+const string ParticleLayer::f_shader(
+		"#version 120\n"
+		"varying vec2 f_texcoord;\n"
+		"uniform sampler2D tex;\n"
+		"\n"
+		"void main(void)\n"
+		"{\n"
+		"\tvec2 flipped_texcoord = vec2(f_texcoord.x, f_texcoord.y);"
+		"\tgl_FragColor = texture2D(tex, flipped_texcoord);\n"
+		"}\n");
+
+
 ParticleManager::ParticleManager(unsigned int tex, int maxSize)
 	: tex(tex), particles(maxSize)
 {
