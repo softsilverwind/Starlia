@@ -30,6 +30,12 @@ task :clean do
 	sh "#{Rm} #{Embassy.ext('cpp')} #{Embassy.ext('h')}"
 end
 
+task :find do
+	puts "Src: #{Src.inspect}"
+	puts "Mby: #{Embassy.inspect}"
+	puts "Obj: #{Obj.inspect}"
+end
+
 task :distclean => :clean do
 	sh "#{Rm} #{Final}"
 end

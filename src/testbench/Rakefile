@@ -1,7 +1,6 @@
 Basedir = '../..'
 
-require "#{Basedir}/scripts/rakefuns.rb"
-require "#{Basedir}/scripts/rakeconsts.rb"
+require "#{Basedir}/scripts/starforge.rb"
 
 Incldir = "#{Basedir}/include"
 Builddir = "#{Basedir}/build"
@@ -17,7 +16,7 @@ sh "#{Rm} #{Depend}"
 
 file Depend do
 	puts "Generating #{Depend}"
-	makedep Src, Depend
+	makedep Src, Embassy, Depend
 end
 
 import Depend

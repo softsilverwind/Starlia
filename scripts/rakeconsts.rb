@@ -7,6 +7,6 @@ Compilers = {
 Rm = 'rm -f'
 
 Depend = 'depend.dep'
-Src = FileList['*.cpp']
-Embassy = FileList['*.mby']
-Obj = Src.ext('o') + Embassy.ext('o')
+Src = FileList['**/*.cpp']
+Embassy = FileList['**/*.mby']
+Obj = Src.ext('o') | Embassy.ext('o')

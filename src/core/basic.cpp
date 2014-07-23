@@ -11,6 +11,8 @@
 #include <core/core.h>
 #include <core/basic.h>
 
+#include "shaders/shaders.h"
+
 namespace Starlia
 {
 
@@ -97,56 +99,10 @@ void SStaticShaderLayer::draw()
 }
 
 
-const string SBasicColorLayer::v_shader(
-		"#version 120\n"
-		"attribute vec3 pos;\n"
-		"attribute vec3 color;\n"
-		"\n"
-		"uniform mat4 wvp;\n"
-		"varying vec3 f_color;\n"
-		"\n"
-		"void main(void)\n"
-		"{\n"
-		"\tgl_Position = wvp * vec4(pos, 1.0);\n"
-		"\tf_color = color;\n"
-		"}\n");
-
-const string SBasicColorLayer::f_shader(
-		"#version 120\n"
-		"varying vec3 f_color;\n"
-		"\n"
-		"void main(void)\n"
-		"{\n"
-		"\tgl_FragColor = vec4(f_color, 1.0);\n"
-		"}\n");
-
-
-const string SBasicObjectLayer::v_shader(
-		"#version 120\n"
-		"attribute vec3 pos;\n"
-		"attribute vec2 texcoord;\n"
-		"\n"
-		"varying vec2 f_texcoord;\n"
-		"\n"
-		"uniform mat4 wvp;\n"
-		"\n"
-		"void main(void)\n"
-		"{\n"
-		"\tgl_Position = wvp * vec4(pos, 1.0);\n"
-		"\tf_texcoord = texcoord;\n"
-		"}\n");
-
-const string SBasicObjectLayer::f_shader(
-		"#version 120\n"
-		"varying vec2 f_texcoord;\n"
-		"uniform sampler2D tex;\n"
-		"\n"
-		"void main(void)\n"
-		"{\n"
-		"\tvec2 flipped_texcoord = vec2(f_texcoord.x, f_texcoord.y);"
-		"\tgl_FragColor = texture2D(tex, flipped_texcoord);\n"
-		"}\n");
-
+const string SBasicColorLayer::v_shader(shaders_basiccolor_v);
+const string SBasicColorLayer::f_shader(shaders_basiccolor_f);
+const string SBasicObjectLayer::v_shader(shaders_basicobject_v);
+const string SBasicObjectLayer::f_shader(shaders_basicobject_f);
 
 bool SCircle::initialized = false;
 vector<Coord2f> SCircle::vertices;
