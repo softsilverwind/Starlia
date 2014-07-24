@@ -81,8 +81,6 @@ SStaticShaderLayer::SStaticShaderLayer(shared_ptr<SCamera> camera, const string&
 	shared_ptr<SObject> obj;
 	if (obj = dynamic_pointer_cast<SObject>(camera))
 		add(obj);
-
-	program = linked_program;
 }
 
 SStaticShaderLayer::SStaticShaderLayer(SCamera *camera, const string& v_shader, const string& f_shader)
@@ -92,12 +90,23 @@ SStaticShaderLayer::SStaticShaderLayer(SCamera *camera, const string& v_shader, 
 
 void SStaticShaderLayer::draw()
 {
+	glUseProgram(linked_program);
+
 	setProjection(camera->getProjection());
 	setView(camera->getView());
 
 	SListLayer<SObject>::draw();
 }
 
+shared_ptr<SCamera> SStaticShaderLayer::getCamera()
+{
+	return camera;
+}
+
+unsigned int SStaticShaderLayer::getActiveProgram()
+{
+	return linked_program;
+}
 
 const string SBasicColorLayer::v_shader(shaders_basiccolor_v);
 const string SBasicColorLayer::f_shader(shaders_basiccolor_f);

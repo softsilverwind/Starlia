@@ -39,9 +39,13 @@ class SStaticShaderLayer : public SListLayer<SObject>
 
 		virtual void draw() override;
 
+		virtual unsigned int getActiveProgram() override;
+
 	public:
 		SStaticShaderLayer(shared_ptr<SCamera> camera, const string& f_shader, const string& v_shader);
 		SStaticShaderLayer(SCamera *camera, const string& f_shader, const string& v_shader);
+
+		shared_ptr<SCamera> getCamera();
 };
 
 class SBasicColorLayer : public SStaticShaderLayer

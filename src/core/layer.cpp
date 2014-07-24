@@ -10,11 +10,6 @@ using namespace std;
 namespace Starlia
 {
 
-void SLayer::draw()
-{
-	glUseProgram(program);
-}
-
 bool SLayer::eventKeyPress(SDLKey c)
 {
 	auto it = keypresses.find(c);
@@ -71,13 +66,13 @@ const mat4& SLayer::getWVP()
 
 int SLayer::getAttrib(const string& name)
 {
-	int ret = glGetAttribLocation(program, name.c_str());
+	int ret = glGetAttribLocation(getActiveProgram(), name.c_str());
 	return ret;
 }
 
 int SLayer::getUniform(const string& name)
 {
-	int ret = glGetUniformLocation(program, name.c_str());
+	int ret = glGetUniformLocation(getActiveProgram(), name.c_str());
 	return ret;
 }
 

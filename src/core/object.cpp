@@ -207,6 +207,11 @@ mat4 SPerspCamera::getView()
 			, vec3(-position.x, -position.y, -position.z));
 }
 
+float SPerspCamera::distanceFrom(Coord3f point)
+{
+	return length(position, point);
+}
+
 SOrthoCamera::SOrthoCamera(Coord2f center, Coord2f halfsize)
 	: center(center), halfsize(halfsize)
 {
@@ -245,6 +250,11 @@ mat4 SOrthoCamera::getProjection()
 mat4 SOrthoCamera::getView()
 {
 	return mat4(1.0f);
+}
+
+float SOrthoCamera::distanceFrom(Coord3f point)
+{
+	return point.z;
 }
 
 }

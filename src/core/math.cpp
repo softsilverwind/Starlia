@@ -93,7 +93,19 @@ double angleOf(Coord2f start, Coord2f end)
 
 double length(Coord2f start, Coord2f end)
 {
-	return sqrt((end.x - start.x) * (end.x - start.x) + (end.y - start.y) * (end.y - start.y));
+	double x = end.x - start.x;
+	double y = end.y - start.y;
+
+	return sqrt(x * x + y * y);
+}
+
+double length(Coord3f start, Coord3f end)
+{
+	double x = end.x - start.x;
+	double y = end.y - start.y;
+	double z = end.z - start.z;
+
+	return sqrt(x * x + y * y + z * z);
 }
 
 double dmod(double first, double second)

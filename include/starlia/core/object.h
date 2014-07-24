@@ -167,6 +167,8 @@ class SCamera
 	public:
 		virtual mat4 getProjection() { return mat4(1.0f); };
 		virtual mat4 getView() { return mat4(1.0f); };
+
+		virtual float distanceFrom(Coord3f) { return 0; }
 };
 
 class SOrthoCamera : public SCamera
@@ -183,6 +185,8 @@ class SOrthoCamera : public SCamera
 
 		virtual mat4 getProjection() override;
 		virtual mat4 getView() override;
+
+		virtual float distanceFrom(Coord3f point) override;
 };
 
 class SPerspCamera : public SCamera, public S3dDynObject
@@ -195,6 +199,8 @@ class SPerspCamera : public SCamera, public S3dDynObject
 
 		virtual mat4 getProjection() override;
 		virtual mat4 getView() override;
+
+		virtual float distanceFrom(Coord3f point) override;
 };
 
 #include "object.inl"

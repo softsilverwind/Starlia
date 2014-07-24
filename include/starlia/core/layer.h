@@ -56,9 +56,9 @@ class SLayer
 		mat4 world, view, projection, wvp;
 
 	protected:
-		unsigned program;
+		virtual unsigned int getActiveProgram() { assert(0); }
 
-		virtual void draw();
+		virtual void draw() {};
 		virtual void update() {};
 
 		// event* functions are called by the StarCore class, on an event

@@ -1,3 +1,5 @@
+#include <GL/gl.h>
+
 #include "layer.h"
 #include "structs.h"
 #include "basic.h"
@@ -10,7 +12,8 @@ namespace Starlia
 struct Particle
 {
 	Coord3f position;
-	Color3f tint;
+	Color4f tint;
+
 	float radius;
 	float angle;
 
@@ -38,14 +41,31 @@ class ParticleAffector;
 class ParticleManager : public SObject
 {
 	private:
+		static const Coord3f square[];
+
 		unsigned int tex;
 
 		vector<Particle> particles;
-		vector<ParticleEmitter> emitters;
 		vector<ParticleAffector> affectors;
+		vector<ParticleEmitter> emitters;
+
+		unsigned int square_buffer;
+		unsigned int position_buffer;
+		unsigned int tint_buffer;
+		unsigned int radius_angle_buffer;
+
+		int useIndex;
+		int firstUnused();
+
+		bool sortParticles;
+		int srcBlend, dstBlend;
 
 	public:
-		ParticleManager(unsigned int tex, int maxSize = DEFAULT_MAX_PARTICLE_COUNT);
+		ParticleManager(const string& filename, int maxSize = DEFAULT_MAX_PARTICLE_COUNT,
+				bool sortParticles = true, int srcBlend = GL_SRC_ALPHA,
+				int dstBlend = GL_ONE_MINUS_SRC_ALPHA);
+
+		virtual ~ParticleManager() override;
 
 		virtual void draw(SLayer *) override;
 		virtual void update() override;

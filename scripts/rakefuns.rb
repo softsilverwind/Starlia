@@ -43,11 +43,11 @@ def makedep sources, mbys, dependfile
 		end
 
 		mbys.each do |x|
-			dep.puts %{rule %r{#{rem_ext(x)}\.(?:cpp|h)} do}
+			dep.puts %{rule %r{#{rem_ext(x)}\.(?:cpp|h)} => '#{x}' do}
 			dep.puts %{\tembassy "#{x}"}
 			dep.puts %{end}
 			dep.puts
-			dep.puts %{rule '#{rem_ext(x)}.o' => ['#{rem_ext(x)}.cpp'] do}
+			dep.puts %{rule '#{rem_ext(x)}.o' => '#{rem_ext(x)}.cpp' do}
 			dep.puts %{\tinvoke Compilers[:cpp], '#{rem_ext(x) + ".cpp"}', '#{rem_ext(x) + ".o"}'}
 			dep.puts %{end}
 			dep.puts
